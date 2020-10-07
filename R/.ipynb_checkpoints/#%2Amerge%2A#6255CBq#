@@ -1,0 +1,275 @@
+## Functions for mapping query cells to reference
+mapQuery <- function(exp_query, metadata_query, ref_obj, do_normalize = TRUE) {
+    
+    if (do_normalize) {
+        exp_query <- singlecellmethods::normalizeData(exp_query, 1e4, 'log')
+    }
+    
+    exp_query_scaled <- singlecellmethods::scaleDataWithStats(
+        exp_query[ref_obj$vargenes$symbol, ], ref_obj$vargenes$mean, ref_obj$vargenes$stddev, 1
+    )
+    
+    #added do_corr (remove this later)
+    #if (verbose) message('doing do_corr in the query')
+    #exp_query_scaled <- exp_query_scaled[which(is.na(rowSums(exp_query_scaled)) == 0), ]
+    #exp_query_scaled <- exp_query_scaled %>% scale() %>% pmin(10) %>% pmax(-10)
+
+    
+    # 1. Project
+    Z_pca_query = t(ref_obj$loadings) %*% exp_query_scaled
+    
+    # 2. Cluster
+    Z_pca_query_cos <- singlecellmethods:::cosine_normalize_cpp(Z_pca_query, 2)
+    R_query = soft_cluster(ref_obj$centroids, Z_pca_query_cos, 0.1)
+    
+    # 3. Correct
+    Xq = Matrix(rbind(rep(1, ncol(Z_pca_query)), rep(1, ncol(Z_pca_query))), sparse = TRUE)
+    Zq_corr = moe_correct_ref(as.matrix(Z_pca_query), 
+                              as.matrix(Xq), 
+                              as.matrix(R_query), 
+                              as.matrix(ref_obj$cache[[1]]), 
+                              as.matrix(ref_obj$cache[[2]])) # calls cpp code
+    
+	## UMAP query if the reference umap is present
+    umap_query = NULL
+    if (!is.null(ref_obj$umap)) {
+        umap_query <- uwot::umap_transform(t(Zq_corr), ref_obj$umap)
+    }
+    
+    ## Predict cell type 
+    type_probs <- crossprod(R_query, ref_obj$cluster_annotations)
+    cell_type <- colnames(type_probs)[apply(type_probs, 1, which.max)]
+    type_thresh <- 0.2
+    cell_type[which(apply(type_probs, 1, max) < type_thresh)] <- 'unassigned'
+    
+    metadata_query$cell_type <- cell_type
+    
+    return(list(Z = Zq_corr, Zq_pca = Z_pca_query, R = R_query, Xq = Xq, umap = umap_query, meta_data = metadata_query))
+}
+
+
+
+## Functions to build a reference
+calcVargenes = function(obj, ngenes) {
+    # Find and save variable genes for use in downstream PCA
+    obj = FindVariableFeatures(obj, selection.method = "vst", nfeatures = ngenes)
+    vargenes = VariableFeatures(object = obj)
+    
+    # Save the means and std devs for each vargene
+    dat = as.matrix(GetAssayData(object = obj, assay = "RNA", slot = 'data'))
+    dat = dat[vargenes, ] # subset on variable genes only
+    gene_means = rowMeans(dat)
+    gene_sds = sqrt(rowVars(dat))
+    vargene_means_sds = cbind(gene_means, gene_sds)
+    rownames(vargene_means_sds) = vargenes
+    colnames(vargene_means_sds) = c("mean", "stddev")
+    
+    return(vargene_means_sds)
+}
+
+subsetScaleByVargenes = function(exp, vargenes_means_sds){
+    # Ensure that rows are in the correct order
+    res = exp[rownames(vargenes_means_sds), ] %>% 
+        sweep(1, vargenes_means_sds[,1], "-") %>%
+        sweep(1, vargenes_means_sds[,2], "/")
+    return(res)
+}
+
+# Run Harmony to harmonize the reference
+runHarmony = function(Z_pca, metadata, vars, K) {
+    set.seed(111)
+    harm_obj = harmony::HarmonyMatrix(
+        data_mat = t(Z_pca), ## PCA embedding matrix of cells
+        meta_data = metadata, ## dataframe with cell labels
+#         theta = 2, ## cluster diversity enforcement
+#         sigma = 0.1,
+        vars_use = vars, ## variable to integrate out
+#         nclust = K, ## number of clusters in Harmony model
+        max.iter.harmony = 10,
+        return_object = TRUE, ## return the full Harmony model object
+        do_pca = FALSE ## don't recompute PCs
+    )
+    return(harm_obj)
+}
+
+saveReference = function(vargenes_means_sds, u, cache, Y, Z_harm_ref, term1, term2) {
+    saveRDS(vargenes_means_sds, "vargenes_means_sds.RDS")
+    saveRDS(u, "u.RDS")
+    saveRDS(cache, "cache.RDS")
+    saveRDS(Y, "Y.RDS")
+    saveRDS(Z_harm_ref, "Z_harm_ref.RDS")
+    saveRDS(term1, "ref_term1.rds")
+    saveRDS(term2, "ref_term2.rds")
+}
+
+# exp_ref is [genes x cells]
+buildReference <- function(exp_ref, metadata_ref, vars=NULL, cell_types, K=50, verbose=FALSE, do_umap=TRUE, weightedPCA = FALSE, use_all_genes = FALSE, do_normalize = TRUE, pca_function = 'rsvd') {
+    set.seed(1) # for reproducible soft k-means
+    
+    res <- list(meta_data = metadata_ref)
+    
+    if (verbose) message('start normalizing and find variable genes')
+    
+    if (do_normalize) {
+        exp_ref <- singlecellmethods::normalizeData(exp_ref, 1e4, 'log')
+    }
+    
+    vargenes_df <- singlecellmethods::findVariableGenes(exp_ref, rep('A', ncol(exp_ref)), num.bin = 20)
+    
+    if (use_all_genes) { # use all genes
+        var_genes <- unique(data.table(vargenes_df)[, head(.SD[order(-gene_dispersion_scaled)], nrow(exp_ref)), by = group][, symbol])
+    } else { # pick top 2000 variable genes
+        var_genes <- unique(data.table(vargenes_df)[, head(.SD[order(-gene_dispersion_scaled)], 2000), by = group][, symbol])
+    }
+    
+    exp_ref <- exp_ref[var_genes, ]
+    
+    
+    if (weightedPCA) {
+        if (verbose) message('start weighted scaling and weighted PCA')
+        s = singlecellmethods::weighted_pca(as(exp_ref, 'dgCMatrix'), metadata_ref$cell_type)
+        res$vargenes = s$vargenes #weighted_pca returns weighted means and sds for scaling query
+        res$loadings = s$loadings
+        Z_pca_ref = t(s$embeddings)
+        
+    } else { #regular PCA
+        
+        if (verbose) message('start regular scaling and PCA')
+        vargenes_means_sds <- tibble(
+        symbol = var_genes,
+        mean = Matrix::rowMeans(exp_ref)
+        )
+        vargenes_means_sds$stddev <- singlecellmethods::rowSDs(exp_ref, vargenes_means_sds$mean)
+        exp_ref_scaled <- singlecellmethods::scaleDataWithStats(exp_ref, vargenes_means_sds$mean, vargenes_means_sds$stddev, 1) #scale data
+        
+        #PCA
+        if (pca_function == 'rsvd') {
+            s <- rsvd::rsvd(exp_ref_scaled, k = 20)
+        } else if (pca_function == 'svd') {
+            s = svd(exp_ref_scaled)
+        } else if (pca_function == 'irlba') {
+            s = irlba(exp_ref_scaled, nv = 20)
+        }
+        
+        Z_pca_ref = diag(s$d) %*% t(s$v) # [d x N]
+        res$loadings <- s$u
+        res$vargenes <- vargenes_means_sds
+    }
+    
+    if (!is.null(vars)) {
+        if (verbose) message('start Harmony')
+        ref_harmObj = runHarmony(Z_pca_ref, metadata_ref, vars, K)
+        Z_harm_ref = ref_harmObj$Z_corr
+
+        res$centroids <- t(singlecellmethods:::cosine_normalize_cpp(ref_harmObj$R %*% t(Z_harm_ref) , 1))
+        res$R <- ref_harmObj$R
+        res$betas <- harmony:::moe_ridge_get_betas(ref_harmObj)
+        res$obj <- ref_harmObj
+        res$Z_orig <- Z_pca_ref
+        res$Z_corr <- Z_harm_ref    
+    } else {
+        clust_res <- singlecellmethods::soft_kmeans(Z_pca_ref, K)
+        res$centroids <- clust_res$Y
+        res$R <- clust_res$R
+        res$betas <- NULL
+        res$obj <- NULL
+        res$Z_orig <- Z_pca_ref
+        res$Z_corr <- Z_pca_ref
+    }
+    res$cache <- compute_ref_cache(res$R, res$Z_corr)
+
+    if (do_umap) {
+        if (verbose) message('start UMAP')
+        res$umap <- uwot::umap(
+            t(res$Z_corr), n_neighbors = 30, learning_rate = 0.5, init = "laplacian", 
+            metric = 'cosine', fast_sgd = TRUE,
+            min_dist = .1, n_threads = 4, ret_model = TRUE
+        )        
+    }
+    
+    ## save cell type labels 
+    if (verbose) message('annotate clusters')
+    cell_types <- factor(cell_types)
+    cluster_annotations <- res$R %*% model.matrix(~0 + cell_types)
+    cluster_annotations <- diag(1 / rowSums(cluster_annotations)) %*% cluster_annotations
+    colnames(cluster_annotations) <- gsub('cell_types', '', colnames(cluster_annotations))
+    res$cluster_annotations <- cluster_annotations
+
+
+    return(res)
+}
+
+# function for F1 by cell type, from benchmarking paper
+evaluate <- function(true, predicted){
+  "
+  Script to evaluate the performance of the classifier.
+  It returns multiple evaluation measures: the confusion matrix, median F1-score, F1-score for each class, accuracy, percentage of unlabeled, population size. 
+  
+  The percentage of unlabeled cells is find by checking for cells that are labeled 'Unassigned', 'unassigned', 'Unknown', 'unknown', 'Nodexx', 'rand', or 'ambiguous'.
+  
+  Parameters
+  ----------
+  TrueLabelsPath: csv file with the true labels (format: one column, no index)
+  PredLabelsPath: csv file with the predicted labels (format: one column, no index)
+  Indices: which part of the csv file should be read (e.g. if more datasets are tested at the same time) (format: c(begin, end))
+  
+  Returns
+  -------
+  Conf: confusion matrix
+  MedF1 : median F1-score
+  F1 : F1-score per class
+  Acc : accuracy
+  PercUnl : percentage of unlabeled cells
+  PopSize : number of cells per cell type
+  "
+  
+  true_lab <- unlist(true)
+  pred_lab <- unlist(predicted)
+  
+  unique_true <- unlist(unique(true_lab))
+  unique_pred <- unlist(unique(pred_lab))
+  
+  unique_all <- unique(c(unique_true,unique_pred))
+  conf <- table(true_lab,pred_lab)
+  pop_size <- rowSums(conf)
+  
+  pred_lab = gsub('Node..','Node',pred_lab)
+  
+  conf_F1 <- table(true_lab,pred_lab,exclude = c('unassigned','Unassigned','Unknown','rand','Node','ambiguous','unknown'))
+
+  F1 <- vector()
+  sum_acc <- 0
+  
+  for (i in c(1:length(unique_true))){
+    findLabel = colnames(conf_F1) == row.names(conf_F1)[i]
+    if(sum(findLabel)){
+      prec <- conf_F1[i,findLabel] / colSums(conf_F1)[findLabel]
+      rec <- conf_F1[i,findLabel] / rowSums(conf_F1)[i]
+      if (prec == 0 || rec == 0){
+        F1[i] = 0
+      } else{
+        F1[i] <- (2*prec*rec) / (prec + rec)
+      }
+      sum_acc <- sum_acc + conf_F1[i,findLabel]
+    } else {
+      F1[i] = 0
+    }
+  }
+  
+  pop_size <- pop_size[pop_size > 0]
+  
+  names(F1) <- names(pop_size)
+  
+  med_F1 <- median(F1)
+  
+  total <- length(pred_lab)
+  num_unlab <- sum(pred_lab == 'unassigned') + sum(pred_lab == 'Unassigned') + sum(pred_lab == 'rand') + sum(pred_lab == 'Unknown') + sum(pred_lab == 'unknown') + sum(pred_lab == 'Node') + sum(pred_lab == 'ambiguous')
+  per_unlab <- num_unlab / total
+  
+  acc <- sum_acc/sum(conf_F1)
+  
+  result <- list(Conf = conf, MedF1 = med_F1, F1 = F1, Acc = acc, PercUnl = per_unlab, PopSize = pop_size)
+  
+  return(result)
+}
+
