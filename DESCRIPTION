@@ -1,11 +1,16 @@
 Package: symphony
 Title: Single-cell Reference Compression and Query Mapping
 Version: 1.0
-Authors@R: 
+Authors@R: c(
     person(given = "Joyce", family = "Kang",
            role = c("aut", "cre"),
-           email = "joyce_kang@hms.harvard.edu")
-Description: Symphony is an algorithm to enable rapid single-cell reference mapping. Symphony compression takes in a harmonized reference and outputs the minimal reference elements needed to map a new query. Symphony mapping takes in query gene expression and maps the cells into the harmonized reference embedding, which can power downstream visualization and inference tasks.
+           email = "joyce_kang@hms.harvard.edu"),
+    person("Ilya", "Korsunsky", email = "ilya.korsunsky@gmail.com", 
+           role = c("cre", "aut"), comment = c(ORCID = "0000-0003-4848-3948")),
+    person("Soumya", "Raychaudhuri", 
+        role = c("aut"), comment = c(ORCID = "0000-0002-1901-8265"))
+    )
+Description: Implements the Symphony reference building and query mapping algorithms from Kang, Korsunsky, et al.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -13,3 +18,18 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: 
     testthat
+LinkingTo: 
+    Rcpp
+Imports: 
+    Rcpp,
+    harmony,
+    uwot,
+    singlecellmethods,
+    irlba,
+    class,
+    Seurat,
+    Matrix,
+    rsvd,
+    purrr,
+    dplyr,
+    ggplot2
