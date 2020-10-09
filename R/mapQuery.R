@@ -13,6 +13,7 @@
 #' @import stats
 #' @import utils
 #' @import magrittr
+#' @importFrom Matrix Matrix
 #' 
 #' @export
 mapQuery = function(exp_query, 
@@ -55,7 +56,7 @@ mapQuery = function(exp_query,
     
     if (verbose) message('Cluster')
     ### 2. Soft cluster assignment
-    Z_pca_query_cos = singlecellmethods::cosine_normalize_cpp(Z_pca_query, 2)
+    Z_pca_query_cos = cosine_normalize_cpp(Z_pca_query, 2)
     R_query = soft_cluster(ref_obj$centroids, Z_pca_query_cos, sigma)
     
     if (verbose) message('Correct')

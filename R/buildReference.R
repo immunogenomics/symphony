@@ -47,8 +47,8 @@ buildReference <- function(exp_ref,                   # Genes x cells
     if (verbose) message('Finding variable genes')
     if (vargenes_method == 'mvp') {
         vargenes_df = singlecellmethods::findVariableGenes(exp_ref, rep('A', ncol(exp_ref)), num.bin = 20)
-        var_genes = unique(data.table(vargenes_df)[, head(.SD[order(-gene_dispersion_scaled)], topn), 
-                                                        by = group][, symbol])
+        var_genes = unique(data.table(vargenes_df)[, head(.SD[order(-'gene_dispersion_scaled')], topn), 
+                                                        by = 'group'][, 'symbol'])
     } else if (vargenes_method == 'vst') {
         var_genes = singlecellmethods::vargenes_vst(exp_ref, topn = topn)
     } else {
@@ -90,7 +90,7 @@ buildReference <- function(exp_ref,                   # Genes x cells
             do_pca = FALSE            ## do not recompute PCs
         )
 
-        res$centroids <- t(singlecellmethods::cosine_normalize_cpp(ref_harmObj$R %*% t(ref_harmObj$Z_corr) , 1))
+        res$centroids <- t(cosine_normalize_cpp(ref_harmObj$R %*% t(ref_harmObj$Z_corr) , 1))
         res$R <- ref_harmObj$R
         res$betas <- harmony::moe_ridge_get_betas(ref_harmObj)
         res$Z_orig <- Z_pca_ref
