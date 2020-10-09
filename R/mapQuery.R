@@ -1,5 +1,4 @@
 #' Function for mapping query cells to a Symphony reference
-#' Create new factor from 2 existing ones
 #'
 #' @param exp_query Query gene expression (genes by cells)
 #' @param metadata_query Query metadata (cells by attributes)
@@ -10,9 +9,8 @@
 #' @param do_umap Perform umap projection into reference UMAP (if reference includes a uwot model)
 #' @param sigma Fuzziness parameter for soft clustering (sigma = 1 is hard clustering)
 #' 
-#' @import stats
 #' @import utils
-#' @import magrittr
+#' @importFrom magrittr "%>%"
 #' @importFrom Matrix Matrix
 #' 
 #' @export
@@ -27,7 +25,7 @@ mapQuery = function(exp_query,
     
     if (do_normalize) {
         if (verbose) message('Normalizing')
-        exp_query = singlecellmethods::normalizeData(exp_query, 1e4, 'log')
+        exp_query = normalizeData(exp_query, 1e4, 'log')
     }
     
     ## Synchronize and scale query genes
@@ -38,9 +36,9 @@ mapQuery = function(exp_query,
     shared_genes = ref_obj$vargenes$symbol[idx_shared_genes]
     
     # Subset and scale the query cells by reference means and standard deviations
-    exp_query_scaled = singlecellmethods::scaleDataWithStats(exp_query[shared_genes, ],
-                                                             ref_obj$vargenes$mean[idx_shared_genes],
-                                                             ref_obj$vargenes$stddev[idx_shared_genes], 1)
+    exp_query_scaled = scaleDataWithStats(exp_query[shared_genes, ],
+                                          ref_obj$vargenes$mean[idx_shared_genes],
+                                          ref_obj$vargenes$stddev[idx_shared_genes], 1)
     
     # To add rows of zeros for missing genes, start with full matrix of zeroes
     exp_query_scaled_sync = matrix(0, nrow = length(ref_obj$vargenes$symbol), ncol = ncol(exp_query))  
@@ -71,7 +69,7 @@ mapQuery = function(exp_query,
                 if (length(unique(.x)) == 1) { # Special case if factor only has 1 level
                     rep(1, length(.x))
                 } else {
-                    model.matrix(~0 + .x)
+                    stats::model.matrix(~0 + .x)
                 }
             }) %>% purrr::reduce(cbind)
         

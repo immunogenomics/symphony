@@ -1,8 +1,113 @@
-moe_ridge_get_betas <- function(harmonyObj) {
-    harmonyObj$moe_ridge_get_betas_cpp()
-}
+# from singlecellmethods---------------------------------
+
+normalizeData <- function(A, scaling_factor = 1e4, method) {
+    if(!'dgCMatrix' %in% class(A)) A <- as(A, "dgCMatrix")
     
-#Note: this will need to be fixed if we're including merging redundant clusters in ref building
+    if (method == "log") {
+        A@x <- A@x / rep.int(Matrix::colSums(A), diff(A@p))
+        A@x <- scaling_factor * A@x
+        A@x <- log(1 + A@x)
+    } else if (method == "fft") {
+        A@x <- A@x / rep.int(Matrix::colSums(A), diff(A@p))
+        A@x <- scaling_factor * A@x
+        A@x <- sqrt(A@x) + sqrt(1 + A@x)
+    } else if (method == "geneCLR") {
+        A@x <- as.numeric(normalizeCLR_dgc(A@x, A@p, A@i, ncol(A), nrow(A), 1))        
+    } else if (method == "cellCLR") {
+        A@x <- as.numeric(normalizeCLR_dgc(A@x, A@p, A@i, ncol(A), nrow(A), 2))
+    } else {
+        stop(sprintf("ERROR: method %s not implemented", method))
+    }
+
+    return(A)
+}
+
+scaleData <- function(A, margin = 1, thresh = 10) {
+    A <- as(A, "dgCMatrix")
+    
+    if (margin != 1) A <- t(A)
+    
+    res <- scaleRows_dgc(A@x, A@p, A@i, ncol(A), nrow(A), thresh)
+    if (margin != 1) res <- t(res)
+    row.names(res) <- row.names(A)
+    colnames(res) <- colnames(A)
+    return(res)
+}
+
+scaleDataWithStats <- function(A, mean_vec, sd_vec, margin = 1, thresh = 10) {
+    if (!"dgCMatrix" %in% class(A))
+        A <- as(A, "dgCMatrix")
+    
+    if (margin != 1) A <- t(A)
+    
+    res <- scaleRowsWithStats_dgc(A@x, A@p, A@i, mean_vec, sd_vec, 
+                                  ncol(A), nrow(A), thresh)
+    if (margin != 1) res <- t(res)
+    row.names(res) <- row.names(A)
+    colnames(res) <- colnames(A)
+    return(res)
+}
+
+rowSDs <- function(A, row_means=NULL, weights=NULL) {
+    if (is.null(row_means)) {
+        row_means <- rowMeans(A, weights)
+    }
+    if (is.null(weights)) {
+        res <- as.numeric(rowSDs_dgc(A@x, A@p, A@i, row_means, ncol(A), nrow(A), TRUE))
+    } else {
+        res <- as.numeric(rowSDsWeighted_dgc(A@x, A@p, A@i, row_means, weights, ncol(A), nrow(A), TRUE))
+    }
+    names(res) <- row.names(A)
+    return(res)
+}
+
+rowMeans <- function(A, weights=NULL) {
+    if (is.null(weights)) {
+        res <- Matrix::rowMeans(A)
+    } else {
+        res <- as.numeric(rowMeansWeighted_dgc(A@x, A@p, A@i, weights, ncol(A), nrow(A)))
+    }
+    names(res) <- row.names(A)
+    return(res)
+}
+
+rowVarsStd <- function(A, row_means, row_sds, vmax, weights=NULL) {
+    if (is.null(weights)) {
+        res <- as.numeric(rowVarSDs_dgc(A@x, A@p, A@i, row_means, row_sds, vmax, ncol(A), nrow(A), FALSE))
+    } 
+#     else {
+#         res <- as.numeric(rowSDsWeighted_dgc(A@x, A@p, A@i, row_means, weights, ncol(A), nrow(A), TRUE))
+#     }
+    names(res) <- row.names(A)
+    return(res)
+}
+
+rowVars <- function(A, row_means=NULL, weights=NULL) {
+    if (is.null(row_means)) {
+        row_means <- rowMeans(A, weights)
+    }
+    if (is.null(weights)) {
+        res <- as.numeric(rowSDs_dgc(A@x, A@p, A@i, row_means, ncol(A), nrow(A), FALSE))
+    } else {
+        res <- as.numeric(rowSDsWeighted_dgc(A@x, A@p, A@i, row_means, weights, ncol(A), nrow(A), FALSE))
+    }
+    names(res) <- row.names(A)
+    return(res)
+}
+
+## colums are observations
+soft_kmeans <- function(X, k, w, max_iter=20, sigma=0.1) {
+    message('WARNING: soft_kmeans fxn uses cosine distance only')
+    Z <- cosine_normalize_cpp(X, 2)
+    if (missing(w))
+    Y <- stats::kmeans(t(Z), centers = k, iter.max = 25, nstart = 10)$centers %>% t() ## D x K
+    res <- soft_kmeans_cpp(Y, Z, max_iter, sigma)
+    return(res)
+}
+
+# Symphony utils---------------------------------
+    
+# Note: this will need to be fixed if we're including merging redundant clusters in ref building
 probPredict = function(query_obj, ref_obj) {
     ## Predict cell type using probabilistic method
     type_probs <- crossprod(query_obj$R, ref_obj$cluster_annotations)
@@ -33,9 +138,8 @@ knnPredictCos <- function(query_obj, ref_obj,
     return(query_obj)
 }
 
-
-
-# Function for evaluating F1 by cell type, modified from benchmarking paper Abdelaal et al. 2019
+# Function for evaluating F1 by cell type, 
+# modified from benchmarking paper Abdelaal et al. 2019
 evaluate <- function(true, predicted){
   "
   Parameters

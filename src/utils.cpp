@@ -6,6 +6,9 @@
 #include <cmath>
 using namespace Rcpp;
 
+
+// Symphony utils----------------------------------
+
 // [[Rcpp::depends(RcppArmadillo)]]
 
 //' Computes the soft cluster assignments of query cells across reference clusters.
@@ -88,14 +91,7 @@ arma::mat moe_correct_ref(
     return Zq_corr; //(d x m)
 }
 
-//' Returns the batch coefficients of the linear mixture model as a 3D tensor.
-//' 
-//' @param R Cell cluster assignments
-//' @param Z PCA embedding
-//' @param lambda Diagonal matrix for ridge regression
-//' @param design Design matrix
-//' @export
-// [[Rcpp::export]]
+// Returns the batch coefficients of the linear mixture model as a 3D tensor.
 arma::cube get_betas(const arma::mat& R, const arma::mat& Z, const arma::mat& lambda, const arma::mat& design) {
   unsigned K = R.n_rows;
   unsigned B = design.n_rows;
@@ -108,16 +104,4 @@ arma::cube get_betas(const arma::mat& R, const arma::mat& Z, const arma::mat& la
     W_cube.slice(k) = arma::inv(Phi_Rk * design.t() + lambda) * Phi_Rk * Z.t();
   }
   return W_cube;
-}
-
-//' Cosine normalization
-//' @param V matrix
-//' @param dim rows (dim 1) or col (dim 2)
-//' @export
-// [[Rcpp::export]]
-arma::mat cosine_normalize_cpp(arma::mat & V, int dim) {
-  // norm rows: dim=1
-  // norm cols: dim=0 or dim=2
-  if (dim == 2) dim = 0;
-  return arma::normalise(V, 2, dim);
 }
