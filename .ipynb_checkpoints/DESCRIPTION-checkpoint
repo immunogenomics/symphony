@@ -36,6 +36,4 @@ Imports:
     ggplot2,
     stats,
     utils,
-    magrittr,
-    data.table,
-    tibble
+    magrittr
