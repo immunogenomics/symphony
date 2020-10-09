@@ -1,2 +1,5 @@
 ^LICENSE\.md$
 ^README\.Rmd$
+^\.ipynb_checkpoints$
+^R/\.ipynb_checkpoints$
+^src/\.ipynb_checkpoints$

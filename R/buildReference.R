@@ -18,6 +18,7 @@
 #' @import data.table
 #' @import tibble
 #' @import irlba
+#' @importFrom rlang .data
 #'
 #' @export
 buildReference <- function(exp_ref,                   # Genes x cells
@@ -41,16 +42,16 @@ buildReference <- function(exp_ref,                   # Genes x cells
         
     if (do_normalize) {
         if (verbose) message('Normalizing')
-        exp_ref = singlecellmethods::normalizeData(exp_ref, 1e4, 'log')
+        exp_ref = normalizeData(exp_ref, 1e4, 'log')
     } 
     
     if (verbose) message('Finding variable genes')
     if (vargenes_method == 'mvp') {
-        vargenes_df = singlecellmethods::findVariableGenes(exp_ref, rep('A', ncol(exp_ref)), num.bin = 20)
-        var_genes = unique(data.table(vargenes_df)[, head(.SD[order(-'gene_dispersion_scaled')], topn), 
-                                                        by = 'group'][, 'symbol'])
+        vargenes_df = findVariableGenes(exp_ref, rep('A', ncol(exp_ref)), num.bin = 20)
+        var_genes = unique(data.table(vargenes_df)[, head(.SD[order(-.data$gene_dispersion_scaled)], topn), 
+                                                        by = .data$group][, .data$symbol])
     } else if (vargenes_method == 'vst') {
-        var_genes = singlecellmethods::vargenes_vst(exp_ref, topn = topn)
+        var_genes = vargenes_vst(exp_ref, topn = topn)
     } else {
         message("Invalid variable gene selection method. Options are 'vst' or 'mvp'.")
     }
@@ -63,11 +64,11 @@ buildReference <- function(exp_ref,                   # Genes x cells
         
     if (verbose) message('Scaling and PCA')
     vargenes_means_sds = tibble(symbol = var_genes, mean = Matrix::rowMeans(exp_ref))
-    vargenes_means_sds$stddev = singlecellmethods::rowSDs(exp_ref, vargenes_means_sds$mean)
+    vargenes_means_sds$stddev = rowSDs(exp_ref, vargenes_means_sds$mean)
         
     # Scale data
-    exp_ref_scaled = singlecellmethods::scaleDataWithStats(exp_ref, vargenes_means_sds$mean,
-                                                    vargenes_means_sds$stddev, 1)
+    exp_ref_scaled = scaleDataWithStats(exp_ref, vargenes_means_sds$mean, vargenes_means_sds$stddev, 1)
+    
     # PCA
     s = irlba::irlba(exp_ref_scaled, nv = d)
     Z_pca_ref = diag(s$d) %*% t(s$v) # [PCs by cells]
@@ -98,7 +99,7 @@ buildReference <- function(exp_ref,                   # Genes x cells
         res$K <- K
         res$d <- d
     } else {
-        clust_res <- singlecellmethods::soft_kmeans(Z_pca_ref, K)
+        clust_res <- soft_kmeans(Z_pca_ref, K)
         res$centroids <- clust_res$Y
         res$R <- clust_res$R
         res$betas <- NULL

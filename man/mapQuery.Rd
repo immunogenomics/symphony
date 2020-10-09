@@ -2,8 +2,7 @@
 % Please edit documentation in R/mapQuery.R
 \name{mapQuery}
 \alias{mapQuery}
-\title{Function for mapping query cells to a Symphony reference
-Create new factor from 2 existing ones}
+\title{Function for mapping query cells to a Symphony reference}
 \usage{
 mapQuery(
   exp_query,
@@ -35,5 +34,4 @@ mapQuery(
 }
 \description{
 Function for mapping query cells to a Symphony reference
-Create new factor from 2 existing ones
 }
