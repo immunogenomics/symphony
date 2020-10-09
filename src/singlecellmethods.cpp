@@ -197,8 +197,6 @@ arma::vec rowMeansWeighted_dgc(const arma::vec& x, const arma::vec& p,
     return res;
 }
 
-
-//' @export
 // [[Rcpp::export]]
 arma::vec rowSDs_dgc(const arma::vec& x, const arma::vec& p, 
                      const arma::vec& i, const arma::vec& mean_vec, 

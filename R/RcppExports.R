@@ -25,7 +25,6 @@ rowMeansWeighted_dgc <- function(x, p, i, weights, ncol, nrow) {
     .Call('_symphony_rowMeansWeighted_dgc', PACKAGE = 'symphony', x, p, i, weights, ncol, nrow)
 }
 
-#' @export
 rowSDs_dgc <- function(x, p, i, mean_vec, ncol, nrow, do_sqrt) {
     .Call('_symphony_rowSDs_dgc', PACKAGE = 'symphony', x, p, i, mean_vec, ncol, nrow, do_sqrt)
 }
@@ -77,7 +76,6 @@ moe_correct_ref <- function(Zq, Xq, Rq, Nr, RrZtr) {
     .Call('_symphony_moe_correct_ref', PACKAGE = 'symphony', Zq, Xq, Rq, Nr, RrZtr)
 }
 
-#' @export
 get_betas <- function(R, Z, lambda, design) {
     .Call('_symphony_get_betas', PACKAGE = 'symphony', R, Z, lambda, design)
 }
