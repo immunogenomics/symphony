@@ -38,4 +38,5 @@ Imports:
     utils,
     magrittr,
     data.table,
-    tibble
+    tibble,
+    Matrix

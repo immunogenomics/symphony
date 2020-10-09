@@ -1,3 +1,7 @@
+moe_ridge_get_betas <- function(harmonyObj) {
+    harmonyObj$moe_ridge_get_betas_cpp()
+}
+    
 #Note: this will need to be fixed if we're including merging redundant clusters in ref building
 probPredict = function(query_obj, ref_obj) {
     ## Predict cell type using probabilistic method
@@ -22,8 +26,8 @@ knnPredict <- function(query_obj, ref_obj,
 knnPredictCos <- function(query_obj, ref_obj,
                        train_labels, # cell labels for knn classification 
                        k = 5) {
-    Z_ref_cos = singlecellmethods:::cosine_normalize_cpp(ref_obj$Z_corr, 2)
-    Z_query_cos = singlecellmethods:::cosine_normalize_cpp(query_obj$Z, 2)
+    Z_ref_cos = cosine_normalize_cpp(ref_obj$Z_corr, 2)
+    Z_query_cos = cosine_normalize_cpp(query_obj$Z, 2)
     knn_pred = class::knn(t(Z_ref_cos), t(Z_query_cos), train_labels, k = k)
     query_obj$meta_data$cell_type_pred_knn_cos = knn_pred
     return(query_obj)

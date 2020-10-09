@@ -109,3 +109,15 @@ arma::cube get_betas(const arma::mat& R, const arma::mat& Z, const arma::mat& la
   }
   return W_cube;
 }
+
+//' Cosine normalization
+//' @param V matrix
+//' @param dim rows (dim 1) or col (dim 2)
+//' @export
+// [[Rcpp::export]]
+arma::mat cosine_normalize_cpp(arma::mat & V, int dim) {
+  // norm rows: dim=1
+  // norm cols: dim=0 or dim=2
+  if (dim == 2) dim = 0;
+  return arma::normalise(V, 2, dim);
+}

@@ -60,12 +60,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cosine_normalize_cpp
+arma::mat cosine_normalize_cpp(arma::mat& V, int dim);
+RcppExport SEXP _symphony_cosine_normalize_cpp(SEXP VSEXP, SEXP dimSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::mat& >::type V(VSEXP);
+    Rcpp::traits::input_parameter< int >::type dim(dimSEXP);
+    rcpp_result_gen = Rcpp::wrap(cosine_normalize_cpp(V, dim));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_symphony_soft_cluster", (DL_FUNC) &_symphony_soft_cluster, 3},
     {"_symphony_compute_ref_cache", (DL_FUNC) &_symphony_compute_ref_cache, 2},
     {"_symphony_moe_correct_ref", (DL_FUNC) &_symphony_moe_correct_ref, 5},
     {"_symphony_get_betas", (DL_FUNC) &_symphony_get_betas, 4},
+    {"_symphony_cosine_normalize_cpp", (DL_FUNC) &_symphony_cosine_normalize_cpp, 2},
     {NULL, NULL, 0}
 };
 

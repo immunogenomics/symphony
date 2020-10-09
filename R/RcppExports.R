@@ -43,3 +43,11 @@ get_betas <- function(R, Z, lambda, design) {
     .Call('_symphony_get_betas', PACKAGE = 'symphony', R, Z, lambda, design)
 }
 
+#' Cosine normalization
+#' @param V matrix
+#' @param dim rows (dim 1) or col (dim 2)
+#' @export
+cosine_normalize_cpp <- function(V, dim) {
+    .Call('_symphony_cosine_normalize_cpp', PACKAGE = 'symphony', V, dim)
+}
+

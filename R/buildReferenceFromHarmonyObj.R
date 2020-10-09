@@ -32,7 +32,7 @@ buildReferenceFromHarmonyObj <- function(harmony_obj,
     res$betas = harmony::moe_ridge_get_betas(harmony_obj)
     
     if(verbose) message('Calculate final L2 normalized reference centroids (Y_cos)')
-    res$centroids = t(singlecellmethods::cosine_normalize_cpp(harmony_obj$R %*% t(harmony_obj$Z_corr), 1))
+    res$centroids = t(cosine_normalize_cpp(harmony_obj$R %*% t(harmony_obj$Z_corr), 1))
     
     if(verbose) message('Calculate reference compression terms (Nr and C)')
     res$cache = compute_ref_cache(res$R, res$Z_corr)
