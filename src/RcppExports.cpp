@@ -227,6 +227,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// get_betas
+arma::cube get_betas(const arma::mat& R, const arma::mat& Z, const arma::mat& lambda, const arma::mat& design);
+RcppExport SEXP _symphony_get_betas(SEXP RSEXP, SEXP ZSEXP, SEXP lambdaSEXP, SEXP designSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::mat& >::type R(RSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type Z(ZSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type lambda(lambdaSEXP);
+    Rcpp::traits::input_parameter< const arma::mat& >::type design(designSEXP);
+    rcpp_result_gen = Rcpp::wrap(get_betas(R, Z, lambda, design));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_symphony_exp_mean", (DL_FUNC) &_symphony_exp_mean, 7},
@@ -243,6 +257,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_symphony_soft_cluster", (DL_FUNC) &_symphony_soft_cluster, 3},
     {"_symphony_compute_ref_cache", (DL_FUNC) &_symphony_compute_ref_cache, 2},
     {"_symphony_moe_correct_ref", (DL_FUNC) &_symphony_moe_correct_ref, 5},
+    {"_symphony_get_betas", (DL_FUNC) &_symphony_get_betas, 4},
     {NULL, NULL, 0}
 };
 
