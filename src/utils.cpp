@@ -92,6 +92,8 @@ arma::mat moe_correct_ref(
 }
 
 // Returns the batch coefficients of the linear mixture model as a 3D tensor.
+//' @export
+// [[Rcpp::export]]
 arma::cube get_betas(const arma::mat& R, const arma::mat& Z, const arma::mat& lambda, const arma::mat& design) {
   unsigned K = R.n_rows;
   unsigned B = design.n_rows;
