@@ -5,5 +5,6 @@
 #' @name symphony
 #' @docType package
 #' @useDynLib symphony
-#' @import Rcpp 
+#' @importFrom Rcpp loadModule
+loadModule("symphony_module", TRUE)
 NULL
