@@ -20,8 +20,6 @@
 #' @import irlba
 #' @importFrom rlang .data
 #'
-#' @useDynLib symphony
-#'
 #' @export
 buildReference <- function(exp_ref,                   # Genes x cells
                            metadata_ref, 
