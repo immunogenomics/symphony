@@ -1,4 +1,9 @@
-  ## usethis namespace: start
-  #' @importFrom Rcpp sourceCpp
-  ## usethis namespace: end
-  NULL
+#' symphony
+#' 
+#' Efficient single-cell reference mapping
+#' 
+#' @name symphony
+#' @docType package
+#' @useDynLib symphony
+#' @import Rcpp 
+NULL
