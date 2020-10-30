@@ -5,5 +5,5 @@
 #' @name symphony
 #' @docType package
 #' @useDynLib symphony
-#' @import Rcpp 
+#' @importFrom Rcpp sourceCpp
 NULL
