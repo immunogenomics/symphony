@@ -40,7 +40,6 @@ Check out the [quick start tutorial](https://github.com/immunogenomics/symphony/
 This function performs all steps of the reference building pipeline including variable gene selection, scaling, PCA, Harmony, and Symphony compression.
 
 ```{r eval=FALSE}
-library(symphony)
 # Build reference
 reference = symphony::buildReference(
     ref_exp,                 # reference cell genes by cells matrix
@@ -63,7 +62,7 @@ This function compresses an existing Harmony object into a Symphony reference th
 
 ```{r eval=FALSE}
 
-# Run Harmony to integrate the reference
+# Run Harmony to integrate the reference cells
 ref_harmObj = harmony::HarmonyMatrix(
         data_mat = t(Z_pca_ref),   # PCA embedding matrix of cells
         meta_data = ref_metadata,  # dataframe with cell metadata
@@ -85,6 +84,7 @@ reference = buildReferenceFromHarmonyObj(
         do_umap = TRUE,         # run UMAP and save UMAP model?
         save_uwot_path = '/absolute/path/uwot_model_1' # filepath to save UMAP model)
 ```
+Note that `vargenes_means_sds` requires column names `c('symbol', 'mean', 'stddev')` (see [tutorial example](https://github.com/immunogenomics/symphony/blob/main/vignettes/pbmcs_tutorial.ipynb/)). 
 
 ## Query mapping
 Once you have a prebuilt reference (e.g. loaded from a saved .rds R object), you can map new query cells onto it starting from query gene expression.
