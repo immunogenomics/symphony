@@ -95,7 +95,7 @@ rowVars <- function(A, row_means=NULL, weights=NULL) {
     return(res)
 }
 
-## colums are observations
+## columns are observations
 soft_kmeans <- function(X, k, w, max_iter=20, sigma=0.1) {
     message('WARNING: soft_kmeans fxn uses cosine distance only')
     Z <- cosine_normalize_cpp(X, 2)
@@ -118,7 +118,14 @@ probPredict = function(query_obj, ref_obj) {
     return(query_obj)
 }
 
-## Predict cell annotations using knn method
+#' Predict cell annotations using knn method
+#'
+#' @param query_obj Query object
+#' @param ref_obj Reference object
+#' @param train_labels vector of labels to train
+#' @param k num neighbors
+#' 
+#' @export
 knnPredict <- function(query_obj, ref_obj,
                        train_labels, # cell labels for knn classification 
                        k = 5) {
