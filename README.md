@@ -34,7 +34,6 @@ including variable gene selection, scaling, PCA, Harmony, and Symphony
 compression.
 
 ``` r
-library(symphony)
 # Build reference
 reference = symphony::buildReference(
     ref_exp,                 # reference cell genes by cells matrix
@@ -59,7 +58,7 @@ would like your code to be more modular and flexible.
 
 ``` r
 
-# Run Harmony to integrate the reference
+# Run Harmony to integrate the reference cells
 ref_harmObj = harmony::HarmonyMatrix(
         data_mat = t(Z_pca_ref),   # PCA embedding matrix of cells
         meta_data = ref_metadata,  # dataframe with cell metadata
@@ -81,6 +80,10 @@ reference = buildReferenceFromHarmonyObj(
         do_umap = TRUE,         # run UMAP and save UMAP model?
         save_uwot_path = '/absolute/path/uwot_model_1' # filepath to save UMAP model)
 ```
+
+Note that `vargenes_means_sds` requires column names `c('symbol',
+'mean', 'stddev')` (see [tutorial
+example](https://github.com/immunogenomics/symphony/blob/main/vignettes/pbmcs_tutorial.ipynb/)).
 
 ## Query mapping
 
