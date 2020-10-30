@@ -18,17 +18,11 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of symphony is to ...
+Symphony enables single-cell reference atlas mapping.
 
 ## Installation
 
-You can install the released version of symphony from [CRAN](https://CRAN.R-project.org) with:
-
-``` r
-install.packages("symphony")
-```
-
-And the development version from [GitHub](https://github.com/) with:
+Install the current version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
