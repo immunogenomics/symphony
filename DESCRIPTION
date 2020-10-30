@@ -39,3 +39,5 @@ Imports:
     Matrix,
     tidyr,
     rlang
+Remotes:
+    immunogenomics/harmony

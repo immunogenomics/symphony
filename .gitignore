@@ -3,3 +3,5 @@ src/.ipynb_checkpoints
 .ipynb_checkpoints
 .RData
 .Rhistory
+R/.RData
+R/.Rhistory
