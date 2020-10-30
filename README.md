@@ -22,8 +22,8 @@ devtools::install_github("immunogenomics/symphony")
 
 ## Quick start
 
-Check out the \[quick start tutorial\]
-(<https://github.com/immunogenomics/symphony/vignettes/pbmcs_tutorial.ipynb>).
+Check out the [quick start
+tutorial](https://github.com/immunogenomics/symphony/blob/main/vignettes/pbmcs_tutorial.ipynb/).
 
 ## Reference building
 
