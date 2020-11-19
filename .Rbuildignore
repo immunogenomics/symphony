@@ -3,3 +3,4 @@
 ^\.ipynb_checkpoints$
 ^R/\.ipynb_checkpoints$
 ^src/\.ipynb_checkpoints$
+^vignettes/*$
