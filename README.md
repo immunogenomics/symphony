@@ -9,6 +9,8 @@
 
 Efficient and precise single-cell reference atlas mapping with Symphony
 
+Preprint: https://www.biorxiv.org/content/10.1101/2020.11.18.389189v1
+
 # Installation
 
 Install the current version of Symphony from
@@ -125,3 +127,6 @@ query = mapQuery(query_exp, query_metadata, vars = c('donor', 'technology') refe
 
 Code to reproduce Symphony results from the Kang et al. manuscript will
 be made available on github.com/immunogenomics/referencemapping.
+
+
+
