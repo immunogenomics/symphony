@@ -44,6 +44,7 @@ buildReferenceFromHarmonyObj <- function(harmony_obj,
             metric = 'cosine', fast_sgd = FALSE, n_sgd_threads = 1, # for reproducibility
             min_dist = .1, n_threads = 4, ret_model = TRUE
         )
+        colnames(res$umap$embedding) = c('UMAP1', 'UMAP2')
         
         # Since the nn-index component of the uwot model is not able to be saved as an 
         # object, we save the uwot model at a user-defined path.
