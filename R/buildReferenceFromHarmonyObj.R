@@ -29,7 +29,7 @@ buildReferenceFromHarmonyObj <- function(harmony_obj,
     res$R = harmony_obj$R
     res$Z_orig = harmony_obj$Z_orig
     res$Z_corr = harmony_obj$Z_corr
-    res$betas = harmony::moe_ridge_get_betas(harmony_obj)
+    #res$betas = harmony::moe_ridge_get_betas(harmony_obj)
     
     if(verbose) message('Calculate final L2 normalized reference centroids (Y_cos)')
     res$centroids = t(cosine_normalize_cpp(harmony_obj$R %*% t(harmony_obj$Z_corr), 1))
