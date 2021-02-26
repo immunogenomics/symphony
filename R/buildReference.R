@@ -21,31 +21,31 @@
 #' @importFrom rlang .data
 #'
 #' @export
-buildReference <- function(exp_ref,                   # Genes x cells
-                           metadata_ref, 
-                           vars = NULL,   
-                           K = 50,                    # Number of soft clusters for Harmony
-                           verbose = FALSE, 
-                           do_umap = TRUE,
-                           do_normalize = TRUE, 
+buildReference <- function(exp_ref,                   # genes x cells
+                           metadata_ref,              # cells x metadata fields
+                           vars = NULL,               # metadata variables to Harmonize over
+                           K = 50,                    # number of soft clusters for Harmony
+                           verbose = FALSE,           # verbose output
+                           do_umap = TRUE,            # run umap on reference cells
+                           do_normalize = TRUE,       # run log(CP10K+1) normalization
                            vargenes_method = 'vst',   # vst or mvp
-                           topn = 2000, 
-                           tau = 0, 
-                           theta = 2,
+                           topn = 2000,               # number of variable genes
+                           tau = 0,                   # Harmony parameter
+                           theta = 2,                 # Harmony parameter
                            save_uwot_path = NULL,     # Path to save uwot model (use absolute path)
-                           d = 20,
-                           additional_genes = NULL) {
+                           d = 20,                    # number of dimensions for PCs
+                           additional_genes = NULL) { # vector of any additional genes beyond vargenes to include
     
     set.seed(111) # for reproducible soft k-means and UMAP
     
     res = list(meta_data = metadata_ref)
-        
+
     if (do_normalize) {
         if (verbose) message('Normalizing')
         exp_ref = normalizeData(exp_ref, 1e4, 'log')
-    } 
+    }
     
-    if (verbose) message('Finding variable genes')
+    if (verbose) message('Finding ', topn, ' variable genes using ', vargenes_method, ' method')
     if (vargenes_method == 'mvp') {
         vargenes_df = findVariableGenes(exp_ref, rep('A', ncol(exp_ref)), num.bin = 20)
         var_genes = unique(data.table(vargenes_df)[, head(.SD[order(-.data$gene_dispersion_scaled)], topn), 
@@ -56,16 +56,20 @@ buildReference <- function(exp_ref,                   # Genes x cells
         message("Invalid variable gene selection method. Options are 'vst' or 'mvp'.")
     }
     
-    if(!is.null(additional_genes)) { # Add any additional genes
+    # Add in any additional genes
+    if(!is.null(additional_genes)) { 
+        if (verbose) message('Adding ', length(additional_genes), ' additional genes')
         var_genes = union(var_genes, additional_genes)
+        if (verbose) message('Total ' , length(var_genes), ' genes for downstream steps')
     }
 
-    exp_ref = exp_ref[var_genes, ] # Subset gene expression matrix by the desired genes
+    # Subset gene expression matrix by the desired genes
+    exp_ref = exp_ref[var_genes, ]
         
     if (verbose) message('Scaling and PCA')
     vargenes_means_sds = tibble(symbol = var_genes, mean = Matrix::rowMeans(exp_ref))
     vargenes_means_sds$stddev = rowSDs(exp_ref, vargenes_means_sds$mean)
-        
+    
     # Scale data
     exp_ref_scaled = scaleDataWithStats(exp_ref, vargenes_means_sds$mean, vargenes_means_sds$stddev, 1)
     
@@ -75,8 +79,9 @@ buildReference <- function(exp_ref,                   # Genes x cells
     res$loadings = s$u
     res$vargenes = vargenes_means_sds
     
+    # Run Harmony integration
     if (!is.null(vars)) {
-        if (verbose) message('start Harmony')
+        if (verbose) message('Running Harmony integration')
         
         # Run Harmony to harmonize the reference
         ref_harmObj = harmony::HarmonyMatrix(
@@ -112,7 +117,7 @@ buildReference <- function(exp_ref,                   # Genes x cells
     res$cache = compute_ref_cache(res$R, res$Z_corr)
 
     if (do_umap) {
-        if (verbose) message('UMAP')
+        if (verbose) message('Running UMAP')
         res$umap <- uwot::umap(
             t(res$Z_corr), n_neighbors = 30, learning_rate = 0.5, init = "laplacian", 
             metric = 'cosine', fast_sgd = FALSE, n_sgd_threads = 1, # for reproducibility
@@ -128,6 +133,5 @@ buildReference <- function(exp_ref,                   # Genes x cells
             if (verbose) message(paste('Saved uwot model'))
         }
     }
-
     return(res)
 }

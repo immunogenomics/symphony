@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{knnPredict}
 \alias{knnPredict}
-\title{Predict cell annotations using knn method}
+\title{Predict cell annotations using k-NN method}
 \usage{
 knnPredict(query_obj, ref_obj, train_labels, k = 5)
 }
@@ -16,5 +16,5 @@ knnPredict(query_obj, ref_obj, train_labels, k = 5)
 \item{k}{num neighbors}
 }
 \description{
-Predict cell annotations using knn method
+Predict cell annotations using k-NN method
 }
