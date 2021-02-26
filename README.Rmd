@@ -60,9 +60,12 @@ reference = symphony::buildReference(
     do_normalize = FALSE,    # normalize the expression matrix?
     vargenes_method = 'vst', # 'vst' or 'mvp'
     topn = 2000,             # number of variable genes to use
+    theta = 2,               # Harmony parameter for diversity term
     d = 20,                  # number of dimensions for PCA
-    save_uwot_path = '/absolute/path/uwot_model_1' # filepath to save UMAP model
+    save_uwot_path = '/absolute/path/uwot_model_1', # filepath to save UMAP model
+    additional_genes = NULL  # vector of any additional genes to force include
 )
+
 ```
 
 ### Option 2: Starting from existing Harmony object

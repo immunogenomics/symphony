@@ -3,7 +3,6 @@
 export(buildReference)
 export(buildReferenceFromHarmonyObj)
 export(compute_ref_cache)
-export(fbind)
 export(knnPredict)
 export(mapQuery)
 export(moe_correct_ref)

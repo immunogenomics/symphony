@@ -1,6 +1,6 @@
 #' symphony
 #' 
-#' Efficient single-cell reference mapping
+#' Efficient single-cell reference atlas mapping (Kang et al.)
 #' 
 #' @name symphony
 #' @docType package

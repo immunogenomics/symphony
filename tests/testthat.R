@@ -1,4 +1,4 @@
 library(testthat)
 library(symphony)
 
-test_check("symphony")
+#test_check("symphony")

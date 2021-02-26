@@ -1,17 +1,16 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Symphony
+Symphony
+========
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
 Efficient and precise single-cell reference atlas mapping with Symphony
 
-Preprint: https://www.biorxiv.org/content/10.1101/2020.11.18.389189v1
-
-# Installation
+Installation
+============
 
 Install the current version of Symphony from
 [GitHub](https://github.com/) with:
@@ -23,25 +22,26 @@ devtools::install_github("immunogenomics/symphony")
 
 ### Installation notes:
 
-  - You may need to install the latest version of devtools (because of
+-   You may need to install the latest version of devtools (because of
     the recent GitHub change from “master” to “main” terminology, which
     can cause `install_github` to fail).
-  - You may also need to install the lastest version of Harmony:
-
-<!-- end list -->
+-   You may also need to install the lastest version of Harmony:
 
 ``` r
 devtools::install_github("immunogenomics/harmony")
 ```
 
-# Usage/Demos
+Usage/Demos
+===========
 
-## Quick start
+Quick start
+-----------
 
 Check out the [quick start
 tutorial](https://github.com/immunogenomics/symphony/blob/main/vignettes/pbmcs_tutorial.ipynb/).
 
-## Reference building
+Reference building
+------------------
 
 ### Option 1: Starting from reference genes by cells matrix
 
@@ -61,8 +61,10 @@ reference = symphony::buildReference(
     do_normalize = FALSE,    # normalize the expression matrix?
     vargenes_method = 'vst', # 'vst' or 'mvp'
     topn = 2000,             # number of variable genes to use
+    theta = 2,               # Harmony parameter for diversity term
     d = 20,                  # number of dimensions for PCA
-    save_uwot_path = '/absolute/path/uwot_model_1' # filepath to save UMAP model
+    save_uwot_path = '/absolute/path/uwot_model_1', # filepath to save UMAP model
+    additional_genes = NULL  # vector of any additional genes to force include
 )
 ```
 
@@ -73,7 +75,6 @@ reference that enables query mapping. We recommend this option if you
 would like your code to be more modular and flexible.
 
 ``` r
-
 # Run Harmony to integrate the reference cells
 ref_harmObj = harmony::HarmonyMatrix(
         data_mat = t(Z_pca_ref),   # starting embedding (e.g. PCA, CCA) of cells
@@ -97,11 +98,12 @@ reference = buildReferenceFromHarmonyObj(
         save_uwot_path = '/absolute/path/uwot_model_1' # filepath to save UMAP model)
 ```
 
-Note that `vargenes_means_sds` requires column names `c('symbol',
-'mean', 'stddev')` (see [tutorial
+Note that `vargenes_means_sds` requires column names
+`c('symbol', 'mean', 'stddev')` (see [tutorial
 example](https://github.com/immunogenomics/symphony/blob/main/vignettes/pbmcs_tutorial.ipynb/)).
 
-## Query mapping
+Query mapping
+-------------
 
 Once you have a prebuilt reference (e.g. loaded from a saved .rds R
 object), you can map new query cells onto it starting from query gene
@@ -123,10 +125,8 @@ specify them in the `vars` parameter.
 query = mapQuery(query_exp, query_metadata, vars = c('donor', 'technology') reference, do_normalize = FALSE)
 ```
 
-# Reproducing results from manuscript
+Reproducing results from manuscript
+===================================
 
 Code to reproduce Symphony results from the Kang et al. manuscript will
 be made available on github.com/immunogenomics/referencemapping.
-
-
-

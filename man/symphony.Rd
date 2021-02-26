@@ -5,5 +5,5 @@
 \alias{symphony}
 \title{symphony}
 \description{
-Efficient single-cell reference mapping
+Efficient single-cell reference atlas mapping (Kang et al.)
 }
