@@ -34,6 +34,7 @@ mapQuery = function(exp_query,
     # Find shared genes between reference and query
     idx_shared_genes = which(ref_obj$vargenes$symbol %in% rownames(exp_query))
     shared_genes = ref_obj$vargenes$symbol[idx_shared_genes]
+    if (verbose) message('Found ', length(shared_genes), ' reference variable genes in query dataset')
     
     # Subset and scale the query cells by reference means and standard deviations
     exp_query_scaled = scaleDataWithStats(exp_query[shared_genes, ],
@@ -48,17 +49,17 @@ mapQuery = function(exp_query,
     rownames(exp_query_scaled_sync) = ref_obj$vargenes$symbol
     colnames(exp_query_scaled_sync) = colnames(exp_query)
     
-    if (verbose) message('Project') 
+    if (verbose) message('Project query cells using reference gene loadings') 
     ### 1. Project into PCs using reference loadings
     Z_pca_query = t(ref_obj$loadings) %*% exp_query_scaled_sync
     
-    if (verbose) message('Cluster')
+    if (verbose) message('Clustering query cells to reference centroids')
     ### 2. Soft cluster assignment
     Z_pca_query_cos = cosine_normalize_cpp(Z_pca_query, 2)
     R_query = soft_cluster(ref_obj$centroids, Z_pca_query_cos, sigma)
     
-    if (verbose) message('Correct')
-    ### 3. Correction
+    if (verbose) message('Correcting query batch effects')
+    ### 3. Correction step with ridge regression
     
     # Make query design matrix
     if (!is.null(vars)) {
@@ -75,7 +76,7 @@ mapQuery = function(exp_query,
         
         Xq = cbind(1, intercept = onehot) %>% t()
     } else { 
-        # If no batches specified, treat all query cells as 1 batch
+        # If no batches specified, treat all query cells as single batch
         Xq = Matrix(rbind(rep(1, ncol(Z_pca_query)), rep(1, ncol(Z_pca_query))), sparse = TRUE)
     }
     
@@ -84,7 +85,7 @@ mapQuery = function(exp_query,
                               as.matrix(Xq), 
                               as.matrix(R_query), 
                               as.matrix(ref_obj$cache[[1]]), 
-                              as.matrix(ref_obj$cache[[2]]))
+                              as.matrix(ref_obj$cache[[2]])) ## TODO: add lambda parameter
     
     if (verbose) message('UMAP')
     ## UMAP projection of query if the reference uwot model is present

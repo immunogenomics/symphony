@@ -1,4 +1,4 @@
-# from singlecellmethods---------------------------------
+# from singlecellmethods ---------------------------------
 
 normalizeData <- function(A, scaling_factor = 1e4, method) {
     if(!'dgCMatrix' %in% class(A)) A <- as(A, "dgCMatrix")
@@ -105,7 +105,7 @@ soft_kmeans <- function(X, k, w, max_iter=20, sigma=0.1) {
     return(res)
 }
 
-# Symphony utils---------------------------------
+# Symphony utils ---------------------------------
     
 # Note: this will need to be fixed if we're including merging redundant clusters in ref building
 probPredict = function(query_obj, ref_obj) {
@@ -118,7 +118,7 @@ probPredict = function(query_obj, ref_obj) {
     return(query_obj)
 }
 
-#' Predict cell annotations using knn method
+#' Predict cell annotations using k-NN method
 #'
 #' @param query_obj Query object
 #' @param ref_obj Reference object
@@ -146,7 +146,7 @@ knnPredictCos <- function(query_obj, ref_obj,
 }
 
 # Function for evaluating F1 by cell type, 
-# modified from benchmarking paper Abdelaal et al. 2019
+# Modified from benchmarking paper Abdelaal et al. Genome Biology 2019
 evaluate <- function(true, predicted){
   "
   Parameters
