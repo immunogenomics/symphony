@@ -87,12 +87,12 @@ mapQuery = function(exp_query,
                               as.matrix(ref_obj$cache[[1]]), 
                               as.matrix(ref_obj$cache[[2]])) ## TODO: add lambda parameter
     
-    if (verbose) message('UMAP')
     ## UMAP projection of query if the reference uwot model is present
     umap_query = NULL
     
     if (do_umap & !is.null(ref_obj$save_uwot_path)) {
-        ref_umap_model = uwot::load_uwot(ref_obj$save_uwot_path, verbose = FALSE)
+        if (verbose) message('UMAP')
+	ref_umap_model = uwot::load_uwot(ref_obj$save_uwot_path, verbose = FALSE)
         umap_query = uwot::umap_transform(t(Zq_corr), ref_umap_model)
     }
     
