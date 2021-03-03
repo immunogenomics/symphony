@@ -38,5 +38,8 @@ Imports:
     tibble,
     Matrix,
     tidyr,
-    rlang
+    rlang,
+    RColorBrewer,
+    ggrastr,
+    ggrepel
 Remotes: github::immunogenomics/harmony
