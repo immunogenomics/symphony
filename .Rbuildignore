@@ -7,3 +7,4 @@
 ^man/.ipynb_checkpoints$
 ^man/figures/.ipynb_checkpoints$
 ^tests/.ipynb_checkpoints$
+^pre-built_references/*$
