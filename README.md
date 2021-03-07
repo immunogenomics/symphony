@@ -129,4 +129,5 @@ Reproducing results from manuscript
 ===================================
 
 Code to reproduce Symphony results from the Kang et al. manuscript will
-be made available on github.com/immunogenomics/symphony_reproducibility.
+be made available on
+github.com/immunogenomics/symphony\_reproducibility.
