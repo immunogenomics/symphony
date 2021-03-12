@@ -1,0 +1,10 @@
+^LICENSE\.md$
+^README\.Rmd$
+^\.ipynb_checkpoints$
+^R/\.ipynb_checkpoints$
+^src/\.ipynb_checkpoints$
+^vignettes/*$
+^man/.ipynb_checkpoints$
+^man/figures/.ipynb_checkpoints$
+^tests/.ipynb_checkpoints$
+^pre-built_references/*$
