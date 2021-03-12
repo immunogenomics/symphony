@@ -1,7 +1,0 @@
-*.rds filter=lfs diff=lfs merge=lfs -text
-pre-built_references/fetal_liver_reference_3p.rds filter=lfs diff=lfs merge=lfs -text
-pre-built_references/pancreas_plate-based_reference.rds filter=lfs diff=lfs merge=lfs -text
-pre-built_references/pbmcs_10x_reference.rds filter=lfs diff=lfs merge=lfs -text
-pre-built_references/fetal_liver_uwot_model filter=lfs diff=lfs merge=lfs -text
-pre-built_references/pancreas_plate-based_uwot_model filter=lfs diff=lfs merge=lfs -text
-pre-built_references/pbmcs_10x_uwot_model filter=lfs diff=lfs merge=lfs -text
