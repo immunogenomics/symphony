@@ -37,19 +37,24 @@ buildReferenceFromHarmonyObj <- function(harmony_obj,
     if(verbose) message('Calculate reference compression terms (Nr and C)')
     res$cache = compute_ref_cache(res$R, res$Z_corr)
 
+    # Add row and column names
+    colnames(res$Z_corr) =  row.names(metadata_ref)
+    rownames(res$Z_corr) = paste0("harmony_", seq_len(nrow(res$Z_corr)))
+    
     if (do_umap) {
         if (verbose) message('UMAP')
-        res$umap = uwot::umap(
+        umap = uwot::umap(
             t(res$Z_corr), n_neighbors = 30, learning_rate = 0.5, init = "laplacian", 
             metric = 'cosine', fast_sgd = FALSE, n_sgd_threads = 1, # for reproducibility
             min_dist = .1, n_threads = 4, ret_model = TRUE
         )
+        res$umap$embedding = umap$embedding
         colnames(res$umap$embedding) = c('UMAP1', 'UMAP2')
         
         # Since the nn-index component of the uwot model is not able to be saved as an 
         # object, we save the uwot model at a user-defined path.
         if (!is.null(save_uwot_path)) { # TODO: check if valid file path
-            model = uwot::save_uwot(res$umap, file = save_uwot_path, unload = FALSE, verbose = FALSE)
+            model = uwot::save_uwot(umap, file = save_uwot_path, unload = FALSE, verbose = FALSE)
             res$save_uwot_path = save_uwot_path
             if (verbose) message(paste('Saved uwot model'))
         }
