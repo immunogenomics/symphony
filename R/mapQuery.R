@@ -92,8 +92,9 @@ mapQuery = function(exp_query,
     
     if (do_umap & !is.null(ref_obj$save_uwot_path)) {
         if (verbose) message('UMAP')
-	ref_umap_model = uwot::load_uwot(ref_obj$save_uwot_path, verbose = FALSE)
+        ref_umap_model = uwot::load_uwot(ref_obj$save_uwot_path, verbose = FALSE)
         umap_query = uwot::umap_transform(t(Zq_corr), ref_umap_model)
+        colnames(umap_query) = c('UMAP1', 'UMAP2')
     }
     
     if (verbose) message('All done!')
