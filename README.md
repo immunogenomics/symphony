@@ -4,7 +4,7 @@
 Symphony
 ========
 
-<!-- badges: start -->
+![logo](man/figures/symphony_logo.png) <!-- badges: start -->
 <!-- badges: end -->
 
 Efficient and precise single-cell reference atlas mapping with Symphony
@@ -43,36 +43,11 @@ tutorial](https://github.com/immunogenomics/symphony/blob/main/vignettes/pbmcs_t
 Reference building
 ------------------
 
-### Option 1: Starting from reference genes by cells matrix
-
-This function performs all steps of the reference building pipeline
-including variable gene selection, scaling, PCA, Harmony, and Symphony
-compression.
-
-``` r
-# Build reference
-reference = symphony::buildReference(
-    ref_exp,                 # reference genes by cells matrix
-    ref_metadata,            # dataframe with cell metadata
-    vars = c('donor'),       # variable(s) to integrate over
-    K = 100,                 # number of Harmony clusters
-    verbose = TRUE,          # display output?
-    do_umap = TRUE,          # run UMAP and save UMAP model to file?
-    do_normalize = FALSE,    # normalize the expression matrix?
-    vargenes_method = 'vst', # 'vst' or 'mvp'
-    topn = 2000,             # number of variable genes to use
-    theta = 2,               # Harmony parameter for diversity term
-    d = 20,                  # number of dimensions for PCA
-    save_uwot_path = '/absolute/path/uwot_model_1', # filepath to save UMAP model
-    additional_genes = NULL  # vector of any additional genes to force include
-)
-```
-
-### Option 2: Starting from existing Harmony object
+### Option 1: Starting from existing Harmony object
 
 This function compresses an existing Harmony object into a Symphony
-reference that enables query mapping. We recommend this option if you
-would like your code to be more modular and flexible.
+reference that enables query mapping. We recommend this option for most
+users since it allows your code to be more modular and flexible.
 
 ``` r
 # Run Harmony to integrate the reference cells
@@ -102,6 +77,31 @@ Note that `vargenes_means_sds` requires column names
 `c('symbol', 'mean', 'stddev')` (see [tutorial
 example](https://github.com/immunogenomics/symphony/blob/main/vignettes/pbmcs_tutorial.ipynb/)).
 
+### Option 2: Starting from reference genes by cells matrix
+
+This function performs all steps of the reference building pipeline
+including variable gene selection, scaling, PCA, Harmony, and Symphony
+compression.
+
+``` r
+# Build reference
+reference = symphony::buildReference(
+    ref_exp,                 # reference genes by cells matrix
+    ref_metadata,            # dataframe with cell metadata
+    vars = c('donor'),       # variable(s) to integrate over
+    K = 100,                 # number of Harmony clusters
+    verbose = TRUE,          # display output?
+    do_umap = TRUE,          # run UMAP and save UMAP model to file?
+    do_normalize = FALSE,    # normalize the expression matrix?
+    vargenes_method = 'vst', # 'vst' or 'mvp'
+    topn = 2000,             # number of variable genes to use
+    theta = 2,               # Harmony parameter for diversity term
+    d = 20,                  # number of dimensions for PCA
+    save_uwot_path = '/absolute/path/uwot_model_1', # filepath to save UMAP model
+    additional_genes = NULL  # vector of any additional genes to force include
+)
+```
+
 Query mapping
 -------------
 
@@ -122,7 +122,8 @@ specify them in the `vars` parameter.
 
 ``` r
 # Map query
-query = mapQuery(query_exp, query_metadata, vars = c('donor', 'technology') reference, do_normalize = FALSE)
+query = mapQuery(query_exp, query_metadata, vars = c('donor', 'technology'),
+                reference, do_normalize = FALSE)
 ```
 
 Reproducing results from manuscript
