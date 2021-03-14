@@ -87,6 +87,10 @@ mapQuery = function(exp_query,
                               as.matrix(ref_obj$cache[[1]]), 
                               as.matrix(ref_obj$cache[[2]])) ## TODO: add lambda parameter
     
+    # Add row and column names
+    colnames(Zq_corr) = row.names(metadata_query)
+    rownames(Zq_corr) = paste0("harmony_", seq_len(nrow(Zq_corr)))
+    
     ## UMAP projection of query if the reference uwot model is present
     umap_query = NULL
     
