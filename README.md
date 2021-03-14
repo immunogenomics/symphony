@@ -1,11 +1,11 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-Symphony
-========
+Symphony <img src="man/figures/symphony_logo.png" width="250" alt="logo" />
+===========================================================================
 
-<img src="man/figures/symphony_logo.png" width="250" alt="logo" />
-<!-- badges: start --> <!-- badges: end -->
+<!-- badges: start -->
+<!-- badges: end -->
 
 Efficient and precise single-cell reference atlas mapping with Symphony
 

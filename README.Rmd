@@ -9,13 +9,13 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
+  fig.align = 'right',
   out.width = "100%"
 )
 ```
 
-# Symphony 
 
-![logo](man/figures/symphony_logo.png){width=250px}
+# Symphony ![logo](man/figures/symphony_logo.png){width=250px}
 <!-- badges: start -->
 <!-- badges: end -->
 
