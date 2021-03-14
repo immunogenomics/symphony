@@ -9,6 +9,9 @@ Symphony <img src="man/figures/symphony_logo.png" alt="logo" width="181" align="
 
 Efficient and precise single-cell reference atlas mapping with Symphony
 
+[Preprint on
+bioRxiv](https://www.biorxiv.org/content/10.1101/2020.11.18.389189v1)
+
 Installation
 ============
 
@@ -34,11 +37,21 @@ devtools::install_github("immunogenomics/harmony")
 Usage/Demos
 ===========
 
-Quick start
------------
+Tutorials
+---------
 
-Check out the [quick start
-tutorial](https://github.com/immunogenomics/symphony/blob/main/vignettes/pbmcs_tutorial.ipynb/).
+Check out the [quick start PBMCs
+tutorial](https://github.com/immunogenomics/symphony/blob/main/vignettes/pbmcs_tutorial.ipynb/)
+for an example of how to build a custom reference and map to it.
+
+Check out the [pre-built references
+tutorial](https://github.com/immunogenomics/symphony/blob/main/vignettes/prebuilt_references_tutorial.ipynb)
+for examples of how to map to provided pre-built Symphony references.
+You can [download pre-built
+references](https://github.com/immunogenomics/symphony/tree/main/pre-built_references)
+from the manuscript in the `pre-built_references` directory in this
+GitHub repo, or on
+[Zenodo](https://zenodo.org/record/4602302#.YE2NoJNKhTY).
 
 Reference building
 ------------------
