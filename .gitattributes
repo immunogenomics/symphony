@@ -5,3 +5,10 @@ pre-built_references/fetal_liver_uwot_model filter=lfs diff=lfs merge=lfs -text
 pre-built_references/pancreas_plate-based_uwot_model filter=lfs diff=lfs merge=lfs -text
 pre-built_references/pbmcs_10x_uwot_model filter=lfs diff=lfs merge=lfs -text
 vignettes/data/* filter=lfs diff=lfs merge=lfs -text
+vignettes/data/pancreas_baron_human_exp.rds filter=lfs diff=lfs merge=lfs -text
+vignettes/data/pancreas_baron_human_metadata.rds filter=lfs diff=lfs merge=lfs -text
+vignettes/data/pancreas_baron_mouse_biomart_homologene_exp.rds filter=lfs diff=lfs merge=lfs -text
+vignettes/data/pancreas_baron_mouse_metadata.rds filter=lfs diff=lfs merge=lfs -text
+vignettes/data/exprs_norm_all.rds filter=lfs diff=lfs merge=lfs -text
+vignettes/data/fetal_liver_meta_5p.rds filter=lfs diff=lfs merge=lfs -text
+vignettes/data/meta_data_subtypes.csv filter=lfs diff=lfs merge=lfs -text
