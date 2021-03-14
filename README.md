@@ -53,8 +53,8 @@ Downloading pre-built references:
 ---------------------------------
 
 -   You can download pre-built references from the
-    \[pre-built\_references directory\]
-    (<a href="https://github.com/immunogenomics/symphony/tree/main/pre-built_references" class="uri">https://github.com/immunogenomics/symphony/tree/main/pre-built_references</a>)
+    [pre-built\_references
+    directory](https://github.com/immunogenomics/symphony/tree/main/pre-built_references)
     in this GitHub repo, or on
     [Zenodo](https://zenodo.org/record/4602302#.YE2NoJNKhTY).
 
