@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-Symphony <img src="man/figures/symphony_logo.png" width="250" alt="logo" />
+Symphony <img src="man/figures/symphony_logo.png" width="150" alt="logo" />
 ===========================================================================
 
 <!-- badges: start -->
