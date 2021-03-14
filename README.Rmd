@@ -14,7 +14,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Symphony ![logo](man/figures/symphony_logo.png){align='right'}
+# Symphony <img src="man/figures/symphony_logo.png" alt="logo" width="150" align="right"/>
+
 <!-- badges: start -->
 <!-- badges: end -->
 
