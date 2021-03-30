@@ -62,7 +62,8 @@ group.colors = c(   'B cell'='#f2bd80',
                     'Pre pro B cell'='#d6061a',
                     'pre-B cell'='#e36f6f',
                     'pro-B cell'='#1dfee1',
-                    'VCAM1+ EI macro.'='#506356')
+                    'VCAM1+ EI macro.'='#506356',
+                    'centroid' ='black')
 
 # Custom ordering to match original author publication ordering of states
 group.ordering = c("HSC_MPP", "Pre pro B cell", 'pro-B cell', 'pre-B cell', 'B cell',
