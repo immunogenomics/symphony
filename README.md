@@ -10,7 +10,7 @@ Symphony <img src="man/figures/symphony_logo.png" alt="logo" width="181" align="
 Efficient and precise single-cell reference atlas mapping with Symphony
 
 [Preprint on
-bioRxiv](https://www.biorxiv.org/content/10.1101/2020.11.18.389189v1)
+bioRxiv](https://www.biorxiv.org/content/10.1101/2020.11.18.389189v2)
 
 Installation
 ============
