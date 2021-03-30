@@ -52,7 +52,7 @@ buildReference <- function(exp_ref,                   # genes x cells
         if (is.null(vargenes_groups)) {
             vargenes_df = findVariableGenes(exp_ref, rep('A', ncol(exp_ref)), num.bin = 20)
         } else { # groups specified
-            vargenes_df = findVariableGenes(exp_ref, groups = as.character(meta_data[[vargenes_groups]]), 
+            vargenes_df = findVariableGenes(exp_ref, groups = as.character(metadata_ref[[vargenes_groups]]), 
                                             num.bin = 20)
         }
         var_genes = unique(data.table(vargenes_df)[, head(.SD[order(-.data$gene_dispersion_scaled)],                                  topn), by = .data$group][, .data$symbol])
@@ -60,7 +60,7 @@ buildReference <- function(exp_ref,                   # genes x cells
         if (is.null(vargenes_groups)) {
             var_genes = vargenes_vst(exp_ref, topn = topn)
         } else { # groups specified
-            var_genes = vargenes_vst(exp_ref, groups = as.character(meta_data[[vargenes_groups]]), topn = topn)
+            var_genes = vargenes_vst(exp_ref, groups = as.character(metadata_ref[[vargenes_groups]]), topn = topn)
         }
     } else {
         message("Invalid variable gene selection method. Options are 'vst' or 'mvp'.")
