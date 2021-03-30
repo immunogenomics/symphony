@@ -8,6 +8,7 @@
 #' @param do_umap Perform UMAP visualization on harmonized reference embedding
 #' @param do_normalize Perform log(CP10K) normalization
 #' @param vargenes_method Variable gene selection method (either 'vst' or 'mvp')
+#' @param vargenes_groups metadata column specifying groups for variable gene selection. If not NULL, calculate topn variable genes in each group separately, then pool
 #' @param topn Number of variable genes to subset by
 #' @param tau Tau parameter for Harmony step
 #' @param theta Theta parameter(s) for Harmony step
@@ -29,7 +30,8 @@ buildReference <- function(exp_ref,                   # genes x cells
                            do_umap = TRUE,            # run umap on reference cells
                            do_normalize = TRUE,       # run log(CP10K+1) normalization
                            vargenes_method = 'vst',   # vst or mvp
-                           topn = 2000,               # number of variable genes
+                           vargenes_groups = NULL,    # metadata column specifying groups for vargene selection
+                           topn = 2000,               # number of variable genes (per batch)
                            tau = 0,                   # Harmony parameter
                            theta = 2,                 # Harmony parameter
                            save_uwot_path = NULL,     # Path to save uwot model (use absolute path)
@@ -45,13 +47,20 @@ buildReference <- function(exp_ref,                   # genes x cells
         exp_ref = normalizeData(exp_ref, 1e4, 'log')
     }
     
-    if (verbose) message('Finding ', topn, ' variable genes using ', vargenes_method, ' method')
+    if (verbose) message('Finding variable genes using ', vargenes_method, ' method')
     if (vargenes_method == 'mvp') {
-        vargenes_df = findVariableGenes(exp_ref, rep('A', ncol(exp_ref)), num.bin = 20)
-        var_genes = unique(data.table(vargenes_df)[, head(.SD[order(-.data$gene_dispersion_scaled)], topn), 
-                                                        by = .data$group][, .data$symbol])
+        if (is.null(vargenes_groups)) {
+            vargenes_df = findVariableGenes(exp_ref, rep('A', ncol(exp_ref)), num.bin = 20)
+        } else { # groups specified
+            vargenes_df = findVariableGenes(exp_ref, groups = meta_data[[vargenes_groups]]), num.bin = 20)
+        }
+        var_genes = unique(data.table(vargenes_df)[, head(.SD[order(-.data$gene_dispersion_scaled)],                                  topn), by = .data$group][, .data$symbol])
     } else if (vargenes_method == 'vst') {
-        var_genes = vargenes_vst(exp_ref, topn = topn)
+        if (is.null(vargenes_groups)) {
+            var_genes = vargenes_vst(exp_ref, topn = topn)
+        } else { # groups specified
+            var_genes = vargenes_vst(exp_ref, groups = meta_data[[vargenes_groups]], topn = topn)
+        }
     } else {
         message("Invalid variable gene selection method. Options are 'vst' or 'mvp'.")
     }
@@ -59,9 +68,9 @@ buildReference <- function(exp_ref,                   # genes x cells
     # Add in any additional genes
     if(!is.null(additional_genes)) { 
         if (verbose) message('Adding ', length(additional_genes), ' additional genes')
-        var_genes = union(var_genes, additional_genes)
-        if (verbose) message('Total ' , length(var_genes), ' genes for downstream steps')
+        var_genes = union(var_genes, additional_genes)   
     }
+    if (verbose) message('Total ' , length(var_genes), ' genes for downstream steps')
 
     # Subset gene expression matrix by the desired genes
     exp_ref = exp_ref[var_genes, ]
@@ -112,8 +121,11 @@ buildReference <- function(exp_ref,                   # genes x cells
         res$Z_orig <- Z_pca_ref
         res$Z_corr <- Z_pca_ref
     }
+    
     # Add row and column names
-    colnames(res$Z_corr) =  row.names(metadata_ref)
+    colnames(res$Z_orig) = row.names(metadata_ref)
+    rownames(res$Z_orig) = paste0("PC_", seq_len(nrow(res$Z_corr)))
+    colnames(res$Z_corr) = row.names(metadata_ref)
     rownames(res$Z_corr) = paste0("harmony_", seq_len(nrow(res$Z_corr)))
     
     # Compute reference compression terms

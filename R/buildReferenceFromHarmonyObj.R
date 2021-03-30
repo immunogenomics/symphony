@@ -38,7 +38,9 @@ buildReferenceFromHarmonyObj <- function(harmony_obj,
     res$cache = compute_ref_cache(res$R, res$Z_corr)
 
     # Add row and column names
-    colnames(res$Z_corr) =  row.names(metadata)
+    colnames(res$Z_orig) = row.names(metadata)
+    rownames(res$Z_orig) = paste0("PC_", seq_len(nrow(res$Z_corr)))
+    colnames(res$Z_corr) = row.names(metadata)
     rownames(res$Z_corr) = paste0("harmony_", seq_len(nrow(res$Z_corr)))
     
     if (do_umap) {
