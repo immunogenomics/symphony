@@ -75,7 +75,7 @@ ref_harmObj = harmony::HarmonyMatrix(
         theta = c(2),              # cluster diversity enforcement
         vars_use = c('donor'),     # variable to integrate out
         nclust = 100,              # number of clusters in Harmony model
-        max.iter.harmony = 10,
+        max.iter.harmony = 10,     # max iterations of Harmony
         return_object = TRUE,      # set to TRUE to return the full Harmony object
         do_pca = FALSE             # do not recompute PCs
 )
@@ -104,19 +104,20 @@ compression.
 ``` r
 # Build reference
 reference = symphony::buildReference(
-    ref_exp,                 # reference genes by cells matrix
-    ref_metadata,            # dataframe with cell metadata
-    vars = c('donor'),       # variable(s) to integrate over
-    K = 100,                 # number of Harmony clusters
-    verbose = TRUE,          # display output?
-    do_umap = TRUE,          # run UMAP and save UMAP model to file?
-    do_normalize = FALSE,    # normalize the expression matrix?
-    vargenes_method = 'vst', # 'vst' or 'mvp'
-    topn = 2000,             # number of variable genes to use
-    theta = 2,               # Harmony parameter for diversity term
-    d = 20,                  # number of dimensions for PCA
-    save_uwot_path = '/absolute/path/uwot_model_1', # filepath to save UMAP model
-    additional_genes = NULL  # vector of any additional genes to force include
+    ref_exp,                   # reference expression (genes by cells)
+    ref_metadata,              # reference metadata (cells x attributes)
+    vars = c('donor'),         # variable(s) to integrate over
+    K = 100,                   # number of Harmony soft clusters
+    verbose = TRUE,            # display verbose output
+    do_umap = TRUE,            # run UMAP and save UMAP model to file
+    do_normalize = FALSE,      # perform log(CP10k) normalization on reference expression
+    vargenes_method = 'vst',   # variable gene selection method: 'vst' or 'mvp'
+    vargenes_groups = 'donor', # metadata column specifying groups for variable gene selection within each group
+    topn = 2000,               # number of variable genes (per group)
+    theta = 2,                 # Harmony parameter(s) for diversity term
+    d = 20,                    # number of dimensions for PCA
+    save_uwot_path = 'path/to/uwot_model_1', # file path to save uwot UMAP model
+    additional_genes = NULL    # vector of any additional genes to force include
 )
 ```
 
@@ -124,29 +125,29 @@ Query mapping
 -------------
 
 Once you have a prebuilt reference (e.g. loaded from a saved .rds R
-object), you can map new query cells onto it starting from query gene
-expression.
+object), you can directly map cells from a new query dataset onto it
+starting from query gene expression.
 
 ``` r
 # Map query
-query = mapQuery(query_exp, query_metadata, reference, do_normalize = FALSE)
+query = mapQuery(query_exp,             # query gene expression (genes x cells)
+                 query_metadata,        # query metadata (cells x attributes)
+                 reference,             # Symphony reference object
+                 vars = NULL,           # Query batch variables to harmonize over (NULL treats query as one batch)
+                 do_normalize = FALSE,  # perform log(CP10k) normalization on query (set to FALSE if already normalized)
+                 do_umap = TRUE)        # project query cells into reference UMAP
 ```
 
 `query$Z` contains the harmonized query feature embedding.
 
 If your query itself has multiple sources of batch variation you would
 like to integrate over (e.g. technology, donors, species), you can
-specify them in the `vars` parameter.
-
-``` r
-# Map query
-query = mapQuery(query_exp, query_metadata, vars = c('donor', 'technology'),
-                reference, do_normalize = FALSE)
-```
+specify them in the `vars` parameter:
+e.g. `vars = c('donor', 'technology')`
 
 Reproducing results from manuscript
 ===================================
 
 Code to reproduce Symphony results from the Kang et al. manuscript will
 be made available on
-github.com/immunogenomics/symphony\_reproducibility.
+[github.com/immunogenomics/symphony\_reproducibility](github.com/immunogenomics/symphony_reproducibility).
