@@ -31,7 +31,7 @@ buildReference <- function(exp_ref,                   # genes x cells
                            do_normalize = TRUE,       # run log(CP10K+1) normalization
                            vargenes_method = 'vst',   # vst or mvp
                            vargenes_groups = NULL,    # metadata column specifying groups for vargene selection
-                           topn = 2000,               # number of variable genes (per batch)
+                           topn = 2000,               # number of variable genes (per group)
                            tau = 0,                   # Harmony parameter
                            theta = 2,                 # Harmony parameter
                            save_uwot_path = NULL,     # Path to save uwot model (use absolute path)
