@@ -88,6 +88,8 @@ mapQuery = function(exp_query,
                               as.matrix(ref_obj$cache[[2]])) ## TODO: add lambda parameter
     
     # Add row and column names
+    colnames(Z_pca_query) = row.names(metadata_query)
+    rownames(Z_pca_query) = paste0("PC_", seq_len(nrow(Zq_corr)))
     colnames(Zq_corr) = row.names(metadata_query)
     rownames(Zq_corr) = paste0("harmony_", seq_len(nrow(Zq_corr)))
     
