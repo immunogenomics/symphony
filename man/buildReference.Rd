@@ -13,6 +13,7 @@ buildReference(
   do_umap = TRUE,
   do_normalize = TRUE,
   vargenes_method = "vst",
+  vargenes_groups = NULL,
   topn = 2000,
   tau = 0,
   theta = 2,
@@ -37,6 +38,8 @@ buildReference(
 \item{do_normalize}{Perform log(CP10K) normalization}
 
 \item{vargenes_method}{Variable gene selection method (either 'vst' or 'mvp')}
+
+\item{vargenes_groups}{metadata column specifying groups for variable gene selection. If not NULL, calculate topn variable genes in each group separately, then pool}
 
 \item{topn}{Number of variable genes to subset by}
 
