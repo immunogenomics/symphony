@@ -1,6 +1,10 @@
+#' Function to find variable genes using mean variance relationship method
+#' 
 #' @importFrom methods as
 #' @importFrom stats loess median na.omit quantile
 #' @importFrom rlang .data
+#'
+#' @export
 findVariableGenes <- function(X, groups, min_expr = .1, max_expr = Inf, 
                                min_dispersion = 0, max_dispersion = Inf, 
                                num.bin = 20, binning.method = "equal_width", return_top_n = 0) {
@@ -64,6 +68,8 @@ findVariableGenes <- function(X, groups, min_expr = .1, max_expr = Inf,
     
 }
 
+#' Function to find variable genes using variance stabilizing transform (VST) method
+#' @export
 vargenes_vst <- function(object, groups, topn, loess.span = 0.3) {
     clip.max <- sqrt(ncol(object))
 
