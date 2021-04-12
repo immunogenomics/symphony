@@ -55,7 +55,14 @@ buildReferenceFromHarmonyObj <- function(harmony_obj,
         
         # Since the nn-index component of the uwot model is not able to be saved as an 
         # object, we save the uwot model at a user-defined path.
-        if (!is.null(save_uwot_path)) { # TODO: check if valid file path
+        if (!is.null(save_uwot_path)) {
+            
+            # If file already exists, delete it (otherwise will result in an error)
+            if (file.exists(save_uwot_path)) {
+                if (verbose) message(paste('File already exists at that path... overwriting...'))
+                file.remove(save_uwot_path)
+            }
+            
             model = uwot::save_uwot(umap, file = save_uwot_path, unload = FALSE, verbose = FALSE)
             res$save_uwot_path = save_uwot_path
             if (verbose) message(paste('Saved uwot model'))
