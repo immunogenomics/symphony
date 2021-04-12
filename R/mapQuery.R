@@ -104,6 +104,6 @@ mapQuery = function(exp_query,
     }
     
     if (verbose) message('All done!')
-    return(list(Z = Zq_corr, Zq_pca = Z_pca_query, R = R_query, Xq = Xq, 
-                umap = umap_query, meta_data = metadata_query))
+    return(list(exp = exp_query, meta_data = metadata_query, Z = Zq_corr, Zq_pca = Z_pca_query, 
+                R = R_query, Xq = Xq, umap = umap_query))
 }
