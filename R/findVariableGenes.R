@@ -24,10 +24,10 @@ findVariableGenes <- function(X, groups, min_expr = .1, max_expr = Inf,
     vargenes_df <- dplyr::inner_join(
         means_nonlog %>% log1p %>% as_tibble() %>% 
             cbind(symbol = row.names(X)) %>% 
-            tidyr::gather(.data$group, .data$gene_mean, -.data$symbol),
+            tidyr::gather(group, gene_mean, -symbol),
         vmr %>% as_tibble() %>% 
             cbind(symbol = row.names(X)) %>% 
-            tidyr::gather(.data$group, .data$gene_dispersion, -.data$symbol), 
+            tidyr::gather(group, gene_dispersion, -symbol), 
         by = c("symbol", "group")
     )
     
