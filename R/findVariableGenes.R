@@ -14,10 +14,10 @@ findVariableGenes <- function(X, groups, min_expr = .1, max_expr = Inf,
     groups_table <- table(groups_int)
     
     ## initially compute means in non-log space, to use in vmr function below
-    means_nonlog <- exp_mean(X@x, X@p, X@i, ncol(X), nrow(X), groups_int, groups_table)
+    means_nonlog <- symphony::exp_mean(X@x, X@p, X@i, ncol(X), nrow(X), groups_int, groups_table)
     colnames(means_nonlog) <- levels(groups)
     
-    vmr <- log_vmr(X@x, X@p, X@i, ncol(X), nrow(X), means_nonlog, groups_int, groups_table)    
+    vmr <- symphony::log_vmr(X@x, X@p, X@i, ncol(X), nrow(X), means_nonlog, groups_int, groups_table)    
     colnames(vmr) <- levels(groups)    
 
     ## transform means to logspace and join means and VMR  
