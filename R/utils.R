@@ -136,7 +136,7 @@ knnPredict <- function(query_obj, ref_obj,
         knn_pred = class::knn(t(ref_obj$Z_corr), t(query_obj$Z), train_labels, k = k, prob = TRUE)
         knn_prob = attributes(knn_pred)$prob
         query_obj$meta_data[save_as] = knn_pred
-        query_obj$meta_data[paste0(save_as, 'prob')] = knn_prob
+        query_obj$meta_data[paste0(save_as, '_prob')] = knn_prob
     } else {
         knn_pred = class::knn(t(ref_obj$Z_corr), t(query_obj$Z), train_labels, k = k, prob = FALSE)
         query_obj$meta_data[save_as] = knn_pred
