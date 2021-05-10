@@ -129,9 +129,18 @@ probPredict = function(query_obj, ref_obj) {
 knnPredict <- function(query_obj, ref_obj,
                        train_labels, # cell labels for k-NN classification 
                        k = 5,
-                       save_as = 'cell_type_pred_knn') { # metadata column name to save result
-    knn_pred = class::knn(t(ref_obj$Z_corr), t(query_obj$Z), train_labels, k = k)
-    query_obj$meta_data[save_as] = knn_pred
+                       save_as = 'cell_type_pred_knn',
+                       confidence = FALSE) { # metadata column name to save result
+    
+    if (confidence) {
+        knn_pred = class::knn(t(ref_obj$Z_corr), t(query_obj$Z), train_labels, k = k, prob = TRUE)
+        knn_prob = attributes(knn_pred)$prob
+        query_obj$meta_data[save_as] = knn_pred
+        query_obj$meta_data[paste0(save_as, 'prob')] = knn_prob
+    } else {
+        knn_pred = class::knn(t(ref_obj$Z_corr), t(query_obj$Z), train_labels, k = k, prob = FALSE)
+        query_obj$meta_data[save_as] = knn_pred
+    }    
     return(query_obj)
 }
 
