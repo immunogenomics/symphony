@@ -127,10 +127,11 @@ probPredict = function(query_obj, ref_obj) {
 #' 
 #' @export
 knnPredict <- function(query_obj, ref_obj,
-                       train_labels, # cell labels for knn classification 
-                       k = 5) {
+                       train_labels, # cell labels for k-NN classification 
+                       k = 5,
+                       save_as = 'cell_type_pred_knn') { # metadata column name to save result
     knn_pred = class::knn(t(ref_obj$Z_corr), t(query_obj$Z), train_labels, k = k)
-    query_obj$meta_data$cell_type_pred_knn = knn_pred
+    query_obj$meta_data[save_as] = knn_pred
     return(query_obj)
 }
 
@@ -144,6 +145,8 @@ knnPredictCos <- function(query_obj, ref_obj,
     query_obj$meta_data$cell_type_pred_knn_cos = knn_pred
     return(query_obj)
 }
+
+
 
 # Function for evaluating F1 by cell type, 
 # Modified from benchmarking paper Abdelaal et al. Genome Biology 2019
