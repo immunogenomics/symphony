@@ -131,7 +131,7 @@ knnPredict <- function(query_obj, ref_obj,
                        k = 5,
                        save_as = 'cell_type_pred_knn',
                        confidence = FALSE) { # metadata column name to save result
-    
+    set.seed(0)
     if (confidence) {
         knn_pred = class::knn(t(ref_obj$Z_corr), t(query_obj$Z), train_labels, k = k, prob = TRUE)
         knn_prob = attributes(knn_pred)$prob
