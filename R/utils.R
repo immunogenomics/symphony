@@ -108,22 +108,24 @@ soft_kmeans <- function(X, k, w, max_iter=20, sigma=0.1) {
 # Symphony utils ---------------------------------
     
 # Note: this will need to be fixed if we're including merging redundant clusters in ref building
-probPredict = function(query_obj, ref_obj) {
-    ## Predict cell type using probabilistic method
-    type_probs <- crossprod(query_obj$R, ref_obj$cluster_annotations)
-    cell_type <- colnames(type_probs)[apply(type_probs, 1, which.max)]
-    type_thresh <- 0.2
-    cell_type[which(apply(type_probs, 1, max) < type_thresh)] <- 'unassigned'
-    query_obj$meta_data$cell_type_pred_prob <- as.factor(cell_type)
-    return(query_obj)
-}
+#probPredict = function(query_obj, ref_obj) {
+#    ## Predict cell type using probabilistic method
+#    type_probs <- crossprod(query_obj$R, ref_obj$cluster_annotations)
+#    cell_type <- colnames(type_probs)[apply(type_probs, 1, which.max)]
+#    type_thresh <- 0.2
+#    cell_type[which(apply(type_probs, 1, max) < type_thresh)] <- 'unassigned'
+#    query_obj$meta_data$cell_type_pred_prob <- as.factor(cell_type)
+#    return(query_obj)
+#}
 
-#' Predict cell annotations using k-NN method
+#' Predict annotations of query cells from the reference using k-NN method
 #'
 #' @param query_obj Query object
 #' @param ref_obj Reference object
 #' @param train_labels vector of labels to train
-#' @param k num neighbors
+#' @param k number of neighbors
+#' @param save_as string that result column will be named in query metadata
+#' @param confidence return k-NN confidence scores (proportion of neighbors voting for the predicted annotation)
 #' 
 #' @export
 knnPredict <- function(query_obj, ref_obj,
@@ -144,7 +146,7 @@ knnPredict <- function(query_obj, ref_obj,
     return(query_obj)
 }
 
-## Predict cell type using knn method with cos distance
+## Predict cell type using k-NN method with cos distance
 knnPredictCos <- function(query_obj, ref_obj,
                        train_labels, # cell labels for knn classification 
                        k = 5) {
@@ -157,16 +159,14 @@ knnPredictCos <- function(query_obj, ref_obj,
 
 
 
-# Function for evaluating F1 by cell type, 
-# Modified from benchmarking paper Abdelaal et al. Genome Biology 2019
-evaluate <- function(true, predicted){
-  "
-  Parameters
-  ----------
-  TrueLabelsPath: csv file with the true labels (format: one column, no index)
-  PredLabelsPath: csv file with the predicted labels (format: one column, no index)
-  Indices: which part of the csv file should be read (e.g. if more datasets are tested at the same time) (format: c(begin, end))
-  
+#' Function for evaluating F1 by cell type, 
+#' Modified from benchmarking paper Abdelaal et al. Genome Biology 2019
+#' @param true vector of true labels
+#' @param predicted vector of predicted labels
+#' 
+#' @export
+evaluate <- function(true, predicted) {
+  "  
   Returns
   -------
   Conf: confusion matrix

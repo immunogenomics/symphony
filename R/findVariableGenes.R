@@ -1,23 +1,37 @@
 #' Function to find variable genes using mean variance relationship method
+#' Adapted from Seurat
 #' 
 #' @importFrom methods as
 #' @importFrom stats loess median na.omit quantile
 #' @importFrom rlang .data
 #'
+#' @param X expression matrix
+#' @param groups vector of groups
+#' @param min_expr min expression cutoff
+#' @param max_expr max expression cutoff
+#' @param min_dispersion min dispersion cutoff
+#' @param max_dispersion max dispersion cutoff
+#' @param num.bin number of bins to use for scaled analysis
+#' @param binning.method how bins are computed
+#' @param return_top_n returns top n genes 
+#' 
 #' @export
 findVariableGenes <- function(X, groups, min_expr = .1, max_expr = Inf, 
                                min_dispersion = 0, max_dispersion = Inf, 
                                num.bin = 20, binning.method = "equal_width", return_top_n = 0) {
+    #https://www.r-bloggers.com/2019/08/no-visible-binding-for-global-variable/
+    group <- gene_mean <- symbol <- gene_dispersion <- NULL # prevents R CMD check note
+    
     ## TODO: check that groups are 0 indexed
     groups <- factor(groups)
     groups_int <- as.integer(factor(groups)) - 1
     groups_table <- table(groups_int)
     
     ## initially compute means in non-log space, to use in vmr function below
-    means_nonlog <- symphony::exp_mean(X@x, X@p, X@i, ncol(X), nrow(X), groups_int, groups_table)
+    means_nonlog <- exp_mean(X@x, X@p, X@i, ncol(X), nrow(X), groups_int, groups_table)
     colnames(means_nonlog) <- levels(groups)
     
-    vmr <- symphony::log_vmr(X@x, X@p, X@i, ncol(X), nrow(X), means_nonlog, groups_int, groups_table)    
+    vmr <- log_vmr(X@x, X@p, X@i, ncol(X), nrow(X), means_nonlog, groups_int, groups_table)    
     colnames(vmr) <- levels(groups)    
 
     ## transform means to logspace and join means and VMR  
@@ -69,6 +83,12 @@ findVariableGenes <- function(X, groups, min_expr = .1, max_expr = Inf,
 }
 
 #' Function to find variable genes using variance stabilizing transform (VST) method
+#'
+#' @param object expression matrix
+#' @param groups finds variable genes within each group then pools
+#' @param topn Return top n genes
+#' @param loess.span Loess span parameter used when fitting the variance-mean relationship
+#'
 #' @export
 vargenes_vst <- function(object, groups, topn, loess.span = 0.3) {
     clip.max <- sqrt(ncol(object))
