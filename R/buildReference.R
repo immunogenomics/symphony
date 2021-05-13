@@ -135,8 +135,8 @@ buildReference <- function(exp_ref,                   # genes x cells
     cluster_sizes = res$cache[[1]] %>% as.matrix()
     centroid_sums = t(res$Z_corr %*% t(res$R)) %>% as.data.frame()
     centroids_pc = sweep(centroid_sums, 1, cluster_sizes, "/")
-    colnames(centroids_pc) = paste0("harmony_", c(1:20))
-    rownames(centroids_pc) = paste0("centroid_", c(1:K))
+    colnames(centroids_pc) = paste0("harmony_", seq_len(nrow(res$Z_corr)))
+    rownames(centroids_pc) = paste0("centroid_", seq_len(nrow(res$R)))
     res$centroids_pc = centroids_pc
 
     if (do_umap) {
