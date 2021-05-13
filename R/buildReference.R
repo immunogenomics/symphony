@@ -118,7 +118,6 @@ buildReference <- function(exp_ref,                   # genes x cells
         res$centroids <- clust_res$Y
         res$R <- clust_res$R
         res$betas <- NULL
-        res$obj <- NULL
         res$Z_orig <- Z_pca_ref
         res$Z_corr <- Z_pca_ref
     }
@@ -131,6 +130,14 @@ buildReference <- function(exp_ref,                   # genes x cells
     
     # Compute reference compression terms
     res$cache = compute_ref_cache(res$R, res$Z_corr)
+    
+    # Compute centroids in harmony PC space
+    cluster_sizes = res$cache[[1]] %>% as.matrix()
+    centroid_sums = t(res$Z_corr %*% t(res$R)) %>% as.data.frame()
+    centroids_pc = sweep(centroid_sums, 1, cluster_sizes, "/")
+    colnames(centroids_pc) = paste0("harmony_", c(1:20))
+    rownames(centroids_pc) = paste0("centroid_", c(1:K))
+    res$centroids_pc = centroids_pc
 
     if (do_umap) {
         if (verbose) message('Running UMAP')
