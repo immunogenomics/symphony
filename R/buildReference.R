@@ -108,7 +108,7 @@ buildReference <- function(exp_ref,                   # genes x cells
 
         res$centroids <- t(cosine_normalize_cpp(ref_harmObj$R %*% t(ref_harmObj$Z_corr) , 1))
         res$R <- ref_harmObj$R
-        #res$betas <- harmony::moe_ridge_get_betas(ref_harmObj)
+        res$betas <- harmony::moe_ridge_get_betas(ref_harmObj)
         res$Z_orig <- Z_pca_ref
         res$Z_corr <- ref_harmObj$Z_corr
         res$K <- K
