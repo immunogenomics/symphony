@@ -3,6 +3,7 @@
 export(buildReference)
 export(buildReferenceFromHarmonyObj)
 export(compute_ref_cache)
+export(evaluate)
 export(findVariableGenes)
 export(knnPredict)
 export(mapQuery)

@@ -129,6 +129,7 @@ buildReference <- function(exp_ref,                   # genes x cells
     rownames(res$Z_corr) = paste0("harmony_", seq_len(nrow(res$Z_corr)))
     
     # Compute reference compression terms
+    if (verbose) message('Computing reference compression terms')
     res$cache = compute_ref_cache(res$R, res$Z_corr)
     
     # Compute centroids in harmony PC space

@@ -6,6 +6,15 @@
 \usage{
 vargenes_vst(object, groups, topn, loess.span = 0.3)
 }
+\arguments{
+\item{object}{expression matrix}
+
+\item{groups}{finds variable genes within each group then pools}
+
+\item{topn}{Return top n genes}
+
+\item{loess.span}{Loess span parameter used when fitting the variance-mean relationship}
+}
 \description{
 Function to find variable genes using variance stabilizing transform (VST) method
 }

@@ -2,9 +2,16 @@
 % Please edit documentation in R/utils.R
 \name{knnPredict}
 \alias{knnPredict}
-\title{Predict cell annotations using k-NN method}
+\title{Predict annotations of query cells from the reference using k-NN method}
 \usage{
-knnPredict(query_obj, ref_obj, train_labels, k = 5)
+knnPredict(
+  query_obj,
+  ref_obj,
+  train_labels,
+  k = 5,
+  save_as = "cell_type_pred_knn",
+  confidence = FALSE
+)
 }
 \arguments{
 \item{query_obj}{Query object}
@@ -13,8 +20,12 @@ knnPredict(query_obj, ref_obj, train_labels, k = 5)
 
 \item{train_labels}{vector of labels to train}
 
-\item{k}{num neighbors}
+\item{k}{number of neighbors}
+
+\item{save_as}{string that result column will be named in query metadata}
+
+\item{confidence}{return k-NN confidence scores (proportion of neighbors voting for the predicted annotation)}
 }
 \description{
-Predict cell annotations using k-NN method
+Predict annotations of query cells from the reference using k-NN method
 }

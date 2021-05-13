@@ -2,7 +2,8 @@
 % Please edit documentation in R/findVariableGenes.R
 \name{findVariableGenes}
 \alias{findVariableGenes}
-\title{Function to find variable genes using mean variance relationship method}
+\title{Function to find variable genes using mean variance relationship method
+Adapted from Seurat}
 \usage{
 findVariableGenes(
   X,
@@ -16,6 +17,26 @@ findVariableGenes(
   return_top_n = 0
 )
 }
+\arguments{
+\item{X}{expression matrix}
+
+\item{groups}{vector of groups}
+
+\item{min_expr}{min expression cutoff}
+
+\item{max_expr}{max expression cutoff}
+
+\item{min_dispersion}{min dispersion cutoff}
+
+\item{max_dispersion}{max dispersion cutoff}
+
+\item{num.bin}{number of bins to use for scaled analysis}
+
+\item{binning.method}{how bins are computed}
+
+\item{return_top_n}{returns top n genes}
+}
 \description{
 Function to find variable genes using mean variance relationship method
+Adapted from Seurat
 }
