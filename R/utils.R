@@ -158,7 +158,6 @@ knnPredictCos <- function(query_obj, ref_obj,
 }
 
 
-
 #' Function for evaluating F1 by cell type, 
 #' Modified from benchmarking paper Abdelaal et al. Genome Biology 2019
 #' @param true vector of true labels
