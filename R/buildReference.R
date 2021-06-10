@@ -103,7 +103,8 @@ buildReference <- function(exp_ref,                   # genes x cells
             nclust = K,               ## number of clusters in Harmony model
             max.iter.harmony = 20,
             return_object = TRUE,     ## return the full Harmony model object
-            do_pca = FALSE            ## do not recompute PCs
+            do_pca = FALSE,            ## do not recompute PCs
+            verbose = verbose
         )
 
         res$centroids <- t(cosine_normalize_cpp(ref_harmObj$R %*% t(ref_harmObj$Z_corr) , 1))
