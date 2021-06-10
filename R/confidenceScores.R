@@ -8,6 +8,7 @@
 #' @param metric Uses Mahalanobis by default, but added as a parameter for potential future use
 #' 
 #' @import utils
+#' @import stats
 #' @export
 calcPerCellConfidence = function(reference, query, Z_orig = FALSE, metric = 'mahalanobis') {
     
@@ -47,12 +48,11 @@ calcPerCellConfidence = function(reference, query, Z_orig = FALSE, metric = 'mah
 #'
 #' @param reference Reference object as returned by Symphony buildReference()
 #' @param query Query object as returned by Symphony mapQuery()
-#' @param Z_orig Define reference distribution using original PCA embedding or harmonized PC embedding
 #' @param query_cluster_labels Vector of user-defined labels denoting clusters / putative novel cell type to calculate the score for
 #' @param metric Uses Mahalanobis by default, but added as a parameter for potential future use
-#' @param lambda ridge parameter to handle clusters with fewer than d cells 
 #' 
-#' @import utils
+#' @import utils 
+#' @import stats
 #' @export
 calcPerClusterConfidence = function(reference, query, query_cluster_labels, metric = 'mahalanobis') {
     
