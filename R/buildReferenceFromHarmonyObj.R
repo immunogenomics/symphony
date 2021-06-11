@@ -8,6 +8,7 @@
 #' @param verbose Verbose output
 #' @param do_umap Perform UMAP visualization on harmonized reference embedding
 #' @param save_uwot_path Absolute path to save the uwot model (if do_umap is TRUE)
+#' @param umap_min_dist umap parameter (see uwot documentation for details)
 #' 
 #' @export
 buildReferenceFromHarmonyObj <- function(harmony_obj,
@@ -16,7 +17,8 @@ buildReferenceFromHarmonyObj <- function(harmony_obj,
                            pca_loadings,           # genes x PCs
                            verbose = TRUE, 
                            do_umap = TRUE, 
-                           save_uwot_path = NULL) {
+                           save_uwot_path = NULL,
+                           umap_min_dist = 0.1) {
     
     set.seed(111) # for reproducibility
     
@@ -56,7 +58,7 @@ buildReferenceFromHarmonyObj <- function(harmony_obj,
         umap = uwot::umap(
             t(res$Z_corr), n_neighbors = 30, learning_rate = 0.5, init = "laplacian", 
             metric = 'cosine', fast_sgd = FALSE, n_sgd_threads = 1, # for reproducibility
-            min_dist = .1, n_threads = 4, ret_model = TRUE
+            min_dist = umap_min_dist, n_threads = 4, ret_model = TRUE
         )
         res$umap$embedding = umap$embedding
         colnames(res$umap$embedding) = c('UMAP1', 'UMAP2')
