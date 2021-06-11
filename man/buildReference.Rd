@@ -19,7 +19,8 @@ buildReference(
   theta = 2,
   save_uwot_path = NULL,
   d = 20,
-  additional_genes = NULL
+  additional_genes = NULL,
+  umap_min_dist = 0.1
 )
 }
 \arguments{
@@ -52,6 +53,8 @@ buildReference(
 \item{d}{Number of PC dimensions}
 
 \item{additional_genes}{Any custom genes (e.g. marker genes) to include in addition to variable genes}
+
+\item{umap_min_dist}{umap parameter (see uwot documentation for details)}
 }
 \description{
 Function for building a Symphony reference starting from expression matrix

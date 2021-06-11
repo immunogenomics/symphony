@@ -15,6 +15,7 @@
 #' @param save_uwot_path Absolute path to save the uwot model (if do_umap is TRUE)
 #' @param d Number of PC dimensions
 #' @param additional_genes Any custom genes (e.g. marker genes) to include in addition to variable genes
+#' @param umap_min_dist umap parameter (see uwot documentation for details)
 #' 
 #' @import data.table
 #' @import tibble
@@ -36,7 +37,8 @@ buildReference <- function(exp_ref,                   # genes x cells
                            theta = 2,                 # Harmony parameter
                            save_uwot_path = NULL,     # Path to save uwot model (use absolute path)
                            d = 20,                    # number of dimensions for PCs
-                           additional_genes = NULL) { # vector of any additional genes beyond vargenes to include
+                           additional_genes = NULL,   # vector of any additional genes beyond vargenes to include
+                           umap_min_dist = 0.1 ) {    # umap parameter
     
     set.seed(111) # for reproducible soft k-means and UMAP
     
@@ -146,7 +148,7 @@ buildReference <- function(exp_ref,                   # genes x cells
         umap <- uwot::umap(
             t(res$Z_corr), n_neighbors = 30, learning_rate = 0.5, init = "laplacian", 
             metric = 'cosine', fast_sgd = FALSE, n_sgd_threads = 1, # for reproducibility
-            min_dist = .1, n_threads = 4, ret_model = TRUE
+            min_dist = umap_min_dist, n_threads = 4, ret_model = TRUE
         )
         res$umap$embedding = umap$embedding
         colnames(res$umap$embedding) = c('UMAP1', 'UMAP2')
