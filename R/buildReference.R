@@ -57,7 +57,7 @@ buildReference <- function(exp_ref,                   # genes x cells
             vargenes_df = findVariableGenes(exp_ref, groups = as.character(metadata_ref[[vargenes_groups]]), 
                                             num.bin = 20)
         }
-        var_genes = unique(data.table(vargenes_df)[, head(.SD[order(-.data$gene_dispersion_scaled)],                                  topn), by = .data$group][, .data$symbol])
+        var_genes = unique(data.table(vargenes_df)[, head(.SD[order(-.data$gene_dispersion_scaled)], topn), by = .data$group][, .data$symbol])
     } else if (vargenes_method == 'vst') {
         if (is.null(vargenes_groups)) {
             var_genes = vargenes_vst(exp_ref, topn = topn)
