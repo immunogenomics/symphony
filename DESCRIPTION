@@ -41,5 +41,6 @@ Imports:
     rlang,
     RColorBrewer,
     ggrastr,
-    ggrepel
+    ggrepel,
+    RANN
 Remotes: github::immunogenomics/harmony

@@ -12,7 +12,8 @@ buildReferenceFromHarmonyObj(
   pca_loadings,
   verbose = TRUE,
   do_umap = TRUE,
-  save_uwot_path = NULL
+  save_uwot_path = NULL,
+  umap_min_dist = 0.1
 )
 }
 \arguments{
@@ -29,6 +30,8 @@ buildReferenceFromHarmonyObj(
 \item{do_umap}{Perform UMAP visualization on harmonized reference embedding}
 
 \item{save_uwot_path}{Absolute path to save the uwot model (if do_umap is TRUE)}
+
+\item{umap_min_dist}{umap parameter (see uwot documentation for details)}
 }
 \description{
 Function for building a Symphony reference from a Harmony object. Useful if you would like your

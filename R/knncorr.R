@@ -1,17 +1,20 @@
 #' Calculates the k-NN correlation, which measures how well the sorted ordering of k nearest reference
 #' neighbors in a gold standard embedding correlate with the ordering for the same reference cells in 
 #' an alternative embedding (i.e. from reference mapping).
+#' NOTE: it is very important for the order of reference cells (cols) in gold_ref matches that of alt_ref
+#' (same for matching columns of gold_query and alt_query).
 #'
-#' @param gold_ref Reference cells in gold standard embedding [pcs x cells]
-#' @param alt_ref Reference cells in alternative embedding [pcs x cells]
-#' @param gold_query Query cells in gold standard embedding [pcs x cells]
-#' @param alt_query Query cells in alternative embedding [pcs x cells]
+#' @param gold_ref Reference cells in gold standard embedding (pcs x cells)
+#' @param alt_ref Reference cells in alternative embedding (pcs x cells)
+#' @param gold_query Query cells in gold standard embedding (pcs x cells)
+#' @param alt_query Query cells in alternative embedding (pcs x cells)
 #' @param k Number of reference neighbors to use for kNN-correlation calculation
 #' 
 #' @import RANN
 #' 
 #' @export
 calcknncorr = function(gold_ref, alt_ref, gold_query, alt_query, k = 500) {
+    message('Note: This function assumes that ordering of cells (cols) between gold and alt embeddings match')
     # Calculate the query cells' k nearest reference neighbors in the gold standard embedding
     nn_in_gold = nn2(t(gold_ref), t(gold_query), k = k)
 
