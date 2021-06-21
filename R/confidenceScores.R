@@ -45,16 +45,20 @@ calcPerCellConfidence = function(reference, query, Z_orig = FALSE, metric = 'mah
 #' Calculates the Mahalanobis distance from user-defined query clusters to their nearest
 #' reference centroid after initial projection into reference PCA space. 
 #' All query cells in a cluster get the same score. Higher distance indicates less confidence.
+#' Due to the instability of estimating covariance with small numbers of cells, we do not assign a 
+#' score to clusters smaller than u * d, where d is the dimensionality of the embedding and u is specified.
 #'
 #' @param reference Reference object as returned by Symphony buildReference()
 #' @param query Query object as returned by Symphony mapQuery()
 #' @param query_cluster_labels Vector of user-defined labels denoting clusters / putative novel cell type to calculate the score for
 #' @param metric Uses Mahalanobis by default, but added as a parameter for potential future use
+#' @param u Do not assign scores to clusters smaller than u * d (see above description)
 #' 
 #' @import utils 
 #' @import stats
 #' @export
-calcPerClusterConfidence = function(reference, query, query_cluster_labels, metric = 'mahalanobis') {
+calcPerClusterConfidence = function(reference, query, query_cluster_labels, metric = 'mahalanobis', 
+                                    u = 2) {
     
     query_cluster_labels = as.character(query_cluster_labels)
     query_cluster_labels_unique = unique(query_cluster_labels)
@@ -90,11 +94,11 @@ calcPerClusterConfidence = function(reference, query, query_cluster_labels, metr
     for (c in 1:num_clusters) {
         # if the number of cells in a query cluster is less than d, we add a ridge to the diagonal
         cluster_size = length(which(query_cluster_labels == query_cluster_labels_unique[c]))
-        if (cluster_size <  nrow(query$Z)) {
+        if (cluster_size <  u * nrow(query$Z)) {
             message('(Warning) cluster contains too few cells to estimate confidence: ', query_cluster_labels_unique[c])
             mah_dist_cs$distance_score[c] = NA
         } else {
-            cov = cov_cs[[c]] +  1 * diag(nrow(query$Z)) # ridge to help stabilize numerical estimates
+            cov = cov_cs[[c]] + 1 * diag(nrow(query$Z)) # ridge to help stabilize numerical estimates
             mah_dist_cs$distance_score[c] = mahalanobis(x = centroid_closest[c,], center = center_cs[,c], cov = cov)
         }
     }
