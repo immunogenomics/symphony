@@ -1,6 +1,6 @@
 #' ---- Per-cell Confidence Score ----
 #' Calculates the weighted Mahalanobis distance for the query cells to reference clusters. Returns a vector
-#' of distance scores, one per query cell. Higher distance indicates less confidence.
+#' of distance scores, one per query cell. Higher distance metric indicates less confidence.
 #'
 #' @param reference Reference object as returned by Symphony buildReference()
 #' @param query Query object as returned by Symphony mapQuery()
@@ -10,7 +10,7 @@
 #' @import utils
 #' @import stats
 #' @export
-calcPerCellConfidence = function(reference, query, Z_orig = FALSE, metric = 'mahalanobis') {
+calcPerCellMappingMetric = function(reference, query, Z_orig = FALSE, metric = 'mahalanobis') {
     
     ### Calculate (weighted) covariance matrix and centroid for all k soft clusters
     
@@ -57,7 +57,7 @@ calcPerCellConfidence = function(reference, query, Z_orig = FALSE, metric = 'mah
 #' @import utils 
 #' @import stats
 #' @export
-calcPerClusterConfidence = function(reference, query, query_cluster_labels, metric = 'mahalanobis', 
+calcPerClusterMappingMetric = function(reference, query, query_cluster_labels, metric = 'mahalanobis', 
                                     u = 2) {
     
     query_cluster_labels = as.character(query_cluster_labels)

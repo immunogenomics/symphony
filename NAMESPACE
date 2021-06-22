@@ -2,8 +2,8 @@
 
 export(buildReference)
 export(buildReferenceFromHarmonyObj)
-export(calcPerCellConfidence)
-export(calcPerClusterConfidence)
+export(calcPerCellMappingMetric)
+export(calcPerClusterMappingMetric)
 export(calcknncorr)
 export(calcknncorrWithinQuery)
 export(compute_ref_cache)
