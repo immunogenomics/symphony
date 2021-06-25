@@ -67,7 +67,7 @@ calcknncorrWithinQuery = function(query, var = NULL, k = 100, topn = 2000, d = 2
     
     if (!is.null(var)) {
         for (batch in unique(query$meta_data[[var]])) { # for each batch
-            message(paste('Calculating k-NN correlation within query batch ', batch))
+            message(paste0('Calculating k-NN correlation within query batch ', batch))
         
             batch_idx = which(query$meta_data[[var]] == batch)
             query_exp_batch = query$exp[, batch_idx]
