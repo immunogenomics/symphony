@@ -10,7 +10,7 @@
 #' @import utils
 #' @import stats
 #' @export
-calcPerCellMappingMetric = function(reference, query, Z_orig = FALSE, metric = 'mahalanobis') {
+calcPerCellMappingMetric = function(reference, query, Z_orig = TRUE, metric = 'mahalanobis') {
     
     ### Calculate (weighted) covariance matrix and centroid for all k soft clusters
     
