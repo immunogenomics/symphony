@@ -70,6 +70,7 @@ calcknncorrWithinQuery = function(query, var = NULL, k = 100, topn = 2000, d = 2
             message(paste0('Calculating k-NN correlation within query batch ', batch))
         
             batch_idx = which(query$meta_data[[var]] == batch)
+            query$exp = Matrix(query$exp, sparse = TRUE)
             query_exp_batch = query$exp[, batch_idx]
         
             Z_pca = runPCAQueryAlone(query_exp_batch, topn = topn, d = d)

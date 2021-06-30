@@ -53,12 +53,13 @@ calcPerCellMappingMetric = function(reference, query, Z_orig = FALSE, metric = '
 #' @param query_cluster_labels Vector of user-defined labels denoting clusters / putative novel cell type to calculate the score for
 #' @param metric Uses Mahalanobis by default, but added as a parameter for potential future use
 #' @param u Do not assign scores to clusters smaller than u * d (see above description)
+#' @param lambda Optional ridge parameter added to covariance diagonal to help stabilize numeric estimates
 #' 
 #' @import utils 
 #' @import stats
 #' @export
 calcPerClusterMappingMetric = function(reference, query, query_cluster_labels, metric = 'mahalanobis', 
-                                    u = 2) {
+                                    u = 2, lambda = 0) {
     
     query_cluster_labels = as.character(query_cluster_labels)
     query_cluster_labels_unique = unique(query_cluster_labels)
@@ -98,8 +99,8 @@ calcPerClusterMappingMetric = function(reference, query, query_cluster_labels, m
             message('(Warning) cluster contains too few cells to estimate confidence: ', query_cluster_labels_unique[c])
             mah_dist_cs$distance_score[c] = NA
         } else {
-            cov = cov_cs[[c]] + 1 * diag(nrow(query$Z)) # ridge to help stabilize numerical estimates
-            mah_dist_cs$distance_score[c] = mahalanobis(x = centroid_closest[c,], center = center_cs[,c], cov = cov)
+            cov = cov_cs[[c]] + lambda * diag(nrow(query$Z)) # optional ridge to help stabilize numerical estimates
+            mah_dist_cs$distance_score[c] = sqrt(mahalanobis(x = centroid_closest[c,], center = center_cs[,c], cov = cov))
         }
     }
 

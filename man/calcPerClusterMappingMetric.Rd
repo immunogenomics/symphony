@@ -14,7 +14,8 @@ calcPerClusterMappingMetric(
   query,
   query_cluster_labels,
   metric = "mahalanobis",
-  u = 2
+  u = 2,
+  lambda = 0
 )
 }
 \arguments{
@@ -27,6 +28,8 @@ calcPerClusterMappingMetric(
 \item{metric}{Uses Mahalanobis by default, but added as a parameter for potential future use}
 
 \item{u}{Do not assign scores to clusters smaller than u * d (see above description)}
+
+\item{lambda}{Optional ridge parameter added to covariance diagonal to help stabilize numeric estimates}
 }
 \description{
 ---- Per-cluster Confidence Score ----
