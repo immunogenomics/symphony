@@ -9,7 +9,7 @@ of distance scores, one per query cell. Higher distance metric indicates less co
 calcPerCellMappingMetric(
   reference,
   query,
-  Z_orig = FALSE,
+  Z_orig = TRUE,
   metric = "mahalanobis"
 )
 }

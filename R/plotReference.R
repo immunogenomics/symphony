@@ -58,7 +58,7 @@ plotReference = function(reference,              # Symphony reference object
             theme(plot.title = element_text(hjust = 0.5)) +
             theme(legend.position="bottom") +
             theme(legend.text = element_text(size=8), legend.title=element_text(size=12)) + 
-            guides(colour = guide_legend(override.aes = list(size = 4))) + guides(alpha = FALSE)
+            guides(colour = guide_legend(override.aes = list(size = 4))) + guides(alpha = 'none')
 
     if (show.centroids) {
         # Add centroid locations
@@ -73,9 +73,9 @@ plotReference = function(reference,              # Symphony reference object
     if (show.labels) {
         # Add cell type labels (at median coordinate per cell type)
         labels.cent = umap_labels %>% 
-        dplyr::group_by_at(color.by) %>% #group_by_at takes variable column name
-        dplyr::select(UMAP1, UMAP2) %>% 
-        dplyr::summarize_all(median)
+            dplyr::group_by_at(color.by) %>% #group_by_at takes variable column name
+            dplyr::select(UMAP1, UMAP2) %>% 
+            dplyr::summarize_all(median)
         
         p = p + ggrepel::geom_text_repel(data = labels.cent, aes(x= UMAP1, y = UMAP2, label = get(color.by)), 
                     segment.alpha = 0.5, segment.size = 0.2, box.padding = 0.01, color = 'black')
