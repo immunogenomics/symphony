@@ -4,7 +4,14 @@ pre-built_references/pbmcs_10x_reference.rds filter=lfs diff=lfs merge=lfs -text
 pre-built_references/fetal_liver_uwot_model filter=lfs diff=lfs merge=lfs -text
 pre-built_references/pancreas_plate-based_uwot_model filter=lfs diff=lfs merge=lfs -text
 pre-built_references/pbmcs_10x_uwot_model filter=lfs diff=lfs merge=lfs -text
-vignettes/data/* filter=lfs diff=lfs merge=lfs -text
+pre-built_references/kidney_healthy_fetal_reference.rds filter=lfs diff=lfs merge=lfs -text
+pre-built_references/kidney_healthy_fetal_uwot_model filter=lfs diff=lfs merge=lfs -text
+pre_built_references/tbru_ref.rds filter=lfs diff=lfs merge=lfs -text
+pre_built_references/tbru_uwot_model filter=lfs diff=lfs merge=lfs -text
+pre_built_references/TMS_facs_reference.rds filter=lfs diff=lfs merge=lfs -text
+pre_built_references/TMS_facs_uwot_model filter=lfs diff=lfs merge=lfs -text
+pre_built_references/zhang_reference.rds filter=lfs diff=lfs merge=lfs -text
+pre_built_references/zhang_uwot_model filter=lfs diff=lfs merge=lfs -text
 vignettes/data/pancreas_baron_human_exp.rds filter=lfs diff=lfs merge=lfs -text
 vignettes/data/pancreas_baron_human_metadata.rds filter=lfs diff=lfs merge=lfs -text
 vignettes/data/pancreas_baron_mouse_biomart_homologene_exp.rds filter=lfs diff=lfs merge=lfs -text
