@@ -1,7 +1,9 @@
-Pre-built Symphony reference objects that can be downloaded and used to map new query datasets
+Pre-built Symphony reference objects can be used to map new query datasets.
+
+To avoid GitHub memory limits and for clearer versioning, we use Zenodo to house Symphony references.
+Download the reference of interest from Zenodo and place in this directory.
 
 Link to Zenodo: [https://zenodo.org/record/5090425#.YOqe_hNKhTY](https://zenodo.org/record/5090425#.YOqe_hNKhTY)
-
 
 References available for download: 
 
