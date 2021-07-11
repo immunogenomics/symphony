@@ -1,8 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-Symphony <img src="man/figures/symphony_logo.png" alt="logo" width="181" align="right"/>
-========================================================================================
+# Symphony <img src="man/figures/symphony_logo.png" alt="logo" width="181" align="right"/>
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -12,8 +11,7 @@ Efficient and precise single-cell reference atlas mapping with Symphony
 [Preprint on
 bioRxiv](https://www.biorxiv.org/content/10.1101/2020.11.18.389189v2)
 
-Installation
-============
+# Installation
 
 Install the current version of Symphony from
 [GitHub](https://github.com/) with:
@@ -34,11 +32,9 @@ devtools::install_github("immunogenomics/symphony")
 devtools::install_github("immunogenomics/harmony")
 ```
 
-Usage/Demos
-===========
+# Usage/Demos
 
-Tutorials
----------
+## Tutorials
 
 -   Check out the [quick start PBMCs
     tutorial](https://github.com/immunogenomics/symphony/blob/main/vignettes/pbmcs_tutorial.ipynb/)
@@ -49,17 +45,12 @@ Tutorials
     for examples of how to map to provided Symphony references pre-built
     from the datasets featured in the manuscript.
 
-Downloading pre-built references:
----------------------------------
+## Downloading pre-built references:
 
--   You can download pre-built references from the
-    [pre-built\_references
-    directory](https://github.com/immunogenomics/symphony/tree/main/pre-built_references)
-    in this GitHub repo, or on
-    [Zenodo](https://zenodo.org/record/4602302#.YE2NoJNKhTY).
+-   You can download pre-built references from
+    [Zenodo](https://zenodo.org/record/5090425#.YOqe_hNKhTY).
 
-Reference building
-------------------
+## Reference building
 
 ### Option 1: Starting from existing Harmony object
 
@@ -121,8 +112,7 @@ reference = symphony::buildReference(
 )
 ```
 
-Query mapping
--------------
+## Query mapping
 
 Once you have a prebuilt reference (e.g. loaded from a saved .rds R
 object), you can directly map cells from a new query dataset onto it
@@ -145,8 +135,7 @@ like to integrate over (e.g. technology, donors, species), you can
 specify them in the `vars` parameter:
 e.g. `vars = c('donor', 'technology')`
 
-Reproducing results from manuscript
-===================================
+# Reproducing results from manuscript
 
 Code to reproduce Symphony results from the Kang et al. manuscript will
 be made available on
