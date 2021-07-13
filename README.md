@@ -126,16 +126,18 @@ like to integrate over (e.g. technology, donors, species), you can
 specify them in the `vars` parameter:
 e.g. `vars = c('donor', 'technology')`
 
+# Installation notes
+
 ## System requirements:
 
 Symphony has been successfully installed on Linux and Mac OS X using the
 devtools package to install from GitHub.
 
-Dependencies: - R&gt;=3.6.x - RANN - data.table - irlba - stats - tibble
-- utils - uwot - Matrix - Rcpp - magrittr - methods - rlang - ggplot2 -
-RColorBrewer - ggrastr - ggrepel
+Dependencies: \* R&gt;=3.6.x \* RANN \* data.table \* irlba \* stats \*
+tibble \* utils \* uwot \* Matrix \* Rcpp \* magrittr \* methods \*
+rlang \* ggplot2 \* RColorBrewer \* ggrastr \* ggrepel
 
-## Installation notes / troubleshooting:
+## Troubleshooting:
 
 -   You may need to install the latest version of devtools (because of
     the recent GitHub change from “master” to “main” terminology, which
@@ -146,7 +148,7 @@ RColorBrewer - ggrastr - ggrepel
 devtools::install_github("immunogenomics/harmony")
 ```
 
-We have observed the following installation errors regarding
+We have been notified of the following installation errors regarding
 `systemfonts`, `textshaping`, and `ragg` (which are all required by
 `ggrastr`):
 
@@ -162,13 +164,13 @@ We have observed the following installation errors regarding
 To fix these errors, you can install `systemfonts`, `textshaping`, and
 `ragg` separately using `install.packages()` and specifying the path to
 the required files (replacing `/path/to` below with the path to the
-`include` directory).
+appropriate `include` directory containing the files).
 
     # fix to installing systemfonts
     withr::with_makevars(c(CPPFLAGS="-I/path/to/include/freetype2/"), install.packages("systemfonts"))
 
     # fix to installing textshaping
-    withr::with_makevars(c(CPPFLAGS="-I/path/to/include/harfbuzz/ -I /path/to/include/fribidi/ -I /path/to/include/freetype2/"), install.packages("textshaping"))
+    withr::with_makevars(c(CPPFLAGS="-I/path/to/include/harfbuzz/ -I/path/to/include/fribidi/ -I/path/to/include/freetype2/"), install.packages("textshaping"))
 
     # fix to installing ragg
     withr::with_makevars(c(CPPFLAGS="-I/path/to/include/freetype2/"), install.packages("ragg"))
