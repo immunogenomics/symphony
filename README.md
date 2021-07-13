@@ -21,13 +21,14 @@ Install the current version of Symphony from
 devtools::install_github("immunogenomics/symphony")
 ```
 
-See installation notes below.
+Install should take &lt;10 mins (pending no major issues). See
+installation notes below.
 
 # Usage/Demos
 
 ## Tutorials
 
--   Check out the [quick start PBMCs
+-   Check out the [quick start (&lt;5 min) PBMCs
     tutorial](https://github.com/immunogenomics/symphony/blob/main/vignettes/pbmcs_tutorial.ipynb/)
     for an example of how to build a custom reference and map to it.
 
@@ -161,18 +162,19 @@ We have been notified of the following installation errors regarding
     # error when installing ragg
     <stdin>:1:10: fatal error: ft2build.h: No such file or directory
 
-To fix these errors, you can install `systemfonts`, `textshaping`, and
-`ragg` separately using `install.packages()` and specifying the path to
-the required files (replacing `/path/to` below with the path to the
-appropriate `include` directory containing the files).
+These errors are not inherent to the Symphony package and we cannot fix
+them directly. However, as a workaround, you can install `systemfonts`,
+`textshaping`, and `ragg` separately using `install.packages()` and
+specify the path to the required files (replacing `/path/to` below with
+the path to the appropriate `include` directory containing the files).
 
-    # fix to installing systemfonts
+    # fix to install systemfonts
     withr::with_makevars(c(CPPFLAGS="-I/path/to/include/freetype2/"), install.packages("systemfonts"))
 
-    # fix to installing textshaping
+    # fix to install textshaping
     withr::with_makevars(c(CPPFLAGS="-I/path/to/include/harfbuzz/ -I/path/to/include/fribidi/ -I/path/to/include/freetype2/"), install.packages("textshaping"))
 
-    # fix to installing ragg
+    # fix to install ragg
     withr::with_makevars(c(CPPFLAGS="-I/path/to/include/freetype2/"), install.packages("ragg"))
 
 # Reproducing results from manuscript
