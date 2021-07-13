@@ -31,14 +31,7 @@ Install the current version of Symphony from [GitHub](https://github.com/) with:
 # install.packages("devtools")
 devtools::install_github("immunogenomics/symphony")
 ```
-
-### Installation notes: 
-* You may need to install the latest version of devtools (because of the recent GitHub change from "master" to "main" terminology, which can cause `install_github` to fail).
-* You may also need to install the lastest version of Harmony:
-
-``` r
-devtools::install_github("immunogenomics/harmony")
-```
+See installation notes below.
 
 # Usage/Demos
 ## Tutorials
@@ -126,5 +119,65 @@ query = mapQuery(query_exp,             # query gene expression (genes x cells)
 
 If your query itself has multiple sources of batch variation you would like to integrate over (e.g. technology, donors, species), you can specify them in the `vars` parameter: e.g. `vars = c('donor', 'technology')`
 
+
+## System requirements:
+
+Symphony has been successfully installed on Linux and Mac OS X using the devtools package to install from GitHub. 
+
+Dependencies:
+- R>=3.6.x
+- RANN
+- data.table
+- irlba
+- stats
+- tibble
+- utils
+- uwot
+- Matrix
+- Rcpp
+- magrittr
+- methods
+- rlang
+- ggplot2
+- RColorBrewer
+- ggrastr
+- ggrepel
+
+
+## Installation notes / troubleshooting: 
+
+* You may need to install the latest version of devtools (because of the recent GitHub change from "master" to "main" terminology, which can cause `install_github` to fail).
+* You may also need to install the lastest version of Harmony:
+
+``` r
+devtools::install_github("immunogenomics/harmony")
+```
+
+We have observed the following installation errors regarding `systemfonts`, `textshaping`, and `ragg` (which are all required by `ggrastr`):
+```
+# error when installing systemfonts
+ft_cache.h:9:10: fatal error: ft2build.h: No such file or directory
+
+# error when installing textshaping
+Configuration failed to find the harfbuzz freetype2 fribidi library
+
+# error when installing ragg
+<stdin>:1:10: fatal error: ft2build.h: No such file or directory
+```
+
+To fix these errors, you can install `systemfonts`, `textshaping`, and `ragg` separately using `install.packages()` and specifying the path to the required files (replacing `/path/to` below with the path to the `include` directory).
+
+```
+# fix to installing systemfonts
+withr::with_makevars(c(CPPFLAGS="-I/path/to/include/freetype2/"), install.packages("systemfonts"))
+
+# fix to installing textshaping
+withr::with_makevars(c(CPPFLAGS="-I/path/to/include/harfbuzz/ -I /path/to/include/fribidi/ -I /path/to/include/freetype2/"), install.packages("textshaping"))
+
+# fix to installing ragg
+withr::with_makevars(c(CPPFLAGS="-I/path/to/include/freetype2/"), install.packages("ragg"))
+
+```
+
 # Reproducing results from manuscript
-Code to reproduce Symphony results from the Kang et al. manuscript will be made available on [github.com/immunogenomics/symphony_reproducibility](github.com/immunogenomics/symphony_reproducibility).
+Code to reproduce Symphony results from the Kang et al. manuscript is available on [github.com/immunogenomics/symphony_reproducibility](github.com/immunogenomics/symphony_reproducibility).
