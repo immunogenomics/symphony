@@ -134,9 +134,25 @@ e.g. `vars = c('donor', 'technology')`
 Symphony has been successfully installed on Linux and Mac OS X using the
 devtools package to install from GitHub.
 
-Dependencies: \* R&gt;=3.6.x \* RANN \* data.table \* irlba \* stats \*
-tibble \* utils \* uwot \* Matrix \* Rcpp \* magrittr \* methods \*
-rlang \* ggplot2 \* RColorBrewer \* ggrastr \* ggrepel
+Dependencies:
+
+-   R&gt;=3.6.x
+-   RANN
+-   data.table
+-   irlba
+-   stats
+-   tibble
+-   utils
+-   uwot
+-   Matrix
+-   Rcpp
+-   magrittr
+-   methods
+-   rlang
+-   ggplot2
+-   RColorBrewer
+-   ggrastr
+-   ggrepel
 
 ## Troubleshooting:
 

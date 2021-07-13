@@ -125,6 +125,7 @@ If your query itself has multiple sources of batch variation you would like to i
 Symphony has been successfully installed on Linux and Mac OS X using the devtools package to install from GitHub. 
 
 Dependencies:
+
 * R>=3.6.x
 * RANN
 * data.table
