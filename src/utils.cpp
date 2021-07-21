@@ -11,11 +11,11 @@ using namespace Rcpp;
 
 // [[Rcpp::depends(RcppArmadillo)]]
 
-//' Computes the soft cluster assignments of query cells across reference clusters.
-//' 
-//' @param Y Reference cluster centroid locations
-//' @param Z Query cells projected into PC space (d x m)
-//' @param sigma Soft k-means "fuzziness" parameter, sigma = 0 is hard clustering
+// Computes the soft cluster assignments of query cells across reference clusters.
+// 
+// Y: Reference cluster centroid locations
+// Z: Query cells projected into PC space (d x m)
+// sigma: Soft k-means "fuzziness" parameter, sigma = 0 is hard clustering
 // [[Rcpp::export]]
 arma::mat soft_cluster(const arma::mat& Y, const arma::mat& Z, float sigma) {
     arma::mat Y_cos = arma::normalise(Y, 2, 0); // L2 normalize the columns
@@ -29,10 +29,10 @@ arma::mat soft_cluster(const arma::mat& Y, const arma::mat& Z, float sigma) {
 }
 
 
-//' Computes the Symphony reference compression terms, Nr and C.
-//' 
-//' @param Rr Soft cluster assignments of reference cells (cols) across clusters (rows).
-//' @param Zr Corrected embedding for reference cells (cols) in harmonized PCs (rows).
+// Computes the Symphony reference compression terms, Nr and C.
+// 
+// Rr: Soft cluster assignments of reference cells (cols) across clusters (rows).
+// Zr: Corrected embedding for reference cells (cols) in harmonized PCs (rows).
 // [[Rcpp::export]]
 List compute_ref_cache(
     const arma::mat& Rr, 
@@ -45,13 +45,13 @@ List compute_ref_cache(
     return result;
 }
 
-//' Computes the corrected query cell embedding.
-//' 
-//' @param Zq Query cells projected into PC space (d x m)
-//' @param Xq Query design matrix ((c + 1) x m)
-//' @param Rq Query soft cluster assignments across reference clusters (k x m)
-//' @param Nr Reference cluster sizes (first compression term) (length k)
-//' @param RrZtr Second reference compression term (C) (k x d)
+// Computes the corrected query cell embedding.
+// 
+// Zq: Query cells projected into PC space (d x m)
+// Xq: Query design matrix ((c + 1) x m)
+// Rq: Query soft cluster assignments across reference clusters (k x m)
+// Nr: Reference cluster sizes (first compression term) (length k)
+// RrZtr: Second reference compression term (C) (k x d)
 // [[Rcpp::export]]
 arma::mat moe_correct_ref(
     const arma::mat& Zq, // query cells projected into PC space
