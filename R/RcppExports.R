@@ -50,7 +50,6 @@ soft_kmeans_cpp <- function(Y, Z, max_iter, sigma) {
 #' @param Y Reference cluster centroid locations
 #' @param Z Query cells projected into PC space (d x m)
 #' @param sigma Soft k-means "fuzziness" parameter, sigma = 0 is hard clustering
-#' @export
 soft_cluster <- function(Y, Z, sigma) {
     .Call('_symphony_soft_cluster', PACKAGE = 'symphony', Y, Z, sigma)
 }
@@ -59,7 +58,6 @@ soft_cluster <- function(Y, Z, sigma) {
 #' 
 #' @param Rr Soft cluster assignments of reference cells (cols) across clusters (rows).
 #' @param Zr Corrected embedding for reference cells (cols) in harmonized PCs (rows).
-#' @export
 compute_ref_cache <- function(Rr, Zr) {
     .Call('_symphony_compute_ref_cache', PACKAGE = 'symphony', Rr, Zr)
 }
@@ -71,7 +69,6 @@ compute_ref_cache <- function(Rr, Zr) {
 #' @param Rq Query soft cluster assignments across reference clusters (k x m)
 #' @param Nr Reference cluster sizes (first compression term) (length k)
 #' @param RrZtr Second reference compression term (C) (k x d)
-#' @export
 moe_correct_ref <- function(Zq, Xq, Rq, Nr, RrZtr) {
     .Call('_symphony_moe_correct_ref', PACKAGE = 'symphony', Zq, Xq, Rq, Nr, RrZtr)
 }

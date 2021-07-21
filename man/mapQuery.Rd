@@ -26,7 +26,7 @@ mapQuery(
 
 \item{verbose}{Verbose output}
 
-\item{do_normalize}{Perform log(CP10K) normalization on query expression}
+\item{do_normalize}{Perform log(CP10K+1) normalization on query expression}
 
 \item{do_umap}{Perform umap projection into reference UMAP (if reference includes a uwot model)}
 

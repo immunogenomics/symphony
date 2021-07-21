@@ -91,14 +91,8 @@ calcknncorrWithinQuery = function(query, var = NULL, k = 100, topn = 2000, d = 2
     return(corrs)
 }
 
-#' Non-exported (called by calcknncorrWithinQuery above)
-#' Calculates the k-NN correlation within a query batch.
-#'
-#' @param Z_pca PCA embedding
-#' @param Z_mapping Reference mapping embedding
-#' @param k Number of neighbors to use for kNN-correlation calculation
-#' @param distance either 'euclidean' or 'cosine'i
-#' @keywords internal
+# Non-exported (called by calcknncorrWithinQuery above)
+# Calculates the k-NN correlation within a query batch.
 calcknncorrWithinQueryBatch = function(Z_pca, Z_mapping, k, distance) {
     if (!identical(dim(Z_pca), dim(Z_mapping))) {
         stop('Error: PCA and mapping embeddings have different dimensions')

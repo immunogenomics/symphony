@@ -8,7 +8,7 @@ buildReference(
   exp_ref,
   metadata_ref,
   vars = NULL,
-  K = 50,
+  K = 100,
   verbose = FALSE,
   do_umap = TRUE,
   do_normalize = TRUE,
@@ -30,17 +30,17 @@ buildReference(
 
 \item{vars}{Reference variables to Harmonize over e.g. c('donor', 'technology')}
 
-\item{K}{Number of centroids}
+\item{K}{Number of soft cluster centroids in model}
 
 \item{verbose}{Verbose output}
 
 \item{do_umap}{Perform UMAP visualization on harmonized reference embedding}
 
-\item{do_normalize}{Perform log(CP10K) normalization}
+\item{do_normalize}{Perform log(CP10K+1) normalization}
 
 \item{vargenes_method}{Variable gene selection method (either 'vst' or 'mvp')}
 
-\item{vargenes_groups}{metadata column specifying groups for variable gene selection. If not NULL, calculate topn variable genes in each group separately, then pool}
+\item{vargenes_groups}{Name of metadata column specifying groups for variable gene selection. If not NULL, calculate topn variable genes in each group separately, then pool}
 
 \item{topn}{Number of variable genes to subset by}
 
@@ -48,7 +48,7 @@ buildReference(
 
 \item{theta}{Theta parameter(s) for Harmony step}
 
-\item{save_uwot_path}{Absolute path to save the uwot model (if do_umap is TRUE)}
+\item{save_uwot_path}{Absolute path to save the uwot model (used if do_umap is TRUE)}
 
 \item{d}{Number of PC dimensions}
 

@@ -3,7 +3,7 @@
 \name{evaluate}
 \alias{evaluate}
 \title{Function for evaluating F1 by cell type,
-Modified from benchmarking paper Abdelaal et al. Genome Biology 2019}
+Adapted from automated cell type identifiaction benchmarking paper (Abdelaal et al. Genome Biology, 2019)}
 \usage{
 evaluate(true, predicted)
 }
@@ -14,5 +14,5 @@ evaluate(true, predicted)
 }
 \description{
 Function for evaluating F1 by cell type,
-Modified from benchmarking paper Abdelaal et al. Genome Biology 2019
+Adapted from automated cell type identifiaction benchmarking paper (Abdelaal et al. Genome Biology, 2019)
 }

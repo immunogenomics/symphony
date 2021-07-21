@@ -11,13 +11,13 @@ NOTE: it is very important for the order of reference cells (cols) in gold_ref m
 calcknncorr(gold_ref, alt_ref, gold_query, alt_query, k = 500)
 }
 \arguments{
-\item{gold_ref}{Reference cells in gold standard embedding (pcs x cells)}
+\item{gold_ref}{Reference cells in gold standard embedding (PCs by cells)}
 
-\item{alt_ref}{Reference cells in alternative embedding (pcs x cells)}
+\item{alt_ref}{Reference cells in alternative embedding (PCs by cells)}
 
-\item{gold_query}{Query cells in gold standard embedding (pcs x cells)}
+\item{gold_query}{Query cells in gold standard embedding (PCs by cells)}
 
-\item{alt_query}{Query cells in alternative embedding (pcs x cells)}
+\item{alt_query}{Query cells in alternative embedding (PCs by cells)}
 
 \item{k}{Number of reference neighbors to use for kNN-correlation calculation}
 }

@@ -2,7 +2,7 @@
 % Please edit documentation in R/confidenceScores.R
 \name{calcPerClusterMappingMetric}
 \alias{calcPerClusterMappingMetric}
-\title{---- Per-cluster Confidence Score ----
+\title{Per-cluster Confidence Score:
 Calculates the Mahalanobis distance from user-defined query clusters to their nearest
 reference centroid after initial projection into reference PCA space.
 All query cells in a cluster get the same score. Higher distance indicates less confidence.
@@ -32,7 +32,7 @@ calcPerClusterMappingMetric(
 \item{lambda}{Optional ridge parameter added to covariance diagonal to help stabilize numeric estimates}
 }
 \description{
----- Per-cluster Confidence Score ----
+Per-cluster Confidence Score:
 Calculates the Mahalanobis distance from user-defined query clusters to their nearest
 reference centroid after initial projection into reference PCA space.
 All query cells in a cluster get the same score. Higher distance indicates less confidence.

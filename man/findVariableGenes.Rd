@@ -2,8 +2,7 @@
 % Please edit documentation in R/findVariableGenes.R
 \name{findVariableGenes}
 \alias{findVariableGenes}
-\title{Function to find variable genes using mean variance relationship method
-Adapted from Seurat}
+\title{Function to find variable genes using mean variance relationship method}
 \usage{
 findVariableGenes(
   X,
@@ -38,5 +37,4 @@ findVariableGenes(
 }
 \description{
 Function to find variable genes using mean variance relationship method
-Adapted from Seurat
 }

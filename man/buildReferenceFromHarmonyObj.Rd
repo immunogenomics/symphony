@@ -3,7 +3,7 @@
 \name{buildReferenceFromHarmonyObj}
 \alias{buildReferenceFromHarmonyObj}
 \title{Function for building a Symphony reference from a Harmony object. Useful if you would like your
-code to be more modular. Note that you must have your saved vargenes_means_sds and PCA loadings.}
+code to be more modular. Note that you must have saved vargenes_means_sds and PCA loadings.}
 \usage{
 buildReferenceFromHarmonyObj(
   harmony_obj,
@@ -21,9 +21,9 @@ buildReferenceFromHarmonyObj(
 
 \item{metadata}{Reference cell metadata (cells by attributes)}
 
-\item{vargenes_means_sds}{Variable genes in dataframe with columns ('symbol', 'mean', 'stddev')}
+\item{vargenes_means_sds}{Variable genes in dataframe with columns named ('symbol', 'mean', 'stddev')}
 
-\item{pca_loadings}{Gene loadings from PCA (= irlba(ref_exp_scaled, nv = 20)$u)}
+\item{pca_loadings}{Gene loadings from PCA (e.g. irlba(ref_exp_scaled, nv = 20)$u)}
 
 \item{verbose}{Verbose output}
 
@@ -35,5 +35,5 @@ buildReferenceFromHarmonyObj(
 }
 \description{
 Function for building a Symphony reference from a Harmony object. Useful if you would like your
-code to be more modular. Note that you must have your saved vargenes_means_sds and PCA loadings.
+code to be more modular. Note that you must have saved vargenes_means_sds and PCA loadings.
 }

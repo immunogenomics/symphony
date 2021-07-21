@@ -2,7 +2,7 @@
 % Please edit documentation in R/findVariableGenes.R
 \name{vargenes_vst}
 \alias{vargenes_vst}
-\title{Function to find variable genes using variance stabilizing transform (VST) method}
+\title{Function to find variable genes using variance stabilizing transform (vst) method}
 \usage{
 vargenes_vst(object, groups, topn, loess.span = 0.3)
 }
@@ -16,5 +16,5 @@ vargenes_vst(object, groups, topn, loess.span = 0.3)
 \item{loess.span}{Loess span parameter used when fitting the variance-mean relationship}
 }
 \description{
-Function to find variable genes using variance stabilizing transform (VST) method
+Function to find variable genes using variance stabilizing transform (vst) method
 }
