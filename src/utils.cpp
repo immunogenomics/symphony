@@ -16,7 +16,6 @@ using namespace Rcpp;
 //' @param Y Reference cluster centroid locations
 //' @param Z Query cells projected into PC space (d x m)
 //' @param sigma Soft k-means "fuzziness" parameter, sigma = 0 is hard clustering
-//' @export
 // [[Rcpp::export]]
 arma::mat soft_cluster(const arma::mat& Y, const arma::mat& Z, float sigma) {
     arma::mat Y_cos = arma::normalise(Y, 2, 0); // L2 normalize the columns
@@ -34,7 +33,6 @@ arma::mat soft_cluster(const arma::mat& Y, const arma::mat& Z, float sigma) {
 //' 
 //' @param Rr Soft cluster assignments of reference cells (cols) across clusters (rows).
 //' @param Zr Corrected embedding for reference cells (cols) in harmonized PCs (rows).
-//' @export
 // [[Rcpp::export]]
 List compute_ref_cache(
     const arma::mat& Rr, 
@@ -54,7 +52,6 @@ List compute_ref_cache(
 //' @param Rq Query soft cluster assignments across reference clusters (k x m)
 //' @param Nr Reference cluster sizes (first compression term) (length k)
 //' @param RrZtr Second reference compression term (C) (k x d)
-//' @export
 // [[Rcpp::export]]
 arma::mat moe_correct_ref(
     const arma::mat& Zq, // query cells projected into PC space

@@ -1,5 +1,4 @@
 #' Function to find variable genes using mean variance relationship method
-#' Adapted from Seurat
 #' 
 #' @importFrom methods as
 #' @importFrom stats loess median na.omit quantile
@@ -82,7 +81,7 @@ findVariableGenes <- function(X, groups, min_expr = .1, max_expr = Inf,
     
 }
 
-#' Function to find variable genes using variance stabilizing transform (VST) method
+#' Function to find variable genes using variance stabilizing transform (vst) method
 #'
 #' @param object expression matrix
 #' @param groups finds variable genes within each group then pools

@@ -1,16 +1,16 @@
 Package: symphony
-Title: Single-cell Reference Compression and Query Mapping
-Version: 1.0
+Title: Efficient and precise single-cell reference atlas mapping
+Version: 0.1.0
 Authors@R: c(
     person(given = "Joyce", family = "Kang",
-           role = c("aut", "cre"),
+           role = c("aut", "cre"), comment = c(ORCID = "0000-0002-1962-1291"),
            email = "joyce_kang@hms.harvard.edu"),
     person("Ilya", "Korsunsky", email = "ilya.korsunsky@gmail.com", 
            role = c("aut"), comment = c(ORCID = "0000-0003-4848-3948")),
     person("Soumya", "Raychaudhuri", 
         role = c("aut"), comment = c(ORCID = "0000-0002-1901-8265"))
     )
-Description: Implements the Symphony reference building and query mapping algorithms from Kang, Korsunsky, et al.
+Description: Implements the Symphony reference building and query mapping algorithms and additional functions from Kang et al.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -43,4 +43,3 @@ Imports:
     ggrastr,
     ggrepel,
     RANN
-Remotes: github::immunogenomics/harmony

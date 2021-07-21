@@ -3,16 +3,16 @@
 #' @param exp_ref Reference gene expression (genes by cells)
 #' @param metadata_ref Reference cell metadata (cells by attributes)
 #' @param vars Reference variables to Harmonize over e.g. c('donor', 'technology')
-#' @param K Number of centroids
+#' @param K Number of soft cluster centroids in model
 #' @param verbose Verbose output
 #' @param do_umap Perform UMAP visualization on harmonized reference embedding
-#' @param do_normalize Perform log(CP10K) normalization
+#' @param do_normalize Perform log(CP10K+1) normalization
 #' @param vargenes_method Variable gene selection method (either 'vst' or 'mvp')
-#' @param vargenes_groups metadata column specifying groups for variable gene selection. If not NULL, calculate topn variable genes in each group separately, then pool
+#' @param vargenes_groups Name of metadata column specifying groups for variable gene selection. If not NULL, calculate topn variable genes in each group separately, then pool
 #' @param topn Number of variable genes to subset by
 #' @param tau Tau parameter for Harmony step
 #' @param theta Theta parameter(s) for Harmony step
-#' @param save_uwot_path Absolute path to save the uwot model (if do_umap is TRUE)
+#' @param save_uwot_path Absolute path to save the uwot model (used if do_umap is TRUE)
 #' @param d Number of PC dimensions
 #' @param additional_genes Any custom genes (e.g. marker genes) to include in addition to variable genes
 #' @param umap_min_dist umap parameter (see uwot documentation for details)
@@ -26,7 +26,7 @@
 buildReference <- function(exp_ref,                   # genes x cells
                            metadata_ref,              # cells x metadata fields
                            vars = NULL,               # metadata variables to Harmonize over
-                           K = 50,                    # number of soft clusters for Harmony
+                           K = 100,                    # number of soft clusters for Harmony
                            verbose = FALSE,           # verbose output
                            do_umap = TRUE,            # run umap on reference cells
                            do_normalize = TRUE,       # run log(CP10K+1) normalization

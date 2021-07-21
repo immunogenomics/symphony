@@ -5,7 +5,7 @@
 #' @param ref_obj Reference object as returned by Symphony buildReference()
 #' @param vars Query batch variable(s) to integrate over (column names in metadata)
 #' @param verbose Verbose output
-#' @param do_normalize Perform log(CP10K) normalization on query expression
+#' @param do_normalize Perform log(CP10K+1) normalization on query expression
 #' @param do_umap Perform umap projection into reference UMAP (if reference includes a uwot model)
 #' @param sigma Fuzziness parameter for soft clustering (sigma = 1 is hard clustering)
 #' 
@@ -34,7 +34,7 @@ mapQuery = function(exp_query,
     # Find shared genes between reference and query
     idx_shared_genes = which(ref_obj$vargenes$symbol %in% rownames(exp_query))
     shared_genes = ref_obj$vargenes$symbol[idx_shared_genes]
-    if (verbose) message('Found ', length(shared_genes), ' reference variable genes in query dataset')
+    if (verbose) message('Found ', length(shared_genes), ' out of ', length(ref_obj$vargenes$symbol),' reference variable genes in query dataset')
     
     # Subset and scale the query cells by reference means and standard deviations
     exp_query_scaled = scaleDataWithStats(exp_query[shared_genes, ],

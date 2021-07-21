@@ -1,4 +1,4 @@
-#' ---- Per-cell Confidence Score ----
+#' Per-cell Confidence Score:
 #' Calculates the weighted Mahalanobis distance for the query cells to reference clusters. Returns a vector
 #' of distance scores, one per query cell. Higher distance metric indicates less confidence.
 #'
@@ -41,7 +41,7 @@ calcPerCellMappingMetric = function(reference, query, Z_orig = TRUE, metric = 'm
     return(maha)
 }
 
-#' ---- Per-cluster Confidence Score ----
+#' Per-cluster Confidence Score:
 #' Calculates the Mahalanobis distance from user-defined query clusters to their nearest
 #' reference centroid after initial projection into reference PCA space. 
 #' All query cells in a cluster get the same score. Higher distance indicates less confidence.

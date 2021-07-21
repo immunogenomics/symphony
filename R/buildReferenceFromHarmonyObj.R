@@ -1,10 +1,10 @@
 #' Function for building a Symphony reference from a Harmony object. Useful if you would like your
-#' code to be more modular. Note that you must have your saved vargenes_means_sds and PCA loadings.
+#' code to be more modular. Note that you must have saved vargenes_means_sds and PCA loadings.
 #'
 #' @param harmony_obj Harmony object (output from HarmonyMatrix())
 #' @param metadata Reference cell metadata (cells by attributes)
-#' @param vargenes_means_sds Variable genes in dataframe with columns ('symbol', 'mean', 'stddev')
-#' @param pca_loadings Gene loadings from PCA (= irlba(ref_exp_scaled, nv = 20)$u)
+#' @param vargenes_means_sds Variable genes in dataframe with columns named ('symbol', 'mean', 'stddev')
+#' @param pca_loadings Gene loadings from PCA (e.g. irlba(ref_exp_scaled, nv = 20)$u)
 #' @param verbose Verbose output
 #' @param do_umap Perform UMAP visualization on harmonized reference embedding
 #' @param save_uwot_path Absolute path to save the uwot model (if do_umap is TRUE)
