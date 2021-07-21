@@ -29,8 +29,7 @@ plotReference = function(reference,              # Symphony reference object
                           show.centroids = FALSE) { # Plot soft cluster centroid locations
     
     if (is.null(reference$umap)) {
-        message('Error: umap slot is empty. UMAP was not saved for this reference!')
-        return
+        stop('Error: umap slot is empty. UMAP was not saved for this reference!')
     }
     
     umap_labels = cbind(reference$meta_data, reference$umap$embedding)
