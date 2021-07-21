@@ -9,3 +9,4 @@
 ^tests/.ipynb_checkpoints$
 ^pre-built_references/*$
 ^cran-comments.md$
+^NEWS.md$
