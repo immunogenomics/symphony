@@ -42,7 +42,7 @@ Install should take <10 mins (pending no major issues). See installation notes b
 
 ## Downloading pre-built references: 
 
-* You can download pre-built references from [Zenodo](https://zenodo.org/record/5090425#.YOqe_hNKhTY).
+* You can download pre-built references from [Zenodo](https://zenodo.org/record/5090425).
 
 
 ## Reference building

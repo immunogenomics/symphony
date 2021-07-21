@@ -40,7 +40,7 @@ installation notes below.
 ## Downloading pre-built references:
 
 -   You can download pre-built references from
-    [Zenodo](https://zenodo.org/record/5090425#.YOqe_hNKhTY).
+    [Zenodo](https://zenodo.org/record/5090425).
 
 ## Reference building
 
