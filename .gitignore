@@ -8,3 +8,4 @@ R/.Rhistory
 man/.ipynb_checkpoints
 man/figures/.ipynb_checkpoints
 vignettes/testing_*
+inst/doc

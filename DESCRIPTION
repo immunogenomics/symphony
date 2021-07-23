@@ -13,9 +13,12 @@ Authors@R: c(
 Description: Implements the Symphony reference building and query mapping algorithms and additional functions from Kang et al.
 License: MIT + file LICENSE
 Encoding: UTF-8
+LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat
 LinkingTo: 
     Rcpp,
@@ -42,3 +45,6 @@ Imports:
     ggrastr,
     ggrepel,
     RANN
+VignetteBuilder: knitr
+Depends: 
+    R (>= 2.10)

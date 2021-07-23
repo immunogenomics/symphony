@@ -3,7 +3,13 @@
 ^\.ipynb_checkpoints$
 ^R/\.ipynb_checkpoints$
 ^src/\.ipynb_checkpoints$
-^vignettes/*$
+^vignettes/data$
+^vignettes/OLD$
+^vignettes/libs.R$
+^vignettes/utils.R$
+^vignettes/utils_seurat.R$
+^vignettes/testing*$
+^vignettes/*ipynb$
 ^man/.ipynb_checkpoints$
 ^man/figures/.ipynb_checkpoints$
 ^tests/.ipynb_checkpoints$
