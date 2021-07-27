@@ -1,0 +1,309 @@
+---
+title: "Quickstart Tutorial"
+output: rmarkdown::html_vignette
+fig_width: 6
+fig_height: 4
+vignette: >
+  %\VignetteIndexEntry{Quickstart PBMCs Tutorial}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+In this tutorial, we will construct a Symphony reference from two PBMC datasets from 2 technologies (10x 3'v1 and 3'v2), then map a third dataset from a new technology (10x 5') with Symphony. The analysis follows from Fig. 2 of the paper, but with downsampled datasets.
+
+# Installation
+
+Install Symphony with standard commands.
+```{r eval=FALSE}
+install.packages('symphony')
+```
+
+Once Symphony is installed, load it up!
+```{r}
+library(symphony)
+
+# Other packages for this tutorial
+suppressPackageStartupMessages({
+    # Analysis
+    library(harmony)
+    library(singlecellmethods)
+    library(irlba)
+    library(data.table)
+    library(dplyr)
+
+    # Plotting
+    library(ggplot2)
+    library(ggthemes)
+    library(ggrastr)
+    library(RColorBrewer)
+})
+```
+
+```{r echo=FALSE}
+plotBasic = function(umap_labels,                # metadata, with UMAP labels in UMAP1 and UMAP2 slots
+                        title = 'Query',         # Plot title
+                        color.by = 'cell_type',  # metadata column name for coloring
+                        facet.by = NULL,         # (optional) metadata column name for faceting
+                        color.mapping = NULL,    # custom color mapping
+                        legend.position = 'right') {  # Show cell type legend
+    
+    p = umap_labels %>%
+            dplyr::sample_frac(1L) %>% # permute rows randomly
+            ggplot(aes(x = UMAP1, y = UMAP2)) + 
+            geom_point_rast(aes(col = get(color.by)), size = 1, stroke = 0.4, shape = 16)
+        if (!is.null(color.mapping)) { p = p + scale_color_manual(values = color.mapping) }
+    
+    # Default formatting
+    p = p + theme_bw() +
+            labs(title = title, color = color.by) + 
+            theme(plot.title = element_text(hjust = 0.5)) +
+            theme(legend.position=legend.position) +
+            theme(legend.text = element_text(size=8), legend.title=element_text(size=12)) + 
+            guides(colour = guide_legend(override.aes = list(size = 4))) + guides(alpha = 'none')
+
+    if(!is.null(facet.by)) {
+        p = p + facet_wrap(~get(facet.by)) +
+                theme(strip.text.x = element_text(size = 12)) }    
+    return(p)
+}
+
+# Colors for PBMCs
+pbmc_colors = c("B" = "#66C2A5", "DC" = "#FC8D62", "HSC" = "#8DA0CB", "MK" = "#E78AC3", 
+              "Mono_CD14" = "#A6D854", "Mono_CD16" = "#f2ec72", "NK" = "#62AAEA", 
+              "T_CD4" = "#D1C656", "T_CD8" = "#968763")
+```
+
+# Load the data
+
+Get the expression and metadata.
+```{r}
+load('../data/pbmcs_exprs_small.rda')
+load('../data/pbmcs_meta_small.rda')
+
+dim(pbmcs_exprs_small)
+dim(pbmcs_meta_small)
+
+pbmcs_meta_small %>% head(4)
+```
+
+Subset the dataset into reference and query.
+```{r}
+idx_query = which(pbmcs_meta_small$donor == "5p") # use 5' dataset as the query
+ref_exp_full = pbmcs_exprs_small[, -idx_query]
+ref_metadata = pbmcs_meta_small[-idx_query, ]
+query_exp = pbmcs_exprs_small[, idx_query]
+query_metadata = pbmcs_meta_small[idx_query, ]
+```
+
+# Build Symphony reference
+
+There are two options for how to build a Symphony reference. Option 1 (`buildReferenceFromHarmonyObj`) is the more modular option, meaning that the user has more control over the preprocessing steps prior to reference compression. Option 2 (`buildReference`) builds a reference starting from expression, automating the procedure more but offering less flexibility.
+
+We'll demonstrate both options below.
+
+
+## Option 1: Build from Harmony object (preferred method)
+
+This option consists of more steps than Option 2 but allows your code to be more modular and flexible if you want to do your own preprocessing steps before the Harmony integration step. We recommend this option for most users.
+
+It is important to generate `vargenes_means_sds` (containing variable gene means and standard deviations used to scale the genes) as well as save the loadings for the PCA step.
+
+Starting with the reference expression,
+```{r}
+ref_exp_full[1:5, 1:2] # Sparse matrix with the normalized genes x cells matrix
+```
+
+Select variable genes and subset reference expression by variable genes (the command below will select the top 1,000 genes per batch, then pool them)
+```{r}
+var_genes = vargenes_vst(ref_exp_full, groups = as.character(ref_metadata[['donor']]), topn = 1000)
+ref_exp = ref_exp_full[var_genes, ]
+dim(ref_exp)
+```
+
+Calculate and save the mean and standard deviations for each gene
+```{r}
+vargenes_means_sds = tibble(symbol = var_genes, mean = Matrix::rowMeans(ref_exp))
+vargenes_means_sds$stddev = rowSDs(ref_exp, vargenes_means_sds$mean)
+head(vargenes_means_sds)
+```
+
+Scale data using calculated gene means and standard deviations
+```{r}
+ref_exp_scaled = scaleDataWithStats(ref_exp, vargenes_means_sds$mean, vargenes_means_sds$stddev, 1)
+```
+
+Run PCA (using SVD), save gene loadings (`s$u`)
+```{r}
+set.seed(0)
+s = irlba(ref_exp_scaled, nv = 20)
+Z_pca_ref = diag(s$d) %*% t(s$v) # [pcs by cells]
+loadings = s$u
+```
+
+Run Harmony integration. It is important to set `return_object = TRUE`.
+```{r}
+set.seed(0)
+ref_harmObj = harmony::HarmonyMatrix(
+        data_mat = t(Z_pca_ref),  ## PCA embedding matrix of cells
+        meta_data = ref_metadata, ## dataframe with cell labels
+        theta = c(2),             ## cluster diversity enforcement
+        vars_use = c('donor'),    ## variable to integrate out
+        nclust = 100,             ## number of clusters in Harmony model
+        max.iter.harmony = 20,    ## max number of iterations
+        return_object = TRUE,     ## return the full Harmony model object
+        do_pca = FALSE            ## don't recompute PCs
+)
+```
+
+To run the next function `buildReferenceFromHarmonyObj()`, you need to input the saved gene loadings (`loadings`) and `vargenes_means_sds`.
+```{r}
+# Compress a Harmony object into a Symphony reference
+reference = symphony::buildReferenceFromHarmonyObj(
+                           ref_harmObj,            # output object from HarmonyMatrix()
+                           ref_metadata,           # reference cell metadata
+                           vargenes_means_sds,     # gene names, means, and std devs for scaling
+                           loadings,               # genes x PCs matrix
+                           verbose = TRUE,         # verbose output
+                           do_umap = TRUE,         # set to TRUE to run UMAP
+                           save_uwot_path = './testing_uwot_model_1') # file path to save uwot model
+```
+
+Save Symphony reference for later mapping (modify with your desired output path)
+```{r}
+saveRDS(reference, './testing_reference1.rds')
+```
+
+Let's take a look at what the reference object contains:
+* meta_data: metadata
+* vargenes: variable genes, means, and standard deviations used for scaling
+* loadings: gene loadings for projection into pre-Harmony PC space
+* R: Soft cluster assignments
+* Z_orig: Pre-Harmony PC embedding
+* Z_corr: Harmonized PC embedding
+* centroids: locations of final Harmony soft cluster centroids
+* cache: pre-calculated reference-dependent portions of the mixture model
+* umap: UMAP coordinates
+* save_uwot_path: path to saved uwot model (for query UMAP projection into reference UMAP coordinates)
+
+```{r}
+str(reference)
+```
+
+The harmonized embedding is located in the `Z_corr` slot of the reference object.
+
+```{r}
+dim(reference$Z_corr)
+reference$Z_corr[1:5, 1:5]
+```
+
+Visualize reference UMAP
+
+```{r}
+reference = readRDS('./testing_reference1.rds')
+umap_labels = cbind(ref_metadata, reference$umap$embedding)
+plotBasic(umap_labels, title = 'Reference', color.mapping = pbmc_colors)
+```
+
+## Option 2: Build from scratch (starting with expression)
+
+This option computes a reference object starting from expression in a unified pipeline, automating the preprocessing steps.
+```{r}
+# Build reference
+set.seed(0)
+reference = symphony::buildReference(
+    ref_exp_full,
+    ref_metadata,
+    vars = c('donor'),         # variables to integrate over
+    K = 100,                   # number of Harmony clusters
+    verbose = TRUE,            # verbose output
+    do_umap = TRUE,            # can set to FALSE if want to run umap separately later
+    do_normalize = FALSE,      # set to TRUE if input counts are not normalized yet
+    vargenes_method = 'vst',   # method for variable gene selection ('vst' or 'mvp')
+    vargenes_groups = 'donor', # metadata column specifying groups for variable gene selection 
+    topn = 1000,               # number of variable genes to choose per group
+    d = 20,                    # number of PCs
+    save_uwot_path = './testing_uwot_model_2' # file path to save uwot model
+)
+
+# Save reference (modify with your desired output path)
+saveRDS(reference, './testing_reference2.rds')
+```
+
+Visualize reference UMAP
+```{r}
+reference = readRDS('./testing_reference2.rds')
+umap_labels = cbind(ref_metadata, reference$umap$embedding)
+plotBasic(umap_labels, title = 'Reference', color.mapping = pbmc_colors)
+```
+
+# Map query
+
+In order to map a new query dataset onto the reference, you will need a reference object saved from the steps above, as well as query cell expression and metadata.
+
+The query dataset is assumed to have been normalized in the same manner as the reference cells (here, default is log(CP10k+1) normalization).
+
+```{r}
+# Read in Symphony reference to map to
+reference = readRDS('./testing_reference1.rds')
+# Map query
+query = mapQuery(query_exp,             # query gene expression (genes x cells)
+                 query_metadata,        # query metadata (cells x attributes)
+                 reference,             # Symphony reference object
+                 do_normalize = FALSE,  # perform log(CP10k) normalization on query
+                 do_umap = TRUE)        # project query cells into reference UMAP
+```
+
+Note: Symphony assumes that the query is normalized in the same manner as the reference. Our default implementation currently uses log(CP10k+1) normalization.
+
+Let's take a look at what the query object contains:
+* Z: query cells in reference Harmonized embedding
+* Zq_pca: query cells in pre-Harmony reference PC embedding (prior to correction)
+* R: query cell soft cluster assignments
+* Xq: query cell design matrix for correction step
+* umap: query cells projected into reference UMAP coordinates (using uwot)
+* meta_data: metadata
+```{r}
+str(query)
+```
+
+Predict query cell types using k-NN. Setting confidence = TRUE also returns the prediction confidence scores (proportion of neighbors with winning vote).
+```{r}
+query = knnPredict(query,       # query object
+                   reference,   # reference object
+                   reference$meta_data$cell_type, # reference cell labels for training
+                   k = 5,       # number of reference neighbors to use for prediction
+                   confidence = TRUE)
+```
+
+Query cell type predictions are now in the cell_type_pred_knn column.
+```{r}
+head(query$meta_data)
+```
+
+## Visualization of mapping
+```{r}
+# Sync the column names for both data frames
+reference$meta_data$cell_type_pred_knn = NA
+reference$meta_data$cell_type_pred_knn_prob = NA
+reference$meta_data$ref_query = 'reference'
+query$meta_data$ref_query = 'query'
+
+# Add the UMAP coordinates to the metadata
+meta_data_combined = rbind(query$meta_data, reference$meta_data)
+umap_combined = rbind(query$umap, reference$umap$embedding)
+umap_combined_labels = cbind(meta_data_combined, umap_combined)
+
+# Plot UMAP visualization of all cells
+plotBasic(umap_combined_labels, title = 'Reference and query cells', color.by = 'ref_query')
+```
+
+Plot the reference and query side by side.
+```{r, fig.width = 9, fig.height = 4}
+plotBasic(umap_combined_labels, title = 'Reference and query cells', 
+          color.mapping = pbmc_colors, facet.by = 'ref_query')
+``` 
+
+And that's a wrap! If you run into issues or have questions about Symphony or this tutorial, please open an issue on GitHub.
+```{r}
+sessionInfo()
+```

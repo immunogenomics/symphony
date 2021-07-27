@@ -10,9 +10,11 @@
 ^vignettes/utils_seurat.R$
 ^vignettes/testing*$
 ^vignettes/*ipynb$
+^vignettes/.ipynb_checkpoints$
 ^man/.ipynb_checkpoints$
 ^man/figures/.ipynb_checkpoints$
 ^tests/.ipynb_checkpoints$
 ^pre-built_references/*$
 ^cran-comments.md$
 ^NEWS.md$
+^data/.ipynb_checkpoints$

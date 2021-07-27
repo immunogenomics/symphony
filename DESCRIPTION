@@ -19,7 +19,9 @@ RoxygenNote: 7.1.1
 Suggests: 
     knitr,
     rmarkdown,
-    testthat
+    testthat,
+    singlecellmethods,
+    ggthemes
 LinkingTo: 
     Rcpp,
     RcppArmadillo
