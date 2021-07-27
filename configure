@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 if [ $(uname) == "Linux" ]
 then
   echo 'CXX_STD = CXX11' > ./src/Makevars
