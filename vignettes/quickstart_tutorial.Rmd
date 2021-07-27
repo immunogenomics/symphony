@@ -9,7 +9,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-In this tutorial, we will construct a Symphony reference from two PBMC datasets from 2 technologies (10x 3'v1 and 3'v2), then map a third dataset from a new technology (10x 5') with Symphony. The analysis follows from Fig. 2 of the paper, but with downsampled datasets.
+In this tutorial, we will construct a Symphony reference from two PBMC datasets from 2 technologies (10x 3'v1 and 3'v2), then map a third dataset from a new technology (10x 5') with Symphony. The analysis follows from Fig. 2 of the paper (but with downsampled datasets to fit within CRAN limits on subdirectory size).
 
 # Installation
 
