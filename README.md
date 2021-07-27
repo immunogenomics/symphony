@@ -197,4 +197,4 @@ the path to the appropriate `include` directory containing the files).
 
 Code to reproduce Symphony results from the Kang et al. manuscript is
 available on
-[github.com/immunogenomics/symphony\_reproducibility](github.com/immunogenomics/symphony_reproducibility).
+[github.com/immunogenomics/symphony\_reproducibility](https://github.com/immunogenomics/symphony_reproducibility).

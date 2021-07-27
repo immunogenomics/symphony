@@ -2,7 +2,7 @@
 #' 
 #' @format: Sparse matrix (dgCMatrix): dimensions 1,764 genes by 1,200 cells
 #' 
-#' @source \url{support.10xgenomics.com/single-cell-gene-expression/datasets}
+#' @source \url{https://support.10xgenomics.com/single-cell-gene-expression/datasets}
 "pbmcs_exprs_small"
 
 #' Metadata for 10x PBMCs dataset for vignette.
@@ -19,5 +19,5 @@
 #'
 #' }
 #' 
-#' @source \url{support.10xgenomics.com/single-cell-gene-expression/datasets}
+#' @source \url{https://support.10xgenomics.com/single-cell-gene-expression/datasets}
 "pbmcs_meta_small"

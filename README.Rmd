@@ -181,4 +181,4 @@ withr::with_makevars(c(CPPFLAGS="-I/path/to/include/freetype2/"), install.packag
 ```
 
 # Reproducing results from manuscript
-Code to reproduce Symphony results from the Kang et al. manuscript is available on [github.com/immunogenomics/symphony_reproducibility](github.com/immunogenomics/symphony_reproducibility).
+Code to reproduce Symphony results from the Kang et al. manuscript is available on [github.com/immunogenomics/symphony_reproducibility](https://github.com/immunogenomics/symphony_reproducibility).
