@@ -1,5 +1,5 @@
 Package: symphony
-Title: Efficient and Precise Single-cell Reference Atlas Mapping
+Title: Efficient and Precise Single-Cell Reference Atlas Mapping
 Version: 0.1.0
 Authors@R: c(
     person(given = "Joyce", family = "Kang",
@@ -20,7 +20,6 @@ Suggests:
     knitr,
     rmarkdown,
     testthat,
-    singlecellmethods,
     ggthemes
 LinkingTo: 
     Rcpp,
@@ -46,7 +45,7 @@ Imports:
     RColorBrewer,
     ggrastr,
     ggrepel,
-    RANN
+    RANN    
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)

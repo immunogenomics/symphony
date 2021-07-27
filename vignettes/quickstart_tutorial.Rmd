@@ -26,7 +26,6 @@ library(symphony)
 suppressPackageStartupMessages({
     # Analysis
     library(harmony)
-    library(singlecellmethods)
     library(irlba)
     library(data.table)
     library(dplyr)
@@ -158,14 +157,14 @@ ref_harmObj = harmony::HarmonyMatrix(
 To run the next function `buildReferenceFromHarmonyObj()`, you need to input the saved gene loadings (`loadings`) and `vargenes_means_sds`.
 ```{r}
 # Compress a Harmony object into a Symphony reference
-reference = symphony::buildReferenceFromHarmonyObj(
-                           ref_harmObj,            # output object from HarmonyMatrix()
-                           ref_metadata,           # reference cell metadata
-                           vargenes_means_sds,     # gene names, means, and std devs for scaling
-                           loadings,               # genes x PCs matrix
-                           verbose = TRUE,         # verbose output
-                           do_umap = TRUE,         # set to TRUE to run UMAP
-                           save_uwot_path = './testing_uwot_model_1') # file path to save uwot model
+reference = buildReferenceFromHarmonyObj(
+                        ref_harmObj,            # output object from HarmonyMatrix()
+                        ref_metadata,           # reference cell metadata
+                        vargenes_means_sds,     # gene names, means, and std devs for scaling
+                        loadings,               # genes x PCs matrix
+                        verbose = TRUE,         # verbose output
+                        do_umap = TRUE,         # set to TRUE to run UMAP
+                        save_uwot_path = './testing_uwot_model_1') # file path to save uwot model
 ```
 
 Save Symphony reference for later mapping (modify with your desired output path)
@@ -184,21 +183,18 @@ Let's take a look at what the reference object contains:
 * cache: pre-calculated reference-dependent portions of the mixture model
 * umap: UMAP coordinates
 * save_uwot_path: path to saved uwot model (for query UMAP projection into reference UMAP coordinates)
-
 ```{r}
 str(reference)
 ```
 
 The harmonized embedding is located in the `Z_corr` slot of the reference object.
-
 ```{r}
 dim(reference$Z_corr)
 reference$Z_corr[1:5, 1:5]
 ```
 
 Visualize reference UMAP
-
-```{r}
+```{r, fig.width = 5.5, fig.height = 4}
 reference = readRDS('./testing_reference1.rds')
 umap_labels = cbind(ref_metadata, reference$umap$embedding)
 plotBasic(umap_labels, title = 'Reference', color.mapping = pbmc_colors)
@@ -211,18 +207,18 @@ This option computes a reference object starting from expression in a unified pi
 # Build reference
 set.seed(0)
 reference = symphony::buildReference(
-    ref_exp_full,
-    ref_metadata,
-    vars = c('donor'),         # variables to integrate over
-    K = 100,                   # number of Harmony clusters
-    verbose = TRUE,            # verbose output
-    do_umap = TRUE,            # can set to FALSE if want to run umap separately later
-    do_normalize = FALSE,      # set to TRUE if input counts are not normalized yet
-    vargenes_method = 'vst',   # method for variable gene selection ('vst' or 'mvp')
-    vargenes_groups = 'donor', # metadata column specifying groups for variable gene selection 
-    topn = 1000,               # number of variable genes to choose per group
-    d = 20,                    # number of PCs
-    save_uwot_path = './testing_uwot_model_2' # file path to save uwot model
+            ref_exp_full,
+            ref_metadata,
+            vars = c('donor'),         # variables to integrate over
+            K = 100,                   # number of Harmony clusters
+            verbose = TRUE,            # verbose output
+            do_umap = TRUE,            # can set to FALSE if want to run umap separately later
+            do_normalize = FALSE,      # set to TRUE if input counts are not normalized yet
+            vargenes_method = 'vst',   # method for variable gene selection ('vst' or 'mvp')
+            vargenes_groups = 'donor', # metadata column specifying groups for variable gene selection 
+            topn = 1000,               # number of variable genes to choose per group
+            d = 20,                    # number of PCs
+            save_uwot_path = './testing_uwot_model_2' # file path to save uwot model
 )
 
 # Save reference (modify with your desired output path)
@@ -230,7 +226,7 @@ saveRDS(reference, './testing_reference2.rds')
 ```
 
 Visualize reference UMAP
-```{r}
+```{r, fig.width = 5.5, fig.height = 4}
 reference = readRDS('./testing_reference2.rds')
 umap_labels = cbind(ref_metadata, reference$umap$embedding)
 plotBasic(umap_labels, title = 'Reference', color.mapping = pbmc_colors)
@@ -281,7 +277,7 @@ head(query$meta_data)
 ```
 
 ## Visualization of mapping
-```{r}
+```{r, fig.width = 5.5, fig.height = 4}
 # Sync the column names for both data frames
 reference$meta_data$cell_type_pred_knn = NA
 reference$meta_data$cell_type_pred_knn_prob = NA
@@ -298,7 +294,7 @@ plotBasic(umap_combined_labels, title = 'Reference and query cells', color.by = 
 ```
 
 Plot the reference and query side by side.
-```{r, fig.width = 9, fig.height = 4}
+```{r, fig.width = 7, fig.height = 4}
 plotBasic(umap_combined_labels, title = 'Reference and query cells', 
           color.mapping = pbmc_colors, facet.by = 'ref_query')
 ``` 

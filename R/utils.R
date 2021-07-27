@@ -34,6 +34,16 @@ scaleData <- function(A, margin = 1, thresh = 10) {
     return(res)
 }
 
+
+#' Scale data with given mean and standard deviations
+#'
+#' @param A expression matrix (genes by cells)
+#' @param mean_vec vector of mean values
+#' @param sd_vec vector of standard deviation values
+#' @param margin 1 for rowwise calculation
+#' @param thresh threshold to clip max values
+#' 
+#' @export
 scaleDataWithStats <- function(A, mean_vec, sd_vec, margin = 1, thresh = 10) {
     if (!"dgCMatrix" %in% class(A))
         A <- as(A, "dgCMatrix")
@@ -48,6 +58,13 @@ scaleDataWithStats <- function(A, mean_vec, sd_vec, margin = 1, thresh = 10) {
     return(res)
 }
 
+#' Calculate standard deviations by row
+#'
+#' @param A expression matrix (genes by cells)
+#' @param row_means row means
+#' @param weights weights for weighted standard dev calculation
+#' 
+#' @export
 rowSDs <- function(A, row_means=NULL, weights=NULL) {
     if (is.null(row_means)) {
         row_means <- rowMeans(A, weights)
