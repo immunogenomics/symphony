@@ -10,7 +10,7 @@ Authors@R: c(
     person("Soumya", "Raychaudhuri", 
         role = c("aut"), comment = c(ORCID = "0000-0002-1901-8265"))
     )
-Description: Implements the Symphony single-cell reference building and query mapping algorithms and additional functions
+Description: Implements the Symphony single-cell reference building and query mapping algorithms and additional functions.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
