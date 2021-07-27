@@ -5,7 +5,7 @@
 \alias{pbmcs_meta_small}
 \title{Metadata for 10x PBMCs dataset for vignette.}
 \format{
-: A data frame with 1,500 cells and 7 metadata fields.
+: A data frame with 1,200 cells and 7 metadata fields.
 \describe{
 \item{cell_id}{unique cell ID}
 \item{donor}{dataset (3pv1, 3pv2, or 5p)}

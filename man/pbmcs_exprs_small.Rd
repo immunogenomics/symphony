@@ -5,7 +5,7 @@
 \alias{pbmcs_exprs_small}
 \title{Log(CP10k+1) normalized counts matrix (genes by cells) for 10x PBMCs dataset for vignette.}
 \format{
-: Sparse matrix (dgCMatrix): dimensions 1,764 genes by 1,500 cells
+: Sparse matrix (dgCMatrix): dimensions 1,764 genes by 1,200 cells
 }
 \source{
 \url{support.10xgenomics.com/single-cell-gene-expression/datasets}
