@@ -13,7 +13,8 @@ buildReferenceFromHarmonyObj(
   verbose = TRUE,
   do_umap = TRUE,
   save_uwot_path = NULL,
-  umap_min_dist = 0.1
+  umap_min_dist = 0.1,
+  seed = 111
 )
 }
 \arguments{
@@ -31,7 +32,16 @@ buildReferenceFromHarmonyObj(
 
 \item{save_uwot_path}{Absolute path to save the uwot model (if do_umap is TRUE)}
 
-\item{umap_min_dist}{umap parameter (see uwot documentation for details)}
+\item{umap_min_dist}{UMAP parameter (see uwot documentation for details)}
+
+\item{seed}{Random seed}
+}
+\value{
+Symphony reference object. Integrated embedding is stored in the $Z_corr slot. Other slots include
+cell-level metadata ($meta_data), variable genes means and standard deviations ($vargenes),
+loadings from PCA or other dimensional reduction such as CCA ($loadings), original PCA embedding ($Z_orig),
+reference compression terms ($cache), betas from Harmony integration ($betas), cosine-normalized soft cluster centroids ($centroids),
+centroids in PC space ($centroids_pc), and optional umap coordinates ($umap$embedding).
 }
 \description{
 Function for building a Symphony reference from a Harmony object. Useful if you would like your

@@ -13,9 +13,12 @@ scaleDataWithStats(A, mean_vec, sd_vec, margin = 1, thresh = 10)
 
 \item{sd_vec}{vector of standard deviation values}
 
-\item{margin}{1 for rowwise calculation}
+\item{margin}{1 for row-wise calculation}
 
 \item{thresh}{threshold to clip max values}
+}
+\value{
+A matrix of scaled expression values.
 }
 \description{
 Scale data with given mean and standard deviations

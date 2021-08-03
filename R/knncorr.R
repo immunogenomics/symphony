@@ -11,7 +11,7 @@
 #' @param k Number of reference neighbors to use for kNN-correlation calculation
 #' 
 #' @import RANN
-#' 
+#' @return Vector of k-NN correlations for query cells
 #' @export
 calcknncorr = function(gold_ref, alt_ref, gold_query, alt_query, k = 500) {
     message('Note: This function assumes that ordering of cells (cols) between gold and alt embeddings match')
@@ -60,7 +60,7 @@ calcknncorr = function(gold_ref, alt_ref, gold_query, alt_query, k = 500) {
 #' @param distance either 'euclidean' or 'cosine'
 #' 
 #' @import RANN
-#' 
+#' @return Vector of within-query k-NN correlations for query cells
 #' @export
 calcknncorrWithinQuery = function(query, var = NULL, k = 100, topn = 2000, d = 20, distance = 'euclidean') {
     corrs = numeric(nrow(query$meta_data)) # initialize results
@@ -148,10 +148,12 @@ calcknncorrWithinQueryBatch = function(Z_pca, Z_mapping, k, distance) {
 #' @param query_exp Query expression matrix (genes x cells)
 #' @param topn Number of variable genes to use
 #' @param d Number of dimensions
+#' @param seed random seed
 #'
 #' @import irlba
+#' @return A matrix of PCs by cells
 #' @export
-runPCAQueryAlone = function(query_exp, topn = 2000, d = 20) {
+runPCAQueryAlone = function(query_exp, topn = 2000, d = 20, seed = 1) {
     # Subset by variable genes
     vargenes = vargenes_vst(query_exp, topn = topn)
     vargenes_exp = query_exp[vargenes, ]
@@ -163,7 +165,7 @@ runPCAQueryAlone = function(query_exp, topn = 2000, d = 20) {
     exp_scaled <- scaleDataWithStats(vargenes_exp, vargenes_means_sds$mean, vargenes_means_sds$stddev, 1)
     
     # Run SVD, save loadings
-    set.seed(1)
+    set.seed(seed)
     s = irlba(exp_scaled, nv = d)
     Z_pca = diag(s$d) %*% t(s$v) # [PCs by cells]
     return(Z_pca)

@@ -9,6 +9,7 @@
 #' 
 #' @import utils
 #' @import stats
+#' @return A vector of per-cell mapping metric scores for each cell.
 #' @export
 calcPerCellMappingMetric = function(reference, query, Z_orig = TRUE, metric = 'mahalanobis') {
     
@@ -57,6 +58,7 @@ calcPerCellMappingMetric = function(reference, query, Z_orig = TRUE, metric = 'm
 #' 
 #' @import utils 
 #' @import stats
+#' @return A data.frame of per-cluster mapping metric scores for each user-specified query cluster.
 #' @export
 calcPerClusterMappingMetric = function(reference, query, query_cluster_labels, metric = 'mahalanobis', 
                                     u = 2, lambda = 0) {
@@ -103,6 +105,5 @@ calcPerClusterMappingMetric = function(reference, query, query_cluster_labels, m
             mah_dist_cs$distance_score[c] = sqrt(mahalanobis(x = centroid_closest[c,], center = center_cs[,c], cov = cov))
         }
     }
-
     return(mah_dist_cs)
 }

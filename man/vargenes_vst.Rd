@@ -15,6 +15,9 @@ vargenes_vst(object, groups, topn, loess.span = 0.3)
 
 \item{loess.span}{Loess span parameter used when fitting the variance-mean relationship}
 }
+\value{
+A data.frame of variable genes, with means and standard deviations.
+}
 \description{
 Function to find variable genes using variance stabilizing transform (vst) method
 }

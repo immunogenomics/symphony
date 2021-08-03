@@ -28,6 +28,9 @@ calcknncorrWithinQuery(
 
 \item{distance}{either 'euclidean' or 'cosine'}
 }
+\value{
+Vector of within-query k-NN correlations for query cells
+}
 \description{
 Calculates the k-NN correlation within the query cells only, which measures how well the sorted
 ordering of k nearest query neighbors in a query de novo PCA embedding correlate with the ordering

@@ -38,6 +38,9 @@ plotReference(
 
 \item{show.centroids}{Plot soft cluster centroid locations}
 }
+\value{
+A ggplot object.
+}
 \description{
 Function to plot reference, colored by cell type
 }

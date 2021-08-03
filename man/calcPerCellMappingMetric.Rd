@@ -22,6 +22,9 @@ calcPerCellMappingMetric(
 
 \item{metric}{Uses Mahalanobis by default, but added as a parameter for potential future use}
 }
+\value{
+A vector of per-cell mapping metric scores for each cell.
+}
 \description{
 Per-cell Confidence Score:
 Calculates the weighted Mahalanobis distance for the query cells to reference clusters. Returns a vector

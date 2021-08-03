@@ -32,6 +32,12 @@ mapQuery(
 
 \item{sigma}{Fuzziness parameter for soft clustering (sigma = 1 is hard clustering)}
 }
+\value{
+Symphony query object. Mapping embedding is in the $Z slot. Other slots include
+query expression matrix ($exp), query cell-level metadata ($meta_data),
+query cell embedding in pre-Harmonized reference PCs ($Zq_pca), query cell soft cluster
+assignments ($R), and query cells in reference UMAP coordinates ($umap).
+}
 \description{
 Function for mapping query cells to a Symphony reference
 }

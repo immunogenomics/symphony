@@ -13,7 +13,7 @@
 #' @param num.bin number of bins to use for scaled analysis
 #' @param binning.method how bins are computed
 #' @param return_top_n returns top n genes 
-#' 
+#' @return A data.frame of variable genes
 #' @export
 findVariableGenes <- function(X, groups, min_expr = .1, max_expr = Inf, 
                                min_dispersion = 0, max_dispersion = Inf, 
@@ -87,7 +87,7 @@ findVariableGenes <- function(X, groups, min_expr = .1, max_expr = Inf,
 #' @param groups finds variable genes within each group then pools
 #' @param topn Return top n genes
 #' @param loess.span Loess span parameter used when fitting the variance-mean relationship
-#'
+#' @return A data.frame of variable genes, with means and standard deviations.
 #' @export
 vargenes_vst <- function(object, groups, topn, loess.span = 0.3) {
     clip.max <- sqrt(ncol(object))

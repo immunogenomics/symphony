@@ -13,6 +13,9 @@ rowSDs(A, row_means = NULL, weights = NULL)
 
 \item{weights}{weights for weighted standard dev calculation}
 }
+\value{
+A vector of row standard deviations
+}
 \description{
 Calculate standard deviations by row
 }

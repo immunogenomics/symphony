@@ -10,13 +10,14 @@ knnPredict(
   train_labels,
   k = 5,
   save_as = "cell_type_pred_knn",
-  confidence = FALSE
+  confidence = TRUE,
+  seed = 0
 )
 }
 \arguments{
-\item{query_obj}{Query object}
+\item{query_obj}{Symphony query object}
 
-\item{ref_obj}{Reference object}
+\item{ref_obj}{Symphony reference object}
 
 \item{train_labels}{vector of labels to train}
 
@@ -25,6 +26,11 @@ knnPredict(
 \item{save_as}{string that result column will be named in query metadata}
 
 \item{confidence}{return k-NN confidence scores (proportion of neighbors voting for the predicted annotation)}
+
+\item{seed}{random seed (k-NN has some stochasticity in the case of ties)}
+}
+\value{
+Symphony query object, with predicted reference labels stored in the 'save_as' slot of the query$meta_data
 }
 \description{
 Predict annotations of query cells from the reference using k-NN method

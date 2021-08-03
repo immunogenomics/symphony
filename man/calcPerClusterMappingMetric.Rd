@@ -31,6 +31,9 @@ calcPerClusterMappingMetric(
 
 \item{lambda}{Optional ridge parameter added to covariance diagonal to help stabilize numeric estimates}
 }
+\value{
+A data.frame of per-cluster mapping metric scores for each user-specified query cluster.
+}
 \description{
 Per-cluster Confidence Score:
 Calculates the Mahalanobis distance from user-defined query clusters to their nearest

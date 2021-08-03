@@ -8,8 +8,13 @@
 #' @param verbose Verbose output
 #' @param do_umap Perform UMAP visualization on harmonized reference embedding
 #' @param save_uwot_path Absolute path to save the uwot model (if do_umap is TRUE)
-#' @param umap_min_dist umap parameter (see uwot documentation for details)
-#' 
+#' @param umap_min_dist UMAP parameter (see uwot documentation for details)
+#' @param seed Random seed
+#' @return Symphony reference object. Integrated embedding is stored in the $Z_corr slot. Other slots include
+#' cell-level metadata ($meta_data), variable genes means and standard deviations ($vargenes),
+#' loadings from PCA or other dimensional reduction such as CCA ($loadings), original PCA embedding ($Z_orig), 
+#' reference compression terms ($cache), betas from Harmony integration ($betas), cosine-normalized soft cluster centroids ($centroids), 
+#' centroids in PC space ($centroids_pc), and optional umap coordinates ($umap$embedding).
 #' @export
 buildReferenceFromHarmonyObj <- function(harmony_obj,
                            metadata,
@@ -18,9 +23,10 @@ buildReferenceFromHarmonyObj <- function(harmony_obj,
                            verbose = TRUE, 
                            do_umap = TRUE, 
                            save_uwot_path = NULL,
-                           umap_min_dist = 0.1) {
+                           umap_min_dist = 0.1,
+                           seed = 111) {
     
-    set.seed(111) # for reproducibility
+    set.seed(seed) # for reproducibility
     
     if (verbose) message('Save metadata, vargenes (S), and loadings (U)')
     res = list(meta_data = metadata)

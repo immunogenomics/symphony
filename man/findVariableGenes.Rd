@@ -35,6 +35,9 @@ findVariableGenes(
 
 \item{return_top_n}{returns top n genes}
 }
+\value{
+A data.frame of variable genes
+}
 \description{
 Function to find variable genes using mean variance relationship method
 }

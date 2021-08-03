@@ -40,9 +40,9 @@ scaleData <- function(A, margin = 1, thresh = 10) {
 #' @param A expression matrix (genes by cells)
 #' @param mean_vec vector of mean values
 #' @param sd_vec vector of standard deviation values
-#' @param margin 1 for rowwise calculation
+#' @param margin 1 for row-wise calculation
 #' @param thresh threshold to clip max values
-#' 
+#' @return A matrix of scaled expression values.
 #' @export
 scaleDataWithStats <- function(A, mean_vec, sd_vec, margin = 1, thresh = 10) {
     if (!"dgCMatrix" %in% class(A))
@@ -63,7 +63,7 @@ scaleDataWithStats <- function(A, mean_vec, sd_vec, margin = 1, thresh = 10) {
 #' @param A expression matrix (genes by cells)
 #' @param row_means row means
 #' @param weights weights for weighted standard dev calculation
-#' 
+#' @return A vector of row standard deviations 
 #' @export
 rowSDs <- function(A, row_means=NULL, weights=NULL) {
     if (is.null(row_means)) {
@@ -126,20 +126,22 @@ soft_kmeans <- function(X, k, w, max_iter=20, sigma=0.1) {
 
 #' Predict annotations of query cells from the reference using k-NN method
 #'
-#' @param query_obj Query object
-#' @param ref_obj Reference object
+#' @param query_obj Symphony query object
+#' @param ref_obj Symphony reference object
 #' @param train_labels vector of labels to train
 #' @param k number of neighbors
 #' @param save_as string that result column will be named in query metadata
 #' @param confidence return k-NN confidence scores (proportion of neighbors voting for the predicted annotation)
-#' 
+#' @param seed random seed (k-NN has some stochasticity in the case of ties) 
+#' @return Symphony query object, with predicted reference labels stored in the 'save_as' slot of the query$meta_data
 #' @export
 knnPredict <- function(query_obj, ref_obj,
-                       train_labels, # cell labels for k-NN classification 
-                       k = 5,
-                       save_as = 'cell_type_pred_knn',
-                       confidence = FALSE) { # metadata column name to save result
-    set.seed(0)
+                       train_labels,                   # cell labels for k-NN classification 
+                       k = 5,                          # number of reference neighbors
+                       save_as = 'cell_type_pred_knn', # metadata column to save result
+                       confidence = TRUE,              # return prediction confidence
+                       seed = 0) {                     # random seed
+    set.seed(seed)
     if (confidence) {
         knn_pred = class::knn(t(ref_obj$Z_corr), t(query_obj$Z), train_labels, k = k, prob = TRUE)
         knn_prob = attributes(knn_pred)$prob
@@ -164,11 +166,11 @@ knnPredictCos <- function(query_obj, ref_obj,
 }
 
 
-#' Function for evaluating F1 by cell type, 
-#' Adapted from automated cell type identifiaction benchmarking paper (Abdelaal et al. Genome Biology, 2019)
+#' Function for evaluating F1 by cell type,
+#' adapted from automated cell type identifiaction benchmarking paper (Abdelaal et al. Genome Biology, 2019)
 #' @param true vector of true labels
 #' @param predicted vector of predicted labels
-#' 
+#' @return A list of results with confusion matrix ($Conf), median F1-score ($MedF1), F1 scores per class ($F1), and accuracy ($Acc).
 #' @export
 evaluate <- function(true, predicted) {
   "  

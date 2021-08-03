@@ -3,7 +3,7 @@
 \name{evaluate}
 \alias{evaluate}
 \title{Function for evaluating F1 by cell type,
-Adapted from automated cell type identifiaction benchmarking paper (Abdelaal et al. Genome Biology, 2019)}
+adapted from automated cell type identifiaction benchmarking paper (Abdelaal et al. Genome Biology, 2019)}
 \usage{
 evaluate(true, predicted)
 }
@@ -12,7 +12,10 @@ evaluate(true, predicted)
 
 \item{predicted}{vector of predicted labels}
 }
+\value{
+A list of results with confusion matrix ($Conf), median F1-score ($MedF1), F1 scores per class ($F1), and accuracy ($Acc).
+}
 \description{
 Function for evaluating F1 by cell type,
-Adapted from automated cell type identifiaction benchmarking paper (Abdelaal et al. Genome Biology, 2019)
+adapted from automated cell type identifiaction benchmarking paper (Abdelaal et al. Genome Biology, 2019)
 }

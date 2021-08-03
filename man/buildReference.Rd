@@ -20,7 +20,8 @@ buildReference(
   save_uwot_path = NULL,
   d = 20,
   additional_genes = NULL,
-  umap_min_dist = 0.1
+  umap_min_dist = 0.1,
+  seed = 111
 )
 }
 \arguments{
@@ -55,6 +56,15 @@ buildReference(
 \item{additional_genes}{Any custom genes (e.g. marker genes) to include in addition to variable genes}
 
 \item{umap_min_dist}{umap parameter (see uwot documentation for details)}
+
+\item{seed}{Random seed}
+}
+\value{
+Symphony reference object. Integrated embedding is stored in the $Z_corr slot. Other slots include
+cell-level metadata ($meta_data), variable genes means and standard deviations ($vargenes),
+loadings from PCA ($loadings), original PCA embedding ($Z_orig), reference compression terms ($cache),
+betas from Harmony integration ($betas), cosine normalized soft cluster centroids ($centroids),
+centroids in PC space ($centroids_pc), and optional umap coordinates ($umap$embedding).
 }
 \description{
 Function for building a Symphony reference starting from expression matrix

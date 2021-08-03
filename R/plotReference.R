@@ -15,7 +15,7 @@
 #' @import RColorBrewer
 #' @import ggrepel
 #' @import uwot
-#'
+#' @return A ggplot object.
 #' @export
 plotReference = function(reference,              # Symphony reference object
                           as.density = TRUE,      # if FALSE, plot as individual cells
@@ -47,8 +47,7 @@ plotReference = function(reference,              # Symphony reference object
     } else { 
         # Plot as individual points
         p = p + geom_point_rast(aes(col = get(color.by)), size = 0.3, stroke = 0.2, shape = 16)
-        if (!is.null(celltype.colors)) { p = p + scale_color_manual(values = celltype.colors) +
-                                           labs(color = color.by)}
+        if (!is.null(celltype.colors)) { p = p + scale_color_manual(values = celltype.colors) + labs(color = color.by)}
     }
     
     # Default formatting
@@ -83,6 +82,5 @@ plotReference = function(reference,              # Symphony reference object
     if (!show.legend) {
         p = p + theme(legend.position="none")
     }
-    
     return(p)
 }

@@ -4,7 +4,7 @@
 \alias{runPCAQueryAlone}
 \title{Runs a standard PCA pipeline on query (1 batch). Assumes query_exp is already normalized.}
 \usage{
-runPCAQueryAlone(query_exp, topn = 2000, d = 20)
+runPCAQueryAlone(query_exp, topn = 2000, d = 20, seed = 1)
 }
 \arguments{
 \item{query_exp}{Query expression matrix (genes x cells)}
@@ -12,6 +12,11 @@ runPCAQueryAlone(query_exp, topn = 2000, d = 20)
 \item{topn}{Number of variable genes to use}
 
 \item{d}{Number of dimensions}
+
+\item{seed}{random seed}
+}
+\value{
+A matrix of PCs by cells
 }
 \description{
 Runs a standard PCA pipeline on query (1 batch). Assumes query_exp is already normalized.

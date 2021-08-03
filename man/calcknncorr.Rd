@@ -21,6 +21,9 @@ calcknncorr(gold_ref, alt_ref, gold_query, alt_query, k = 500)
 
 \item{k}{Number of reference neighbors to use for kNN-correlation calculation}
 }
+\value{
+Vector of k-NN correlations for query cells
+}
 \description{
 Calculates the k-NN correlation, which measures how well the sorted ordering of k nearest reference
 neighbors in a gold standard embedding correlate with the ordering for the same reference cells in
