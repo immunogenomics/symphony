@@ -13,8 +13,14 @@ bioRxiv](https://www.biorxiv.org/content/10.1101/2020.11.18.389189v2)
 
 # Installation
 
-Install the current version of Symphony from
-[GitHub](https://github.com/) with:
+Symphony is available on CRAN:
+
+``` r
+install.packages("symphony")
+```
+
+Install the development version of Symphony from
+[GitHub](https://github.com/) use:
 
 ``` r
 # install.packages("devtools")
