@@ -15,6 +15,7 @@
 ^man/figures/.ipynb_checkpoints$
 ^tests/.ipynb_checkpoints$
 ^pre-built_references/*$
+^pre-built_references/tbru_additions/*$
 ^cran-comments.md$
 ^NEWS.md$
 ^data/.ipynb_checkpoints$
