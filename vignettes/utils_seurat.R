@@ -449,8 +449,8 @@ knnPredict.Seurat <- function(query_obj, ref_obj, label_transfer, k = 5)
     if (!label_transfer %in% colnames(ref_obj$meta_data)) {
         stop('Label \"{label_transfer}\" is not available in the reference metadata.')
     }
-    knn_pred <- class::knn(t(ref_obj$Z_corr), Embeddings(query, 'harmony'), 
-        ref$meta_data[[label_transfer]], k = k)
+    knn_pred <- class::knn(t(ref_obj$Z_corr), Embeddings(query_obj, 'harmony'), 
+        ref_obj$meta_data[[label_transfer]], k = k)
     query_obj@meta.data[[label_transfer]] <- knn_pred
     return(query_obj)
 }
