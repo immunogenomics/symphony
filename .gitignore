@@ -9,3 +9,5 @@ man/.ipynb_checkpoints
 man/figures/.ipynb_checkpoints
 vignettes/testing_*
 inst/doc
+pre-built_references/*.rds
+pre-built_references/*uwot*

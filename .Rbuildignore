@@ -18,3 +18,7 @@
 ^cran-comments.md$
 ^NEWS.md$
 ^data/.ipynb_checkpoints$
+^vignettes/cache_symphony.uwot$
+^vignettes/cache_symphony_sct.uwot$
+^src/*.o$
+^src/*.so$
