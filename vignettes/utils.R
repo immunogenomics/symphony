@@ -102,7 +102,7 @@ plotBasic = function(umap_labels,                # metadata, with UMAP labels in
             theme(plot.title = element_text(hjust = 0.5)) +
             theme(legend.position=legend.position) +
             theme(legend.text = element_text(size=8), legend.title=element_text(size=12)) + 
-            guides(colour = guide_legend(override.aes = list(size = 4))) + guides(alpha = FALSE)
+            guides(colour = guide_legend(override.aes = list(size = 4))) + guides(alpha = 'none')
 
     if(!is.null(facet.by)) {
         p = p + facet_wrap(~get(facet.by)) +
