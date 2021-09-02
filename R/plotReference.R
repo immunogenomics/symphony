@@ -78,7 +78,7 @@ plotReference = function(reference,              # Symphony reference object
             dplyr::select(UMAP1, UMAP2) %>% 
             dplyr::summarize_all(median)
         if(requireNamespace('ggrepel')){
-            p = p + text_geom(data = labels.cent, aes(x= UMAP1, y = UMAP2, label = get(color.by)), 
+            p = p + geom_text_repel(data = labels.cent, aes(x= UMAP1, y = UMAP2, label = get(color.by)), 
                               segment.alpha = 0.5, segment.size = 0.2, box.padding = 0.01, color = 'black')
         } else{
             message('Install ggrepel to layout labels nicely.')
