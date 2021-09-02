@@ -21,7 +21,8 @@ Suggests:
     rmarkdown,
     testthat,
     ggthemes,
-    ggrastr
+    ggrastr,
+    ggrepel
 LinkingTo: 
     Rcpp,
     RcppArmadillo
@@ -44,7 +45,6 @@ Imports:
     tidyr,
     rlang,
     RColorBrewer,
-    ggrepel,
     RANN
 VignetteBuilder: knitr
 Depends: 
