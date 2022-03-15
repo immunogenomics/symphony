@@ -20,7 +20,9 @@ Suggests:
     knitr,
     rmarkdown,
     testthat,
-    ggthemes
+    ggthemes,
+    ggrastr,
+    ggrepel
 LinkingTo: 
     Rcpp,
     RcppArmadillo
@@ -43,8 +45,6 @@ Imports:
     tidyr,
     rlang,
     RColorBrewer,
-    ggrastr,
-    ggrepel,
     RANN    
 VignetteBuilder: knitr
 Depends: 
