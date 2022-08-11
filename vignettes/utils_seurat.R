@@ -444,13 +444,23 @@ mapQuery <- function (exp_query, metadata_query, ref_obj, vars = NULL, verbose =
 
 environment(mapQuery) <- environment(symphony::mapQuery)
 
-knnPredict.Seurat <- function(query_obj, ref_obj, label_transfer, k = 5) 
+knnPredict.Seurat <- function(query_obj, ref_obj, label_transfer, k = 5, confidence = TRUE, seed = 0) 
 {
+    set.seed(seed)
     if (!label_transfer %in% colnames(ref_obj$meta_data)) {
         stop('Label \"{label_transfer}\" is not available in the reference metadata.')
     }
-    knn_pred <- class::knn(t(ref_obj$Z_corr), Embeddings(query_obj, 'harmony'), 
-        ref_obj$meta_data[[label_transfer]], k = k)
-    query_obj@meta.data[[label_transfer]] <- knn_pred
+    
+    if (confidence) {
+        knn_pred <- class::knn(t(ref_obj$Z_corr), Embeddings(query_obj, 'harmony'), 
+            ref_obj$meta_data[[label_transfer]], k = k, prob = TRUE)
+        knn_prob = attributes(knn_pred)$prob
+        query_obj@meta.data[[label_transfer]] <- knn_pred
+        query_obj@meta.data[paste0(label_transfer, '_prob')] = knn_prob
+    } else {
+        knn_pred <- class::knn(t(ref_obj$Z_corr), Embeddings(query_obj, 'harmony'), 
+            ref_obj$meta_data[[label_transfer]], k = k, prob = FALSE)
+        query_obj@meta.data[[label_transfer]] <- knn_pred
+    }
     return(query_obj)
 }
