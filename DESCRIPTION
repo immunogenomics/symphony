@@ -45,7 +45,7 @@ Imports:
     tidyr,
     rlang,
     RColorBrewer,
-    RANN    
+    RANN
 VignetteBuilder: knitr
 Depends: 
     R (>= 2.10)

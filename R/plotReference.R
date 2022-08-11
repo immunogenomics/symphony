@@ -11,9 +11,7 @@
 #' @param show.labels Show cell type labels
 #' @param show.centroids Plot soft cluster centroid locations
 #' @import ggplot2
-#' @import ggrastr
 #' @import RColorBrewer
-#' @import ggrepel
 #' @import uwot
 #' @return A ggplot object.
 #' @export
@@ -44,9 +42,14 @@ plotReference = function(reference,              # Symphony reference object
                     contour_var = "ndensity", bins = bins, h = bandwidth)
         if (!is.null(celltype.colors)) { p = p + scale_fill_manual(values = celltype.colors) + 
                                            labs(fill = color.by)}
-    } else { 
+    } else {
+        if(requireNamespace('ggrastr')){
         # Plot as individual points
-        p = p + geom_point_rast(aes(col = get(color.by)), size = 0.3, stroke = 0.2, shape = 16)
+        p = p + ggrastr::geom_point_rast(aes(col = get(color.by)), size = 0.3, stroke = 0.2, shape = 16)
+        } else{
+        message('Install ggrastr to plot cell as raster.  Useful if there are many cells.')
+        p = p + geom_point(aes(col = get(color.by)), size = 0.3, stroke = 0.2, shape = 16)
+        }
         if (!is.null(celltype.colors)) { p = p + scale_color_manual(values = celltype.colors) + labs(color = color.by)}
     }
     
@@ -74,9 +77,13 @@ plotReference = function(reference,              # Symphony reference object
             dplyr::group_by_at(color.by) %>% #group_by_at takes variable column name
             dplyr::select(UMAP1, UMAP2) %>% 
             dplyr::summarize_all(median)
-        
-        p = p + ggrepel::geom_text_repel(data = labels.cent, aes(x= UMAP1, y = UMAP2, label = get(color.by)), 
-                    segment.alpha = 0.5, segment.size = 0.2, box.padding = 0.01, color = 'black')
+        if(requireNamespace('ggrepel')){
+            p = p + geom_text_repel(data = labels.cent, aes(x= UMAP1, y = UMAP2, label = get(color.by)), 
+                              segment.alpha = 0.5, segment.size = 0.2, box.padding = 0.01, color = 'black')
+        } else{
+            message('Install ggrepel to layout labels nicely.')
+            p = p + ggplot2::geom_text(data = labels.cent, aes(x= UMAP1, y = UMAP2, label = get(color.by)), color = 'black')
+        }
     }
     
     if (!show.legend) {
