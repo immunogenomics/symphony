@@ -80,7 +80,7 @@ calcPerClusterMappingMetric = function(reference, query, query_cluster_labels, m
     # Calculate query cluster centroid and covariances in PC space
     for (c in 1:num_clusters) {
         cluster_idx = which(query_cluster_labels == query_cluster_labels_unique[c])
-        cluster_Zq_pca = query$Zq_pca[, cluster_idx]
+        cluster_Zq_pca = query$Zq_pca[, cluster_idx, drop = FALSE]
         cov_cs[[c]] = cov(t(cluster_Zq_pca))
         center_cs[, c] = rowMeans(cluster_Zq_pca)
     }
