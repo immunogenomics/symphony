@@ -7,9 +7,6 @@
 \format{
 : Sparse matrix (dgCMatrix): dimensions 1,764 genes by 1,200 cells
 }
-\source{
-\url{https://support.10xgenomics.com/single-cell-gene-expression/datasets}
-}
 \usage{
 pbmcs_exprs_small
 }
