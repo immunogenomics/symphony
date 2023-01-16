@@ -45,7 +45,7 @@ Imports:
     RColorBrewer,
     RANN,
     ggrepel,
-    ggrastr    
+    ggrastr
 VignetteBuilder: knitr
 Depends: 
     R (>= 3.5)
