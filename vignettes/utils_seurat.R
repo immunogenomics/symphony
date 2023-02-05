@@ -10,7 +10,7 @@ buildReferenceFromSeurat <- function(
     res$Z_orig <- t(obj@reductions$pca@cell.embeddings)
     message('Saved embeddings')
     
-    res$R <- t(obj@reductions$harmony@misc$R)
+    res$R <- t(obj@reductions$harmony@misc$R[colnames(obj),]) # seurat does not subset misc slot
     message('Saved soft cluster assignments')
     
     if (assay == 'RNA') {
