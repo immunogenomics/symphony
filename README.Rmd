@@ -23,6 +23,9 @@ Efficient and precise single-cell reference atlas mapping with Symphony
 
 [Kang et al. (Nat Comm, 2021)](https://www.nature.com/articles/s41467-021-25957-x)
 
+For Python users, check out the [symphonypy](https://github.com/potulabe/symphonypy) package by Kseniya Petrova and Sergey Isaev.
+
+
 # Installation
 
 Symphony is available on CRAN:
@@ -37,6 +40,7 @@ Install the development version of Symphony from [GitHub](https://github.com/) u
 devtools::install_github("immunogenomics/symphony")
 ```
 Install should take <10 mins (pending no major issues). See installation notes below.
+
 
 # Usage/Demos
 ## Tutorials

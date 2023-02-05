@@ -11,6 +11,10 @@ Efficient and precise single-cell reference atlas mapping with Symphony
 [Kang et al. (Nat Comm,
 2021)](https://www.nature.com/articles/s41467-021-25957-x)
 
+For Python users, check out the
+[symphonypy](https://github.com/potulabe/symphonypy) package by Kseniya
+Petrova and Sergey Isaev.
+
 # Installation
 
 Symphony is available on CRAN:
@@ -27,26 +31,26 @@ Install the development version of Symphony from
 devtools::install_github("immunogenomics/symphony")
 ```
 
-Install should take &lt;10 mins (pending no major issues). See
+Install should take \<10 mins (pending no major issues). See
 installation notes below.
 
 # Usage/Demos
 
 ## Tutorials
 
--   Check out the [quick start (&lt;5 min) PBMCs
-    tutorial](https://github.com/immunogenomics/symphony/blob/main/vignettes/pbmcs_tutorial.ipynb/)
-    for an example of how to build a custom reference and map to it.
+- Check out the [quick start (\<5 min) PBMCs
+  tutorial](https://github.com/immunogenomics/symphony/blob/main/vignettes/pbmcs_tutorial.ipynb/)
+  for an example of how to build a custom reference and map to it.
 
--   Check out the [pre-built references
-    tutorial](https://github.com/immunogenomics/symphony/blob/main/vignettes/prebuilt_references_tutorial.ipynb)
-    for examples of how to map to provided Symphony references pre-built
-    from the datasets featured in the manuscript.
+- Check out the [pre-built references
+  tutorial](https://github.com/immunogenomics/symphony/blob/main/vignettes/prebuilt_references_tutorial.ipynb)
+  for examples of how to map to provided Symphony references pre-built
+  from the datasets featured in the manuscript.
 
 ## Downloading pre-built references:
 
--   You can download pre-built references from
-    [Zenodo](https://zenodo.org/record/5090425).
+- You can download pre-built references from
+  [Zenodo](https://zenodo.org/record/5090425).
 
 ## Reference building
 
@@ -57,6 +61,7 @@ reference that enables query mapping. We recommend this option for most
 users since it allows your code to be more modular and flexible.
 
 ``` r
+
 # Run Harmony to integrate the reference cells
 ref_harmObj = harmony::HarmonyMatrix(
         data_mat = t(Z_pca_ref),   # starting embedding (e.g. PCA, CCA) of cells
@@ -142,30 +147,30 @@ devtools package to install from GitHub.
 
 Dependencies:
 
--   R&gt;=3.6.x
--   RANN
--   data.table
--   irlba
--   stats
--   tibble
--   utils
--   uwot
--   Matrix
--   Rcpp
--   magrittr
--   methods
--   rlang
--   ggplot2
--   RColorBrewer
--   ggrastr
--   ggrepel
+- R\>=3.6.x
+- RANN
+- data.table
+- irlba
+- stats
+- tibble
+- utils
+- uwot
+- Matrix
+- Rcpp
+- magrittr
+- methods
+- rlang
+- ggplot2
+- RColorBrewer
+- ggrastr
+- ggrepel
 
 ## Troubleshooting:
 
--   You may need to install the latest version of devtools (because of
-    the recent GitHub change from “master” to “main” terminology, which
-    can cause `install_github` to fail).
--   You may also need to install the lastest version of Harmony:
+- You may need to install the latest version of devtools (because of the
+  recent GitHub change from “master” to “main” terminology, which can
+  cause `install_github` to fail).
+- You may also need to install the lastest version of Harmony:
 
 ``` r
 devtools::install_github("immunogenomics/harmony")
@@ -203,4 +208,4 @@ the path to the appropriate `include` directory containing the files).
 
 Code to reproduce Symphony results from the Kang et al. manuscript is
 available on
-[github.com/immunogenomics/symphony\_reproducibility](https://github.com/immunogenomics/symphony_reproducibility).
+[github.com/immunogenomics/symphony_reproducibility](https://github.com/immunogenomics/symphony_reproducibility).
