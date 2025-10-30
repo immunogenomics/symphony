@@ -33,7 +33,6 @@ suppressPackageStartupMessages({
     # Plotting
     library(ggplot2)
     library(ggthemes)
-    library(ggrastr)
     library(RColorBrewer)
 })
 ```
@@ -48,8 +47,8 @@ plotBasic = function(umap_labels,                # metadata, with UMAP labels in
     
     p = umap_labels %>%
             dplyr::sample_frac(1L) %>% # permute rows randomly
-            ggplot(aes(x = UMAP1, y = UMAP2)) + 
-            geom_point_rast(aes(col = get(color.by)), size = 1, stroke = 0.4, shape = 16)
+            ggplot(aes(x = UMAP1, y = UMAP2)) +
+            geom_point(aes(col = get(color.by)), size = 1, stroke = 0.4, shape = 16)
         if (!is.null(color.mapping)) { p = p + scale_color_manual(values = color.mapping) }
     
     # Default formatting
