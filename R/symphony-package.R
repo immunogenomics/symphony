@@ -1,9 +1,4 @@
-#' symphony
-#' 
-#' Efficient single-cell reference atlas mapping (Kang et al.)
-#' 
-#' @name symphony
-#' @docType package
-#' @useDynLib symphony
+#' @keywords internal
+#' @useDynLib symphony, .registration=TRUE
 #' @importFrom Rcpp sourceCpp
-NULL
+"_PACKAGE"

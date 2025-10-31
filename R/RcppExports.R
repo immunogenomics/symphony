@@ -2,62 +2,62 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 exp_mean <- function(x, p, i, ncol, nrow, groups, group_sizes) {
-    .Call('_symphony_exp_mean', PACKAGE = 'symphony', x, p, i, ncol, nrow, groups, group_sizes)
+    .Call(`_symphony_exp_mean`, x, p, i, ncol, nrow, groups, group_sizes)
 }
 
 log_vmr <- function(x, p, i, ncol, nrow, means, groups, group_sizes) {
-    .Call('_symphony_log_vmr', PACKAGE = 'symphony', x, p, i, ncol, nrow, means, groups, group_sizes)
+    .Call(`_symphony_log_vmr`, x, p, i, ncol, nrow, means, groups, group_sizes)
 }
 
 normalizeCLR_dgc <- function(x, p, i, ncol, nrow, margin) {
-    .Call('_symphony_normalizeCLR_dgc', PACKAGE = 'symphony', x, p, i, ncol, nrow, margin)
+    .Call(`_symphony_normalizeCLR_dgc`, x, p, i, ncol, nrow, margin)
 }
 
 scaleRowsWithStats_dgc <- function(x, p, i, mean_vec, sd_vec, ncol, nrow, thresh) {
-    .Call('_symphony_scaleRowsWithStats_dgc', PACKAGE = 'symphony', x, p, i, mean_vec, sd_vec, ncol, nrow, thresh)
+    .Call(`_symphony_scaleRowsWithStats_dgc`, x, p, i, mean_vec, sd_vec, ncol, nrow, thresh)
 }
 
 scaleRows_dgc <- function(x, p, i, ncol, nrow, thresh) {
-    .Call('_symphony_scaleRows_dgc', PACKAGE = 'symphony', x, p, i, ncol, nrow, thresh)
+    .Call(`_symphony_scaleRows_dgc`, x, p, i, ncol, nrow, thresh)
 }
 
 rowMeansWeighted_dgc <- function(x, p, i, weights, ncol, nrow) {
-    .Call('_symphony_rowMeansWeighted_dgc', PACKAGE = 'symphony', x, p, i, weights, ncol, nrow)
+    .Call(`_symphony_rowMeansWeighted_dgc`, x, p, i, weights, ncol, nrow)
 }
 
 rowSDs_dgc <- function(x, p, i, mean_vec, ncol, nrow, do_sqrt) {
-    .Call('_symphony_rowSDs_dgc', PACKAGE = 'symphony', x, p, i, mean_vec, ncol, nrow, do_sqrt)
+    .Call(`_symphony_rowSDs_dgc`, x, p, i, mean_vec, ncol, nrow, do_sqrt)
 }
 
 rowVarSDs_dgc <- function(x, p, i, mean_vec, sd_vec, vmax, ncol, nrow, do_sqrt) {
-    .Call('_symphony_rowVarSDs_dgc', PACKAGE = 'symphony', x, p, i, mean_vec, sd_vec, vmax, ncol, nrow, do_sqrt)
+    .Call(`_symphony_rowVarSDs_dgc`, x, p, i, mean_vec, sd_vec, vmax, ncol, nrow, do_sqrt)
 }
 
 rowSDsWeighted_dgc <- function(x, p, i, mean_vec, weights, ncol, nrow, do_sqrt) {
-    .Call('_symphony_rowSDsWeighted_dgc', PACKAGE = 'symphony', x, p, i, mean_vec, weights, ncol, nrow, do_sqrt)
+    .Call(`_symphony_rowSDsWeighted_dgc`, x, p, i, mean_vec, weights, ncol, nrow, do_sqrt)
 }
 
 cosine_normalize_cpp <- function(V, dim) {
-    .Call('_symphony_cosine_normalize_cpp', PACKAGE = 'symphony', V, dim)
+    .Call(`_symphony_cosine_normalize_cpp`, V, dim)
 }
 
 soft_kmeans_cpp <- function(Y, Z, max_iter, sigma) {
-    .Call('_symphony_soft_kmeans_cpp', PACKAGE = 'symphony', Y, Z, max_iter, sigma)
+    .Call(`_symphony_soft_kmeans_cpp`, Y, Z, max_iter, sigma)
 }
 
 soft_cluster <- function(Y, Z, sigma) {
-    .Call('_symphony_soft_cluster', PACKAGE = 'symphony', Y, Z, sigma)
+    .Call(`_symphony_soft_cluster`, Y, Z, sigma)
 }
 
 compute_ref_cache <- function(Rr, Zr) {
-    .Call('_symphony_compute_ref_cache', PACKAGE = 'symphony', Rr, Zr)
+    .Call(`_symphony_compute_ref_cache`, Rr, Zr)
 }
 
 moe_correct_ref <- function(Zq, Xq, Rq, Nr, RrZtr) {
-    .Call('_symphony_moe_correct_ref', PACKAGE = 'symphony', Zq, Xq, Rq, Nr, RrZtr)
+    .Call(`_symphony_moe_correct_ref`, Zq, Xq, Rq, Nr, RrZtr)
 }
 
 get_betas <- function(R, Z, lambda, design) {
-    .Call('_symphony_get_betas', PACKAGE = 'symphony', R, Z, lambda, design)
+    .Call(`_symphony_get_betas`, R, Z, lambda, design)
 }
 
