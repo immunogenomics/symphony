@@ -141,15 +141,14 @@ loadings = s$u
 Run Harmony integration. It is important to set `return_object = TRUE`.
 ```{r}
 set.seed(0)
-ref_harmObj = harmony::HarmonyMatrix(
+ref_harmObj = harmony::RunHarmony(
         data_mat = t(Z_pca_ref),  ## PCA embedding matrix of cells
         meta_data = ref_metadata, ## dataframe with cell labels
         theta = c(2),             ## cluster diversity enforcement
         vars_use = c('donor'),    ## variable to integrate out
         nclust = 100,             ## number of clusters in Harmony model
-        max.iter.harmony = 20,    ## max number of iterations
-        return_object = TRUE,     ## return the full Harmony model object
-        do_pca = FALSE            ## don't recompute PCs
+        max_iter = 20,            ## max number of iterations
+        return_object = TRUE      ## return the full Harmony model object
 )
 ```
 
@@ -157,7 +156,7 @@ To run the next function `buildReferenceFromHarmonyObj()`, you need to input the
 ```{r}
 # Compress a Harmony object into a Symphony reference
 reference = buildReferenceFromHarmonyObj(
-                        ref_harmObj,            # output object from HarmonyMatrix()
+                        ref_harmObj,            # output object from RunHarmony()
                         ref_metadata,           # reference cell metadata
                         vargenes_means_sds,     # gene names, means, and std devs for scaling
                         loadings,               # genes x PCs matrix

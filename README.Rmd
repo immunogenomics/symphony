@@ -63,20 +63,19 @@ This function compresses an existing Harmony object into a Symphony reference th
 ```{r eval=FALSE}
 
 # Run Harmony to integrate the reference cells
-ref_harmObj = harmony::HarmonyMatrix(
+ref_harmObj = harmony::RunHarmony(
         data_mat = t(Z_pca_ref),   # starting embedding (e.g. PCA, CCA) of cells
         meta_data = ref_metadata,  # dataframe with cell metadata
         theta = c(2),              # cluster diversity enforcement
         vars_use = c('donor'),     # variable to integrate out
         nclust = 100,              # number of clusters in Harmony model
-        max.iter.harmony = 10,     # max iterations of Harmony
-        return_object = TRUE,      # set to TRUE to return the full Harmony object
-        do_pca = FALSE             # do not recompute PCs
+        max_iter = 10,             # max iterations of Harmony
+        return_object = TRUE       # set to TRUE to return the full Harmony object
 )
 
 # Build Symphony reference
 reference = buildReferenceFromHarmonyObj(
-        ref_harmObj,            # output object from HarmonyMatrix()
+        ref_harmObj,            # output object from RunHarmony()
         ref_metadata,           # dataframe with cell metadata
         vargenes_means_sds,     # gene names, means, and std devs for scaling
         loadings,               # genes x PCs

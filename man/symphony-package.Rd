@@ -9,7 +9,7 @@
 Implements the Symphony single-cell reference building and query mapping algorithms and additional functions described in Kang et al \url{https://www.nature.com/articles/s41467-021-25957-x}.
 }
 \author{
-\strong{Maintainer}: Joyce Kang \email{joyce_kang@hms.harvard.edu} (\href{https://orcid.org/0000-0002-1962-1291}{ORCID})
+\strong{Maintainer}: Joyce Kang \email{joyce.b.kang@gmail.com} (\href{https://orcid.org/0000-0002-1962-1291}{ORCID})
 
 Authors:
 \itemize{

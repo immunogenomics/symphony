@@ -1,7 +1,7 @@
 #' Function for building a Symphony reference from a Harmony object. Useful if you would like your
 #' code to be more modular. Note that you must have saved vargenes_means_sds and PCA loadings.
 #'
-#' @param harmony_obj Harmony object (output from HarmonyMatrix())
+#' @param harmony_obj Harmony object (output from RunHarmony() with return_object = TRUE)
 #' @param metadata Reference cell metadata (cells by attributes)
 #' @param vargenes_means_sds Variable genes in dataframe with columns named ('symbol', 'mean', 'stddev')
 #' @param pca_loadings Gene loadings from PCA (e.g. irlba(ref_exp_scaled, nv = 20)$u)
@@ -35,12 +35,12 @@ buildReferenceFromHarmonyObj <- function(harmony_obj,
     
     if(verbose) message('Save R, Z_orig, Z_corr, and betas from Harmony object')
     res$R = harmony_obj$R
-    res$Z_orig = harmony_obj$Z_orig
-    res$Z_corr = harmony_obj$Z_corr
-    res$betas = harmony::moe_ridge_get_betas(harmony_obj)
-    
+    res$Z_orig = harmony_obj$getZorig()
+    res$Z_corr = harmony_obj$getZcorr()
+    res$betas = harmony_obj$W
+
     if(verbose) message('Calculate final L2 normalized reference centroids (Y_cos)')
-    res$centroids = t(cosine_normalize_cpp(harmony_obj$R %*% t(harmony_obj$Z_corr), 1))
+    res$centroids = t(cosine_normalize_cpp(harmony_obj$R %*% t(harmony_obj$getZcorr()), 1))
     
     if(verbose) message('Calculate reference compression terms (Nr and C)')
     res$cache = compute_ref_cache(res$R, res$Z_corr)

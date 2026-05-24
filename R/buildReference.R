@@ -103,24 +103,23 @@ buildReference <- function(exp_ref,                   # genes x cells
         if (verbose) message('Running Harmony integration')
         
         # Run Harmony to harmonize the reference
-        ref_harmObj = harmony::HarmonyMatrix(
+        ref_harmObj = harmony::RunHarmony(
             data_mat = t(Z_pca_ref),  ## PCA embedding matrix of cells
             meta_data = metadata_ref, ## dataframe with cell labels
             theta = theta,            ## cluster diversity enforcement
-            tau = tau,
             vars_use = vars,          ## variable to integrate over
             nclust = K,               ## number of clusters in Harmony model
-            max.iter.harmony = 20,
+            max_iter = 20,
             return_object = TRUE,     ## return the full Harmony model object
-            do_pca = FALSE,           ## do not recompute PCs
-            verbose = verbose
+            verbose = verbose,
+            .options = harmony::harmony_options(tau = tau)
         )
 
-        res$centroids <- t(cosine_normalize_cpp(ref_harmObj$R %*% t(ref_harmObj$Z_corr) , 1))
+        res$centroids <- t(cosine_normalize_cpp(ref_harmObj$R %*% t(ref_harmObj$getZcorr()) , 1))
         res$R <- ref_harmObj$R
-        res$betas <- harmony::moe_ridge_get_betas(ref_harmObj)
+        res$betas <- ref_harmObj$W
         res$Z_orig <- Z_pca_ref
-        res$Z_corr <- ref_harmObj$Z_corr
+        res$Z_corr <- ref_harmObj$getZcorr()
         res$K <- K
         res$d <- d
     } else {
